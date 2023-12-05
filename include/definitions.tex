@@ -1,0 +1,163 @@
+% Define shortcut commands
+
+% Mathematical environments
+\def \bi {\begin{itemize}}
+\def \ei {\end{itemize}}
+\def \be {\begin{linenomath*}\begin{equation}}
+\def \ee {\end{equation}\end{linenomath*}}
+\def \bs {\begin{linenomath*}\begin{equation} \left\{  \begin{aligned}}
+\def \es {\end{aligned} \right. \end{equation}\end{linenomath*}}
+\def \ba {\begin{equation} \begin{aligned}}
+\def \ea {\end{aligned} \end{equation}}
+\def \begm {\left(\begin{matrix}}
+\def \endm {\end{matrix}\right)}
+
+% Mathematical symbols
+\def \dd  {{\mathrm d}}
+\def \expe {\mathbb{E}}
+\def \real {\mathbb{R}}
+\def \e {\mathrm{e}}
+\def \un  {\, \mathrm}
+\def \ve {\mathbf}
+\def \deg {\ensuremath{^{\circ}}}
+\newcommand{\mypow}[2]{\ensuremath{{#1}\times 10^{#2}}\xspace}
+
+% Physics
+\def \bsll {\ensuremath{b\to s\ell^+\ell^-}\xspace}
+\def \BKll {\ensuremath{B\to K^{(*)}\ell^+\ell^-}\xspace}
+\def \BKpll {\ensuremath{B^+\to K^{+}\ell^+\ell^-}\xspace}
+\def \BKpsll {\ensuremath{B^+\to K^{*+}\ell^+\ell^-}\xspace}
+\def \BKpsll {\ensuremath{B^0\to K^{0}\ell^+\ell^-}\xspace}
+\def \BKzsll {\ensuremath{B^0\to K^{*0}\ell^+\ell^-}\xspace}
+\def \BKnn {\ensuremath{B\to K\nu\bar{\nu}}\xspace}
+\def \BKpnn {\ensuremath{B^+\to K^+\nu\bar{\nu}}\xspace}
+\def \BKznn {\ensuremath{B^0\to K^0_{\mathrm S}\nu\bar{\nu}}\xspace}
+\def \BKzznn {\ensuremath{B^0\to K^0\nu\bar{\nu}}\xspace}
+\def \BKjpsi {\ensuremath{B\to K\jpsi}\xspace}
+\def \BKjpsimumu {\ensuremath{B\to K\jpsi(\to\mumu)}\xspace}
+\def \BKpjpsi {\ensuremath{B^+\to K^+\jpsi}\xspace}
+\def \BKzjpsi {\ensuremath{B^0\to K^0_{\mathrm S}\jpsi}\xspace}
+\def \bsnn {\ensuremath{b\to s\nu\bar{\nu}}\xspace}
+\def \mbc {\ensuremath{M_\mathrm{bc}}\xspace}
+\def \nsig {\ensuremath{n_\mathrm{sig}}\xspace}
+\def \nbkg {\ensuremath{n_\mathrm{bkg}}\xspace}
+\def \Br {\ensuremath{\mathrm{Br}}\xspace}
+\def \babar {Babar\xspace}
+\def \qrec {\ensuremath{q_{\mathrm{rec}}^2}\xspace}
+\def \qq {\ensuremath{q^2}\xspace}
+\def \gevcccc {\ensuremath{\,\mathrm{GeV^2/c^4}}\xspace}
+\def \effsig {\ensuremath{\varepsilon_{\mathrm{sig}}}\xspace}
+\def \pt {\ensuremath{p_{\mathrm{T}}}\xspace}
+\def \dr {\ensuremath{dr}\xspace}
+\def \dz {\ensuremath{dz}\xspace}
+\def \bdto {\ensuremath{\mathrm{BDT_1}}\xspace}
+\def \bdtt {\ensuremath{\mathrm{BDT_2}}\xspace}
+\def \bdtc {\ensuremath{\mathrm{BDT_c}}\xspace}
+\def \CLs {\ensuremath{\mathrm{CL_s}}\xspace}
+\def \esig {\ensuremath{\tilde{\varepsilon}_{\mathrm{sig}}}\xspace}
+
+% Numbers
+\def \nlumion {189} % 189.2
+\def \nlumioff {18} % 18.0
+\def \nlumitot {208}
+\def \nlumimc {1000}
+\def \nlumionpartial {63}
+\def \nlumioffpartial {9}
+\def \lumion {\nlumion\invfb}
+\def \lumioff {\nlumioff\invfb}
+\def \lumionpartial {\nlumionpartial\invfb}
+\def \lumioffpartial {\nlumioffpartial\invfb}
+\def \lumitot {\nlumitot\invfb}
+\def \lumimc {\nlumimc\invfb}
+\def \lumimctest {800\invfb}
+\def \limitKp {\mypow{1.0}{-5}}
+\def \limitKz {\mypow{1.8}{-5}}
+\def \limitKppartial {\mypow{4.1}{-5}}
+\def \nsignalmc {\mypow{8}{6}}
+\def \nsignalmctrain {\mypow{4}{6}}
+\def \nsignalmctest {\mypow{4}{6}}
+
+% Misc
+\newcommand{\autocite}[1]{\cite{#1}}
+\newcommand{\myref}[1]{Ref.~\cite{#1}}
+
+\newcommand{\Tstrut}{\rule{0pt}{2.6ex}}         % = `top' strut
+\newcommand{\Bstrut}{\rule[-0.9ex]{0pt}{0pt}}   % = `bottom' strut
+\newcommand{\toprule}{\hline\Bstrut}
+\newcommand{\midrule}{\hline\Tstrut\Bstrut}
+\newcommand{\bottomrule}{\hline\Tstrut}
+
+\newcommand{\textfrac}[2]{%
+	$\frac{\text{#1}}{\text{#2}}$
+}
+
+% Table
+\newcommand{\tab}[4]{%
+    \begin{table}[bt]
+    \caption{#4}
+    \begin{center}
+    \begin{tabular}{#2}
+    #3
+    \end{tabular}
+    \end{center}
+    \label{tab:#1}
+    \end{table}
+}
+
+% Table
+\newcommand{\tabs}[6]{%
+    \begin{table}[t]
+    \caption{#6}
+    \begin{center}
+    \begin{tabular}[t]{#2}
+    #3
+    \end{tabular}
+    \begin{tabular}[t]{#4}
+    #5
+    \end{tabular}
+    \end{center}
+    \label{tab:#1}
+    \end{table}
+}
+
+% Deal with missing figures which are not directly included in the repository
+% Taken from https://tex.stackexchange.com/questions/39982/use-default-figure-if-file-is-missing
+\newcommand{\noimage}{%
+  \setlength{\fboxsep}{-\fboxrule}%
+  \fbox{\phantom{\rule{10pt}{10pt}}Figure missing\phantom{\rule{10pt}{10pt}}}% Framed box
+}
+\let\includegraphicsoriginal\includegraphics
+\renewcommand{\includegraphics}[2][width=\textwidth]{\IfFileExists{#2}{\includegraphicsoriginal[#1]{#2}}{\noimage}}
+
+
+% Simple figure
+\newcommand{\fig}[4]{%
+    \begin{figure}[tb]
+    \centering
+    \includegraphics[width=#2\textwidth]{#3}
+    \caption{#4}
+    \label{fig:#1}
+    \end{figure}
+}
+
+% Figure with two subfigures
+\newcommand{\figs}[6]{%
+    \begin{figure}[tb]
+    \centering
+    \includegraphics[width=#2\textwidth]{#3}
+    \includegraphics[width=#4\textwidth]{#5}
+    \caption{#6}
+    \label{fig:#1}
+    \end{figure}
+}
+
+% Figure with arbitrary number of subfigures
+\newcommand{\figss}[3]{%
+    \begin{figure}[tb]
+    \centering
+    {#2}
+    \caption{#3}
+    \label{fig:#1}
+    \end{figure}
+}
+

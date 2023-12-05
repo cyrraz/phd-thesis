@@ -1,0 +1,359 @@
+%%%%%   Adapted from the standard symbols for use in Belle II notes and papers (C. Hearty 21-Oct-2014)
+%%%%%   An unmodified version can be found in the download section of https://arxiv.org/abs/2104.12624 for example
+%%%%%   Based on babarsym.tex; authored by D. Hitlin, D. MacFarlane, P. Dauncey, and R. Waldi
+
+\RequirePackage{xspace}
+
+%%%%%%%%%%%%%%%%%%%% THE NAME OF THE COLLABORATION %%%%
+\def\belletwo {Belle~II\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%   LEPTONS   %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\let\emi\en
+\def\electron   {\ensuremath{e}\xspace}
+\def\en         {\ensuremath{e^-}\xspace}   % electron negative (\em is taken)
+\def\ep         {\ensuremath{e^+}\xspace}
+\def\epm        {\ensuremath{e^\pm}\xspace} 
+\def\epem       {\ensuremath{e^+e^-}\xspace}
+\def\ee         {\ensuremath{e^-e^-}\xspace}
+
+\def\mmu        {\ensuremath{\mu}\xspace}
+\def\mup        {\ensuremath{\mu^+}\xspace}
+\def\mun        {\ensuremath{\mu^-}\xspace} % muon negative (\mum is taken)
+\def\mumu       {\ensuremath{\mu^+\mu^-}\xspace}
+\def\mtau       {\ensuremath{\tau}\xspace}
+
+\def\taup       {\ensuremath{\tau^+}\xspace}
+\def\taum       {\ensuremath{\tau^-}\xspace}
+\def\tautau     {\ensuremath{\tau^+\tau^-}\xspace}
+
+\def\ellm       {\ensuremath{\ell^-}\xspace}
+\def\ellp       {\ensuremath{\ell^+}\xspace}
+\def\ellell     {\ensuremath{\ell^+ \ell^-}\xspace}
+
+\def\nub        {\ensuremath{\overline{\nu}}\xspace}
+\def\nunub      {\ensuremath{\nu{\overline{\nu}}}\xspace}
+\def\nub        {\ensuremath{\overline{\nu}}\xspace}
+\def\nunub      {\ensuremath{\nu{\overline{\nu}}}\xspace}
+\def\nue        {\ensuremath{\nu_e}\xspace}
+\def\nueb       {\ensuremath{\nub_e}\xspace}
+\def\nuenueb    {\ensuremath{\nue\nueb}\xspace}
+\def\num        {\ensuremath{\nu_\mu}\xspace}
+\def\numb       {\ensuremath{\nub_\mu}\xspace}
+\def\numnumb    {\ensuremath{\num\numb}\xspace}
+\def\nut        {\ensuremath{\nu_\tau}\xspace}
+\def\nutb       {\ensuremath{\nub_\tau}\xspace}
+\def\nutnutb    {\ensuremath{\nut\nutb}\xspace}
+\def\nul        {\ensuremath{\nu_\ell}\xspace}
+\def\nulb       {\ensuremath{\nub_\ell}\xspace}
+\def\nulnulb    {\ensuremath{\nul\nulb}\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%  PHOTONS  %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\g     {\ensuremath{\gamma}\xspace}
+\def\gaga  {\ensuremath{\gamma\gamma}\xspace}  %% changed from \gg, which is >>
+\def\ggstar{\ensuremath{\gamma\gamma^*}\xspace}
+
+\def\ega    {\ensuremath{e\gamma}\xspace}
+\def\game   {\ensuremath{\gamma e^-}\xspace}
+\def\epemg  {\ensuremath{e^+e^-\gamma}\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Other GAUGE BOSONS  %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\H      {\ensuremath{H^0}\xspace}
+\def\Hp     {\ensuremath{H^+}\xspace}
+\def\Hm     {\ensuremath{H^-}\xspace}
+\def\Hpm    {\ensuremath{H^\pm}\xspace}
+\def\W      {\ensuremath{W}\xspace}
+\def\Wp     {\ensuremath{W^+}\xspace}
+\def\Wm     {\ensuremath{W^-}\xspace}
+\def\Wpm    {\ensuremath{W^\pm}\xspace}
+\def\Z      {\ensuremath{Z^0}\xspace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%   QUARKS   %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\q     {\ensuremath{q}\xspace}
+\def\qbar  {\ensuremath{\overline q}\xspace}
+\def\qqbar {\ensuremath{q\overline q}\xspace}
+\def\u     {\ensuremath{u}\xspace}
+\def\ubar  {\ensuremath{\overline u}\xspace}
+\def\uubar {\ensuremath{u\overline u}\xspace}
+\def\d     {\ensuremath{d}\xspace}
+\def\dbar  {\ensuremath{\overline d}\xspace}
+\def\ddbar {\ensuremath{d\overline d}\xspace}
+\def\s     {\ensuremath{s}\xspace}
+\def\sbar  {\ensuremath{\overline s}\xspace}
+\def\ssbar {\ensuremath{s\overline s}\xspace}
+\def\c     {\ensuremath{c}\xspace}
+\def\cbar  {\ensuremath{\overline c}\xspace}
+\def\ccbar {\ensuremath{c\overline c}\xspace}
+\def\b     {\ensuremath{b}\xspace}
+\def\bbar  {\ensuremath{\overline b}\xspace}
+\def\bbbar {\ensuremath{b\overline b}\xspace}
+\def\t     {\ensuremath{t}\xspace}
+\def\tbar  {\ensuremath{\overline t}\xspace}
+\def\tbar  {\ensuremath{\overline t}\xspace}
+\def\ttbar {\ensuremath{t\overline t}\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% LIGHT MESONS  %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\piz   {\ensuremath{\pi^0}\xspace}
+\def\pizs  {\ensuremath{\pi^0\mbox\,\rm{s}}\xspace}
+\def\ppz   {\ensuremath{\pi^0\pi^0}\xspace}
+\def\pip   {\ensuremath{\pi^+}\xspace}
+\def\pim   {\ensuremath{\pi^-}\xspace}
+\def\pipi  {\ensuremath{\pi^+\pi^-}\xspace}
+\def\pipm  {\ensuremath{\pi^\pm}\xspace}
+\def\pimp  {\ensuremath{\pi^\mp}\xspace}
+
+\def\kaon  {\ensuremath{K}\xspace}
+%%% do NOT use ensuremath here
+\def\Kbar  {\kern 0.2em\overline{\kern -0.2em K}{}\xspace}
+\def\Kb    {\ensuremath{\Kbar}\xspace}
+\def\Kz    {\ensuremath{K^0}\xspace}
+\def\Kzb   {\ensuremath{\Kbar^0}\xspace}
+\def\KzKzb {\ensuremath{\Kz \kern -0.16em \Kzb}\xspace}
+\def\Kp    {\ensuremath{K^+}\xspace}
+\def\Km    {\ensuremath{K^-}\xspace}
+\def\Kpm   {\ensuremath{K^\pm}\xspace}
+\def\Kmp   {\ensuremath{K^\mp}\xspace}
+\def\KpKm  {\ensuremath{\Kp \kern -0.16em \Km}\xspace}
+\def\KS    {\ensuremath{K^0_{\mathrm{S}}}\xspace}
+\def\KL    {\ensuremath{K^0_{\mathrm{L}}}\xspace}
+\def\Kstarz  {\ensuremath{K^{*0}}\xspace}
+\def\Kstarzb {\ensuremath{\Kbar^{*0}}\xspace}
+\def\Kstar   {\ensuremath{K^*}\xspace}
+\def\Kstarb  {\ensuremath{\Kbar^*}\xspace}
+\def\Kstarp  {\ensuremath{K^{*+}}\xspace}
+\def\Kstarm  {\ensuremath{K^{*-}}\xspace}
+\def\Kstarpm {\ensuremath{K^{*\pm}}\xspace}
+\def\Kstarmp {\ensuremath{K^{*\mp}}\xspace}
+
+\newcommand{\etapr}{\ensuremath{\eta^{\prime}}\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% HEAVY MESONS  %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% do NOT use ensuremath here
+\def\Dbar    {\kern 0.2em\overline{\kern -0.2em D}{}\xspace}
+\def\Db      {\ensuremath{\Dbar}\xspace}
+\def\Dz      {\ensuremath{D^0}\xspace}
+\def\Dzb     {\ensuremath{\Dbar^0}\xspace}
+\def\DzDzb   {\ensuremath{\Dz {\kern -0.16em \Dzb}}\xspace}
+\def\Dp      {\ensuremath{D^+}\xspace}
+\def\Dm      {\ensuremath{D^-}\xspace}
+\def\Dpm     {\ensuremath{D^\pm}\xspace}
+\def\Dmp     {\ensuremath{D^\mp}\xspace}
+\def\DpDm    {\ensuremath{\Dp {\kern -0.16em \Dm}}\xspace}
+\def\Dstar   {\ensuremath{D^*}\xspace}
+\def\Dstarb  {\ensuremath{\Dbar^*}\xspace}
+\def\Dstarz  {\ensuremath{D^{*0}}\xspace}
+\def\Dstarzb {\ensuremath{\Dbar^{*0}}\xspace}
+\def\Dstarp  {\ensuremath{D^{*+}}\xspace}
+\def\Dstarm  {\ensuremath{D^{*-}}\xspace}
+\def\Dstarpm {\ensuremath{D^{*\pm}}\xspace}
+\def\Dstarmp {\ensuremath{D^{*\mp}}\xspace}
+\def\Ds      {\ensuremath{D^+_s}\xspace}
+\def\Dsb     {\ensuremath{\Dbar^+_s}\xspace}
+\def\Dss     {\ensuremath{D^{*+}_s}\xspace}
+
+
+\def\B       {\ensuremath{B}\xspace}
+%%% do NOT use ensuremath here
+\def\Bbar    {\kern 0.18em\overline{\kern -0.18em B}{}\xspace}
+\def\Bb      {\ensuremath{\Bbar}\xspace}
+\def\BB      {\ensuremath{B\Bbar}\xspace} 
+\def\Bz      {\ensuremath{B^0}\xspace}
+\def\Bzb     {\ensuremath{\Bbar^0}\xspace}
+\def\BzBzb   {\ensuremath{\Bz {\kern -0.16em \Bzb}}\xspace}
+\def\Bu      {\ensuremath{B^+}\xspace}
+\def\Bub     {\ensuremath{B^-}\xspace}
+\def\Bp      {\ensuremath{\Bu}\xspace}
+\def\Bm      {\ensuremath{\Bub}\xspace}
+\def\Bpm     {\ensuremath{B^\pm}\xspace}
+\def\Bmp     {\ensuremath{B^\mp}\xspace}
+\def\BpBm    {\ensuremath{\Bu {\kern -0.16em \Bub}}\xspace}
+\def\Bs      {\ensuremath{B_s}\xspace}
+\def\Bsb     {\ensuremath{\Bbar_s}\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% ONIA %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\jpsi     {\ensuremath{{J\mskip -3mu/\mskip -2mu\psi\mskip 2mu}}\xspace}
+\def\psitwos  {\ensuremath{\psi{(2S)}}\xspace}
+\def\psiprpr  {\ensuremath{\psi(3770)}\xspace}
+\def\etac     {\ensuremath{\eta_c}\xspace}
+\def\chiczero {\ensuremath{\chi_{c0}}\xspace}
+\def\chicone  {\ensuremath{\chi_{c1}}\xspace}
+\def\chictwo  {\ensuremath{\chi_{c2}}\xspace}
+\mathchardef\Upsilon="7107
+\def\Y#1S{\ensuremath{\Upsilon{(#1S)}}\xspace}% no space before {...}!
+\def\OneS  {\Y1S}
+\def\TwoS  {\Y2S}
+\def\ThreeS{\Y3S}
+\def\FourS {\Y4S}
+\def\FiveS {\Y5S}
+\def\SixS  {\Y6S}
+
+\def\chic#1{\ensuremath{\chi_{c#1}}\xspace} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% BARYONS %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\proton      {\ensuremath{p}\xspace}
+\def\antiproton  {\ensuremath{\overline p}\xspace}
+\def\neutron     {\ensuremath{n}\xspace}
+\def\antineutron {\ensuremath{\overline n}\xspace}
+
+\mathchardef\Deltares="7101
+\mathchardef\Xi="7104
+\mathchardef\Lambda="7103
+\mathchardef\Sigma="7106
+\mathchardef\Omega="710A
+
+%%% do NOT use ensuremath here
+\def\Deltabar{\kern 0.25em\overline{\kern -0.25em \Deltares}{}\xspace}
+\def\Lbar{\kern 0.2em\overline{\kern -0.2em\Lambda\kern 0.05em}\kern-0.05em{}\xspace}
+\def\Sigbar{\kern 0.2em\overline{\kern -0.2em \Sigma}{}\xspace}
+\def\Xibar{\kern 0.2em\overline{\kern -0.2em \Xi}{}\xspace}
+\def\Obar{\kern 0.2em\overline{\kern -0.2em \Omega}{}\xspace}
+\def\Nbar{\kern 0.2em\overline{\kern -0.2em N}{}\xspace}
+\def\Xb{\kern 0.2em\overline{\kern -0.2em X}{}\xspace}
+
+\def\X {\ensuremath{X}\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% ENERGY AND MOMENTUM %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\tev}{\ensuremath{\mathrm{\,Te\kern -0.1em V}}\xspace}
+\newcommand{\gev}{\ensuremath{\mathrm{\,Ge\kern -0.1em V}}\xspace}
+\newcommand{\mev}{\ensuremath{\mathrm{\,Me\kern -0.1em V}}\xspace}
+\newcommand{\kev}{\ensuremath{\mathrm{\,ke\kern -0.1em V}}\xspace}
+\newcommand{\ev}{\ensuremath{\mathrm{\,e\kern -0.1em V}}\xspace}
+\newcommand{\gevc}{\ensuremath{{\mathrm{\,Ge\kern -0.1em V\!/}c}}\xspace}
+\newcommand{\mevc}{\ensuremath{{\mathrm{\,Me\kern -0.1em V\!/}c}}\xspace}
+\newcommand{\gevcc}{\ensuremath{{\mathrm{\,Ge\kern -0.1em V\!/}c^2}}\xspace}
+\newcommand{\mevcc}{\ensuremath{{\mathrm{\,Me\kern -0.1em V\!/}c^2}}\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% DISTANCE AND AREA %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\syin {\ensuremath{^{\prime\prime}}\xspace}
+\def\inch   {\ensuremath{\rm \,in}\xspace} % \in is taken
+\def\ft   {\ensuremath{\rm \,ft}\xspace}
+\def\km   {\ensuremath{\mathrm{\,km}}\xspace}
+\def\m    {\ensuremath{\mathrm{\,m}}\xspace}
+\def\cm   {\ensuremath{\mathrm{\,cm}}\xspace}
+\def\cma  {\ensuremath{\mathrm{\,cm}^2}\xspace}
+\def\mm   {\ensuremath{\mathrm{\,mm}}\xspace}
+\def\mma  {\ensuremath{\mathrm{\,mm}^2}\xspace}
+\def\mum  {\ensuremath{{\,\mu\mathrm{m}}}\xspace}%% mu meter 
+\def\muma       {\ensuremath{{\,\mu\rm m}^2}\xspace}
+\def\nm   {\ensuremath{\mathrm{\,nm}}\xspace}
+\def\fm   {\ensuremath{\mathrm{\,fm}}\xspace}
+\def\nm         {\ensuremath{\mathrm{\,nm}}\xspace}   %% nanometer
+%
+\def\barn{\ensuremath{\mathrm{\,b}}\xspace}
+\def\barnhyph{\ensuremath{\mathrm{-b}}\xspace}
+\def\mbarn{\ensuremath{\mathrm{\,mb}}\xspace}
+\def\mbarnhyph{\ensuremath{\mathrm{-mb}}\xspace}
+\def\nb         {\ensuremath{\mathrm{\,nb}}\xspace}
+\def\invnb {\ensuremath{\mbox{\,nb}^{-1}}\xspace}
+\def\pb {\ensuremath{\mathrm{\,pb}}\xspace}
+\def\invpb {\ensuremath{\mbox{\,pb}^{-1}}\xspace}
+\def\fb   {\ensuremath{\mbox{\,fb}}\xspace}
+\def\invfb   {\ensuremath{\mbox{\,fb}^{-1}}\xspace}
+\def\invab   {\ensuremath{\mbox{\,ab}^{-1}}\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% TIME AND MASS  %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\sec{\ensuremath{\rm {\,s}}\xspace}       %% second 
+\def\ms         {\ensuremath{\mathrm{\,ms}}\xspace}     %% millisecond
+\def\mus        {\ensuremath{\,\mu{\mathrm s}}\xspace}    %% microsecond
+\def\ns         {\ensuremath{\mathrm{\,ns}}\xspace}      %% nanosecond
+\def\ps         {\ensuremath{\mathrm{\,ps}}\xspace}  %% picosecond
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%   MISCELLANEOUS %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\Xrad {\ensuremath{X_0}\xspace}
+\def\NIL{\ensuremath{\lambda_{int}}\xspace}
+\let\dgr\degrees
+
+\def\cms         {\ensuremath{\mathrm{\,cm}^{-2} {\rm s}^{-1}}\xspace}
+
+\def\mic  {\ensuremath{\,\mu{\rm C}}\xspace}
+\def\krad {\ensuremath{\rm \,krad}\xspace}
+\def\cmc  {\ensuremath{\mathrm{\,cm}^3}\xspace}
+\def\yr   {\ensuremath{\rm \,yr}\xspace}
+\def\hr   {\ensuremath{\rm \,hr}\xspace}
+\def\degc {\ensuremath{^\circ}{C}\xspace}
+\def\degk {\ensuremath {\rm K}\xspace}
+\def\degrees{\ensuremath{^{\circ}}\xspace}
+\def\mrad{\ensuremath{\mathrm{\,mrad}}\xspace}               %% milliradian
+\def\rad{\ensuremath{\rm \,rad}\xspace}
+\def\mradhyph{\ensuremath{\rm -mr}\xspace}
+%
+\def\sx    {\ensuremath{\sigma_x}\xspace}    
+\def\sy    {\ensuremath{\sigma_y}\xspace}   
+\def\sz    {\ensuremath{\sigma_z}\xspace}    
+
+
+\def\order{{\ensuremath{\cal O}}\xspace}
+\def\L{{\ensuremath{\cal L}}\xspace}
+\def\calL{{\ensuremath{\cal L}}\xspace}
+\def\calS{{\ensuremath{\cal S}}\xspace}
+\def\calA{{\ensuremath{\cal A}}\xspace}
+\def\calD{{\ensuremath{\cal D}}\xspace}
+\def\calR{{\ensuremath{\cal R}}\xspace}
+
+%% Arrows:
+\def\ra                 {\ensuremath{\rightarrow}\xspace}
+\def\to                 {\ensuremath{\rightarrow}\xspace}
+
+
+\newcommand{\stat}{\ensuremath{\mathrm{(stat)}}\xspace}
+\newcommand{\syst}{\ensuremath{\mathrm{(syst)}}\xspace}
+
+\newcommand{\inverse}{\ensuremath{^{-1}}\xspace}
+\newcommand{\dedx}{\ensuremath{\mathrm{d}\hspace{-0.1em}E/\mathrm{d}x}\xspace}
+\newcommand{\chisq}{\ensuremath{\chi^2}\xspace}
+\newcommand{\delm}{\ensuremath{m_{\dstr}-m_{\dz}}\xspace}
+\newcommand{\lum} {\ensuremath{\mathcal{L}}\xspace}
+
+\def\gsim{{~\raise.15em\hbox{$>$}\kern-.85em
+          \lower.35em\hbox{$\sim$}~}\xspace}
+\def\lsim{{~\raise.15em\hbox{$<$}\kern-.85em
+          \lower.35em\hbox{$\sim$}~}\xspace}
+
+\def\qsq                {\ensuremath{q^2}\xspace}
+
+
+
+

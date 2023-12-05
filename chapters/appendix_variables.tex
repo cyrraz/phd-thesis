@@ -1,0 +1,115 @@
+%====================================================================================================
+\section{Definition of variables} \label{sec:app_variable_definition}
+%====================================================================================================
+
+\cref{tab:variable_registry_entire,tab:variable_registry_kaon,tab:variable_registry_roe,tab:variable_registry_dmeson} list discriminative variables that are introduced in \cref{sec:input_variables}, and referred to multiple times in the main text.
+In complement to the figures presented in \cref{sec:input_variables}, \cref{fig:overlays_fw_kz,fig:overlays_entire_kz,fig:overlays_roe_kz,fig:overlays_dmeson_kz} compare simulated signal and background events in bins of these variables for the \BKznn mode.
+The histograms are obtained by selecting with the criteria listed in \cref{sec:object_reconstruction,sec:basic_event_selection,sec:candidate_selection} a total of approximately $10^6$ simulated signal events and $10^6$ simulated background events.
+
+In the tables, the following notations are used:
+\bi
+\item The average interaction point is noted \IP.
+\item For a given track $T$ and a given point $P$, the point of closest approach of $T$ with respect to $P$, noted \POCA, is defined as the point on the track $T$ whose distance to the point $P$ is minimal in the transverse plane \cite{Bertacchi2021}.
+\item Some variables are computed in the centre-of-mass-system (\CMS), but unless specified otherwise, the reference frame is the laboratory.
+\item The tracks in the rest of the event (\ROE) are fit to a common vertex called the tag vertex.
+\item The notations related to the Belle II coordinate system are presented in \cref{fig:belle_ii} in \cref{sec:belleii}.
+\ei
+
+\tab{variable_registry_entire}{llp{7.2cm}}{\input{tables/variable_registry_entire.tex}}
+{
+Variables related to the entire event (see also \cref{sec:var_entire_event}).
+The definition of the signal-\ROE modified Fox-Wolfram moments is given in \cref{sec:da_mfw}, and, more generally, the definitions of variables depending on a momentum distribution are given in \cref{sec:da_variables}.
+}
+
+\tab{variable_registry_kaon}{llp{6.5cm}}{\input{tables/variable_registry_kaon.tex}}
+{
+Variables related to the properties of the signal kaon candidate (see also \cref{sec:var_signal_kaon}).
+}
+
+\tab{variable_registry_roe}{llp{7cm}}{\input{tables/variable_registry_roe.tex}}
+{
+Variables related to the \roe (see also \cref{sec:var_roe}).
+The definition of the \ROE-\ROE modified Fox-Wolfram moments is given in \cref{sec:da_mfw}.
+}
+
+\tab{variable_registry_dmeson}{llp{8cm}}{\input{tables/variable_registry_dmeson.tex}}
+{
+Variables related to the $D$ meson suppression.
+\cref{sec:var_dmeson_suppression} gives information about how the $D$ meson candidates are defined.
+}
+
+\figss{overlays_fw_kz}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/foxWolframR1.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/foxWolframR2.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/foxWolframR3.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso02.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso12.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso20.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso22.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso24.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/harmonicMomentThrust0.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/harmonicMomentThrust2.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the momentum distribution in the entire event for the \BKznn mode.
+\overlaytext
+The variable definitions are given in \cref{tab:variable_registry_entire}.
+}
+
+\figss{overlays_entire_kz}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_K_dr_to_TagV_momentum_line.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_K_dz_to_TagV_momentum_line.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/sphericity.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_weMissM2_ipMask_0.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_weMissPTheta_ipMask_0.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/total_charge2.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/nTracksCleaned.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/nGammasCleaned.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/nLepton.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/thrust.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/thrustAxisCosTheta.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_cosTBTO.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the entire event for the \BKznn mode.
+\overlaytext
+The variable definitions are given in \cref{tab:variable_registry_entire}.
+}
+
+\figss{overlays_roe_kz}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_roeDeltae_ipMask.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hoo0.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hoo2.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_roeM_ipMask.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_roePTheta_ipMask.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_roeP_ipMask.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_thrustOm.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/TagVpVal.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/TagVxBeam.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/TagVyBeam.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/TagVzBeam.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/roePi_var_pt.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the \ROE for the \BKznn mode.
+\overlaytext
+The variable definitions are given in \cref{tab:variable_registry_roe}.
+}
+
+\figss{overlays_dmeson_kz}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/kshortDPveto_M.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/kshortDPveto_chiProb.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/kshortDPveto_dzS_momentum_line.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/kshortD0veto_M.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/kshortD0veto_drS_momentum_line.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/kshortD0veto_dzS_momentum_line.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the $D$ meson suppression for the \BKznn mode.
+\overlaytext
+The variable definitions are given in \cref{tab:variable_registry_dmeson}.
+}

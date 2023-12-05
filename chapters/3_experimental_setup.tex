@@ -1,0 +1,273 @@
+%====================================================================================================
+\chapter{Experimental setup} \label{ch:setup}
+%====================================================================================================
+This chapter introduces the experimental setup employed to search for \BKnn decays.
+The two main experimental components are the SuperKEKB accelerator (\cref{sec:superkekb}), which accelerates and collides electrons and positrons at an energy sufficient to produce $B$ mesons, and the Belle II detector (\cref{sec:belleii}), which is designed to detect the products of $B$ meson decays.
+%====================================================================================================
+\section{The SuperKEKB accelerator} \label{sec:superkekb}
+%====================================================================================================
+The SuperKEKB accelerator \cite{AKAI2018188}, whose schematic view is shown in \cref{fig:superkekb}, is a double-ring electron-positron collider located in Tsukuba, Japan.
+Electrons and positrons are accelerated in an injector linear accelerator to an energy of $E_{\en}=7.0\gev$ and $E_{\ep}=4.0\gev$, respectively, and stored in two rings.
+The two beams collide at an interaction point located within the Belle II detector (\cref{sec:belleii}).
+
+\fig{superkekb}{0.5}{figs/experimental_setup/superkekb.pdf}{
+Schematic of the SuperKEKB accelerator.
+Electron bunches are produced via the photoelectric effect with a photocathode, and positron bunches are produced by sending electrons on a tungsten target.
+A damping ring is employed to reduce the emittance of the positron beam.
+After an acceleration in an injector linear accelerator (LINAC), the electrons are stored at an energy of 7\gev in a high-energy ring (HER), and the positrons at an energy of 4\gev in a low-energy ring (LER).
+The two beams collide at an interaction point located within the Belle II detector. Credits to \cite{Braun:2018hfw}.
+}
+
+The invariant mass available in an electron-positron interaction, denoted as $\sqrt{s}$, is given by
+\begin{equation}
+\sqrt{s}\equiv\sqrt{\left(\frac{E_{\en}+E_{\ep}}{c^2}\right)^2-\left(\frac{\mathbf{p}_{\en}+\mathbf{p}_{\ep}}{c}\right)^2}\approx\sqrt{(7+4)^2-(7-4)^2}=10.58\gevcc,
+\end{equation}
+where $\mathbf{p}_{\ep}$ ($\mathbf{p}_{\en}$) is the three-momentum of the positron (electron), and where the lepton mass is neglected in the second equality.
+As already mentioned in \cref{sec:b_factories}, this invariant mass of $10.58\gevcc$ corresponds to the mass of the \Y4S resonance, which, if produced in the interaction, decays into a pair of $B$ mesons with a probability higher than 96\% \cite{ParticleDataGroup:2020ssz}, making SuperKEKB a member of the \B-factory family.
+
+\cref{tab:cross_section} lists the main processes expected in an electron-positron collision at this energy.
+In addition to $\epem\to\Y4S$, there are five background processes, referred to as continuum background, that will play an important role during the selection of $\BKnn$ decays: $\epem\to\qqbar$ $(q=u,d,c,s)$ and $\epem\to\tautau$.
+The five other background processes listed at the bottom of \cref{tab:cross_section} have relatively large cross-sections, but they are easy to suppress, because they largely differ from typical $\epem\to\Y4S$ events (\cref{sec:trigger}).
+
+\tab{cross_section}{lr}{\input{tables/cross_sections.tex}}
+{Cross-section of the main processes resulting from electron-positron collisions at an energy of $10.58\gev$ in the centre-of-mass system.
+See chapter 4 of \cite{Kou2020} for details on the quoted numbers.}
+
+When a pair of \B mesons is produced, they are emitted nearly at rest in the \Y4S rest frame, since each $B$ meson has a mass of $5.28\gevcc$, which is smaller but close to $\sqrt{s}/2$. 
+In the laboratory frame, each $B$ meson has a momentum of approximately $|\mathbf{p}_{\ep}+\mathbf{p}_{\en}|/2\approx1.5\gevc$, corresponding to a Lorentz boost factor $\beta\gamma\approx0.284$, where $\beta=v/c$ is the ratio between the $B$ meson velocity $v$ and the speed of light, and $\gamma\equiv1/\sqrt{1-\beta^2}$.
+This Lorentz boost is of particular interest for $CP$-violation studies, where the decay time difference between the two $B$ mesons needs to be measured.
+If $\Delta t$ is the decay time difference in the centre-of-mass system, the distance $\Delta z$ between the two decay vertices is given by $\Delta z=c\beta\gamma\Delta t$ and is of the order of 100\mum. 
+
+The designed instantaneous luminosity of SuperKEKB is $8\times10^{35}\mathrm{\,cm^{-2}\,s^{-1}}$, a value 40 times higher than what was achieved by the predecessor of SuperKEKB, KEKB.
+The main steps to reach such an instantaneous luminosity are to increase the beam currents by a factor of approximately two with respect to KEKB, and to squeeze the beams at the interaction point following a method called the nano-beam scheme, explained below, after the introduction of the coordinate system.
+
+The origin of the Belle II coordinate system is the nominal interaction point.
+The $x$ axis is in the horizontal plane and points towards the outside of the accelerator circular tunnel, the $y$ axis is vertical and points upwards; the $z$ axis is the symmetry axis of the Belle II solenoid and points in a direction close to the electron-beam direction.
+
+In the nano-beam scheme \cite{SuperB:2007lel}, which is applied at SuperKEKB and depicted in \cref{fig:nano_beam}, the nominal vertical width $\sigma_y$ of the bunches is squeezed to a value of the order of $50\nm$.
+An important challenge is an effect called the hourglass effect, which makes the value of $\sigma_y$ to reach its minimum only in a small $z$ region (\cref{fig:nano_beam}).
+To overcome this, the nano-beam scheme works with a large half crossing angle $\phi_x\approx40\mrad$ and a small bunch width in the $x$ direction $\sigma_x\approx10\mum$.
+By doing so, even if the actual length $\sigma_z$ of the bunches in the $z$ direction is of the order of 10\mm, only a small part of each bunch is overlapping at any given time, resulting in an effective bunch length of $\sigma^{\mathrm{eff}}_z=\sigma_x/\sin\phi_x\approx0.25\mm\ll\sigma_z$.
+
+\fig{nano_beam}{0.5}{figs/experimental_setup/nano_beam.pdf}{
+Vertical beam size at KEKB and SuperKEKB illustrating the hourglass effect (top) and view from above of an electron bunch and a positron bunch crossing each other (bottom). In the nano-beam scheme used at SuperKEKB, only a small part of each bunch is overlapping at any given time, resulting in a small effective bunch length. Adapted from \cite{AKAI2018188}.}
+
+From the beginning of the current operation phase of SuperKEKB in early 2019 until mid-2022, the Belle II detector has recorded a total integrated luminosity of the order of 400\invfb.
+So far, the maximum instantaneous luminosity achieved by SuperKEKB is approximately $3.8\times10^{34}\mathrm{\,cm^{-2}\,s^{-1}}$, which is the current world record, but still far from the design value.
+
+%====================================================================================================
+\section{The Belle II detector} \label{sec:belleii}
+%====================================================================================================
+
+A view of the  Belle II detector is shown in \cref{fig:belle_ii}.
+Several subsystems work together to detect the particles produced in the electron-positron collisions and infer their momentum, mass and energy.
+A detailed description of the Belle II detector can be found in \cite{Abe:2010gxa}.
+The rest of this section introduces the Belle II subsystems.
+
+\fig{belle_ii}{0.65}{figs/experimental_setup/belleii_new.pdf}{
+Schematic of the Belle II detector, and of its subdetectors: the vertex detector (\VXD), composed of the pixel vertex detector (\PXD) and the silicon vertex detector (\SVD), the central drift chamber (\CDC), the time-of-propagation detector (\TOP), the aerogel ring-imaging Cherenkov detector (\ARICH), the \KL and $\mu$ detector (\KLM).
+The \TOP and \ARICH detectors are used in particular for particle identification (\PID).
+The origin of the Belle II coordinate system is the nominal interaction point.
+The $x$ axis is in the horizontal plane and points towards the outside of the accelerator circular tunnel, the $y$ axis is vertical and points upwards; the $z$ axis is the symmetry axis of the Belle II solenoid and points in a direction close to the electron-beam direction.
+The polar angle $\theta$ is defined with respect to the $z$ axis, and the azimuthal angle $\phi$ is defined in the $xy$ plane.
+Adapted from \cite{Abe:2010gxa}.
+}
+
+%====================================================================================================
+\subsection{Tracking}
+%====================================================================================================
+
+The Belle II tracking system relies on three detectors: the pixel detector (\PXD), the silicon vertex detector (\SVD), and the central drift chamber (\CDC).
+A comprehensive description of the track-finding system is given in \cite{Bertacchi2021}.
+In the following, each detector is briefly presented.
+
+%====================================================================================================
+\subsubsection*{PXD}
+%====================================================================================================
+
+The \PXD is the innermost part of Belle II and a novel detector that was not present in Belle.
+It detects the passage of charged particles by exploiting the production of electron-hole pairs in depleted p-channel field-effect transistors (DEPFETs) \cite{Kemmer:1987ph}.
+The choice of this detection technology is based on the need to cope with a large density of particles coming from the beams and the interaction region, while keeping thin sensors to reduce multiple scattering effects.
+
+The \PXD has a collection of 40 detection modules, each possessing a matrix of $768\times250$ DEPFET pixels.
+Pairs of modules are glued together to form ladders and the \PXD is made of two layers of ladders around the beam pipe (\cref{fig:vxd}, upper left).
+The first layer is 14\mm away from the beam line and has 8 ladders; the second layer is 22\mm away from the beam line and will have 12 ladders.
+At the time of writing, the first layer of the \PXD is fully installed, but only two ladders are installed in the second layer.
+The full installation of the \PXD is foreseen by the end of 2022.
+
+When combined with the \SVD presented below, the presence of the \PXD improves the impact-parameter and decay-time resolution by a factor of approximately two with respect to Belle, resulting in an impact-parameter resolution of approximately 12\mum and a $D$ meson decay-time resolution of the order of $70\,\mathrm{fs}$ \cite{Belle-II:2021cxx}.
+
+\figss{vxd}{
+\includegraphics[width=0.4\textwidth]{figs/experimental_setup/pxd_xy.pdf}
+\includegraphics[width=0.4\textwidth]{figs/experimental_setup/svd_xy.pdf}
+\includegraphics[width=0.8\textwidth]{figs/experimental_setup/svd_zx.pdf}
+}{\PXD sensors in the transverse plane at $z=0\cm$ (upper left), \PXD and \SVD sensors in the transverse plane at $z=0\cm$ (upper right), and \PXD and \SVD sensors in the $xz$-plane at $y=0\cm$ (bottom).
+Adapted from \cite{Braun:2018hfw}.}
+
+%====================================================================================================
+\subsubsection*{SVD}
+%====================================================================================================
+
+Going away from the beam pipe, the detection surface to cover increases as the square of the distance and a pixel-based detector is not an option beyond the \PXD because of the cost and number of channels it would imply.
+For this reason, the \SVD detects the passage of charged particles from the production of electron-hole pairs in double-sided silicon strip detectors (DSSDs), a technology that was already used in Belle.
+
+The working principle of the \SVD is illustrated in \cref{fig:svd}.
+When a charged particle passes through an \SVD sensor, the electrons and holes resulting from ionisation are collected by $p$-side and $n$-side strips located on each side of the sensor.
+The $p$-side strips are perpendicular to the $n$-side strips, so that the coordinates of the charged particle can be determined.
+
+The \SVD is organised in four layers of sensors whose radii with respect to the beam line range from 39\mm to 135\mm (\cref{fig:vxd}).
+Most sensors have a rectangular shape, with the exception of the sensors located in the most forward region of the three outer layers, which have a trapezoidal shape and are slanted in order to reduce the amount of needed material.
+
+\fig{svd}{0.5}{figs/experimental_setup/svd.pdf}{
+Working principle of an \SVD sensor.
+The $n$-side strips (blue rectangle at the top) are perpendicular to the $p$-side strips (red rectangles at the bottom).
+Adapted from \cite{Abe:2010gxa}.}
+
+%====================================================================================================
+\subsubsection*{CDC}
+%====================================================================================================
+
+The \CDC completes the tracking system of Belle II and measures the momentum and energy loss of charged particles, and provides trigger signals.
+The \CDC detects the passage of charged particles from the ionisation of a gas mixture ($\mathrm{He-C_2H_6}$) contained in its detection volume.
+The electrons that are released during the ionisation cause avalanches of electrons that are collected by a set of wires whose electric potential is tuned to create a strong electric field.
+
+The \CDC has a collection of 56 layers of wires, whose radial location with respect to the beam line ranges from 168\mm to 1111\mm.
+Axial wires are parallel to the beam axis and stereo wires have a skewed orientation with respect to the axial wires (\cref{fig:cdc}).
+Layers of axial and stereo wires are grouped into axial and stereo superlayers.
+The first superlayer contains 8 layers of wires, and the other superlayers contain 6 layers of wires.
+By alternating stereo superlayers and axial superlayers (\cref{fig:cdc}), the three-dimensional trajectory of charged particles can be reconstructed in the \CDC.
+
+\figss{cdc}
+{
+\includegraphics[width=0.4\textwidth]{figs/experimental_setup/cdc_wires.pdf}
+\hspace{0.05\textwidth}
+\includegraphics[width=0.5\textwidth]{figs/experimental_setup/cdc.pdf}
+}
+{
+Example of axial wires (top left), of stereo wires (bottom left), and \CDC wires in the transverse plane at $z=0\cm$ (right).
+Layers of wires are grouped into axial and stereo superlayers.
+The first superlayer has a higher wire density.
+Adapted from \cite{Braun:2018hfw, Bertacchi2021}.}
+ 
+The momentum of a charged particle can be deduced from its reconstructed trajectory.
+At Belle II, a solenoid produces a magnetic field parallel to the beam axis, bending the charged particle trajectories in the transverse plane (\cref{sec:solenoid}).
+The transverse momentum $p_T$ of the particle follows from
+\be \label{eq:momentum_vs_curvature}
+p_T=|q|B\rho,
+\ee
+where $q$ is the electric charge of the particle, $B$ is the magnitude of the magnetic field, and $\rho$ is the bending radius of the particle trajectory.
+The relative uncertainty on $p_T$ achieved by the CDC is of the order of $0.1\%$ \cite{Dong:2019wtj}.
+Combining the information about the momentum and the energy loss $\dd E/\dd X$ helps identifying charged particles\footnote{In the expression $\dd E/\dd X$, $E$ denotes the energy of the charged particle and $X$ is a distance measured along the trajectory of the charged particle.}, especially those whose momentum is smaller than 1\gevc (section 34.2 of \cite{ParticleDataGroup:2020ssz}).
+
+%====================================================================================================
+\subsection{Particle identification}
+%====================================================================================================
+The particle identification system is composed of two Cherenkov detectors: the aerogel ring-imaging Cherenkov detector (\ARICH) and the time-of-propagation detector (\TOP).
+%====================================================================================================
+\subsubsection*{ARICH}
+%====================================================================================================
+The \ARICH detector, located at the forward end-cap outside the \CDC, is designed to distinguish between kaons and pions in the momentum range [0.4,4]\gevc, as well as between muons, electrons and pions whose momentum is below 1\gevc.
+Its working principle is illustrated in \cref{fig:arich_top}.
+When a charged particle passes through an aerogel radiator with a velocity larger than the speed of light in the radiator, the particle emits Cherenkov photons.
+The emission angle $\theta_C$ of the photons with respect to the velocity of the charged particle follows
+\be \label{eq:velocity}
+\beta=\frac{1}{n\cos\theta_C},
+\ee
+where $\beta$ is the velocity of the charged particle divided by the speed of light in vacuum and $n$ the refraction index of the radiator.
+By combining information about the momentum $p$ and the velocity $\beta$ of a particle, the mass of the particle (i.e.~its identity) is given by $m=p/(\gamma\beta)$, where $\gamma=1/\sqrt{1-\beta^2}$.
+%====================================================================================================
+\subsubsection*{TOP}
+%====================================================================================================
+The \TOP detector is installed in the barrel region outside the \CDC and its primary purpose is to identify kaons and pions.
+Its working principle is illustrated in \cref{fig:arich_top}.
+The Cherenkov photons emitted by a charged particle propagate through a quartz radiator.
+The photons stay within the radiator thanks to total internal reflections before reaching a photon detection plate located at the edge of the radiator.
+The propagation time of the Cherenkov photons is a function of the Cherenkov angle $\theta_C$, from which the velocity of the particle can be derived with \cref{eq:velocity}.
+A detailed description of the \TOP detector can be found in \cite{Inami2008}.
+In particular, one detail that is not mentioned here is the need to take into account chromaticity, i.e.~the dependence of $\theta_C$ on the photon wavelength.
+
+\fig{arich_top}{1.0}{figs/experimental_setup/arich_top.pdf}{
+Working principle of the \ARICH (left) and \TOP (right) detectors.}
+%====================================================================================================
+\subsection{Calorimetry}
+%====================================================================================================
+
+The electromagnetic crystal calorimeter (\ECL) occupies the remaining volume inside the Belle II magnet.
+Its main role is to detect photons and measure their energy, and to identify electrons.
+The \ECL also participates in the detection of \KL, provides trigger signals and is used to measure the luminosity received by Belle II.
+
+The \ECL is a collection of thousands of scintillation crystals, made of thallium-doped Cesium Iodide (CsI(Tl)), and covering a polar angle range of $12.4\deg<\theta<155.1\deg$, i.e.~approximately 90\% of the solid angle in the centre-of-mass frame.
+Each crystal is coupled to two photodiodes for readout.
+When a photon or an electron passes through an \ECL crystal, it may initiate an electromagnetic shower.
+The final products of the electromagnetic shower, low energy photons, are collected by the photodiodes and converted to an electronic signal.
+
+In terms of performance, the \ECL provides a mass resolution of approximately 5\mevcc for a neutral pion decaying into a pair of photons.
+In addition, the \ECL provides a relative energy resolution of approximately 4\% at an energy of 100\mev and 2\% at 8\gev \cite{Kou2020, Miyabayashi:2020xzp}.
+%====================================================================================================
+\subsection{Solenoid} \label{sec:solenoid}
+%====================================================================================================
+
+A superconducting solenoid radially surrounds the \ECL.
+It generates a magnetic field of $1.5\,$T parallel to the beam axis in a cylindrical volume of 1.7\m in radius and 4.4\m in length.
+The superconductor is an allow of niobium and titanium and is cooled with a cryogenic system based on liquid helium.
+The generated magnetic field bends the trajectory of the charged particles and allows for a measurement of their transverse momentum (\cref{eq:momentum_vs_curvature}).
+
+%====================================================================================================
+\subsection[$\KL$ and $\mu$ detection]{\boldmath{$\KL$} and \boldmath{$\mu$} detection}
+%====================================================================================================
+
+The $\KL$ and $\mu$ detection system (\KLM) forms the outermost part of the Belle II detector.
+Its primary function is to detect muons and showers initiated by \KL mesons.
+In addition, it serves as a magnetic return circuit for the solenoid.
+
+The \KLM is an alternating series of iron plates and detection layers located outside of the solenoid.
+The iron plates provide a total of 3.9 nuclear interaction lengths of material for \KL mesons passing through with a normal incidence, one nuclear interaction length being defined as the mean distance travelled by a \KL meson before undergoing an inelastic nuclear interaction.
+By comparison, the \ECL provides 0.8 nuclear interaction lengths of material for \KL mesons.
+
+A muon with a momentum higher than $\sim0.6\gevc$ passes through the \KLM with a nearly straight trajectory and escapes the detector.
+On the other hand, a \KL meson likely interacts with a nucleus of the \ECL or the \KLM material and initiates a hadronic shower detected by the \ECL, the \KLM or both.
+
+%====================================================================================================
+\subsection{The trigger system} \label{sec:trigger}
+%====================================================================================================
+The Belle II trigger system selects events of interest resulting from electron-positron interactions.
+The trigger system is divided in two layers:
+\bi
+\item The online trigger (\LO) combines information from several trigger subsystems and takes the decision to keep or to exclude a recorded event with a fixed latency of 5\mus.
+Since this decision needs to come very fast, \LO is based on configurable hardware and only a partial reconstruction of the event is made. 
+The main \LO trigger subsystems are the \CDC and the \ECL, which provide information about the tracks and energy clusters present in the event.
+\item The high-level trigger (\HLT) further selects events of interest based on a full event reconstruction made at the software level.
+\ei
+In particular, the trigger system is employed to suppress low multiplicity background sources such as $\epem\to\ell^+\ell^-$, $\epem\to\epem\ell^+\ell^-$ ($\ell=e,\mu$), and $\epem\to\gamma\gamma$.
+These background sources, that were already mentioned at the beginning of this chapter (\cref{tab:cross_section}), are easy to identify, because they usually do not produce more than two tracks in the \CDC nor more than two clusters in the \ECL.
+By contrast, typical $\epem\to\Y4S\to\BB$ events produce at least three tracks in the \CDC, and for those events the trigger efficiency is close to 100\%.
+%====================================================================================================
+\subsection{Beam-induced backgrounds}
+%====================================================================================================
+In addition to the low-multiplicity backgrounds mentioned in the previous section, below are listed three beam-induced backgrounds that are present at Belle II:
+\bi
+\item The Touschek scattering, which is a Coulomb scattering of two electrons or positrons in the same bunch. This scattering causes the particles to deviate from their nominal energy and to induce showers by interacting with the beam pipe.
+The Touschek scattering rate is inversely proportional to the beam size and thus enhanced by the nano-beam scheme presented in \cref{sec:superkekb}.
+The Touschek scattering is mitigated by the use of collimators and metal shields to prevent the scattered particles from reaching the Belle II detector.
+\item The beam–gas scattering, which is a scattering (either Coulomb or Bremsstrahlung) of beam particles by residual gas molecules present in the beam pipe.
+Similarly to the Touschek scattering, the beam-gas scattering causes the particles to deviate from their nominal energy and to hit the inner side of the beam pipe.
+This source of background is also mitigated with collimators and metal shields.
+\item The synchrotron radiation that is emitted by the beams.
+The power of the synchrotron radiation varies as the square of the beam energy, implying that this radiation comes more from the electron beam (7\gev) than from the positron beam (4\gev).
+To protect the Belle II detector from the synchrotron photons, the inner surface of the beam pipe is coated with an absorbing layer of gold.
+Moreover, the shape of the pipe is designed to avoid direct hits on the detector from synchrotron photons.
+\ei
+%====================================================================================================
+\subsection{Software} \label{sec:software}
+%====================================================================================================
+The Belle II analysis software framework (\basft) \cite{Kuhr2019} is a large collection of open-source tools and algorithms for event simulation, reconstruction and analysis.
+In particular, this framework includes tools for unpacking raw data, track finding and reconstruction, \ECL clustering, vertex fitting, and the computation of high-level variables.
+
+In addition to \basft, the following packages are employed for event generation at Belle II:
+\bi
+\item EvtGen \cite{Lange2001} simulates the decays of $B$ mesons.
+\item PYTHIA8 \cite{Sjoestrand2015} simulates the hadronisation of the quarks issued from continuum events $\epem\to\qqbar$ $(q=u,d,c,s)$.
+\item KKMC \cite{Jadach:1999vf,Jadach:2000ir} generates $\epem\to\tautau$ events.
+\item TAUOLA \cite{Jadach1991, Davidson:2010rw} handles the simulation of $\tau$-lepton decays.
+\item GEANT4 \cite{Agostinelli2003} simulates the detector response.
+\ei

@@ -1,0 +1,35 @@
+%====================================================================================================
+\clearpage
+\section{Post-fit normalisation parameters} \label{sec:pulls}
+%====================================================================================================
+This appendix gives information about the normalisation nuisance parameters obtained after a fit of the binned-likelihood model to data samples of \lumionpartial collected at the \Y4S resonance and \lumioffpartial collected 60\mev below the resonance (\cref{sec:first_iteration}).
+
+If $s$ is a background sample taken from the set of considered background sources,
+\begin{equation*}
+s\in\left\{\epem\to\BpBm,\epem\to\BzBzb\right\}\cup\left\{\epem\to\qqbar\,:\,q=u,d,c,s\right\}\cup\left\{\epem\to\tautau\right\},
+\end{equation*}
+then the background normalisation shift of $s$ is defined as $\mu_{\mathrm{s}}-1$,
+where $\mu_{\mathrm{s}}$ is the background strength (i.e.~the background normalisation nuisance parameter) of the background sample $s$ (\cref{sec:syst_norm}).
+For example, a normalisation shift of zero corresponds to no variation with respect to the expectation, and a shift of $+0.5$ corresponds to an upscale of the expected yield by a factor of 1.5.
+
+\cref{fig:63_fit_pulls} (top) presents the post-fit normalisation shifts of the background sources.
+The normalisation shifts of the \B meson background are close to zero (no variation).
+By contrast, the normalisation shifts of the $\epem\to\ccbar$ background and the $\epem\to\ssbar$ background are close to 0.4, meaning that the corresponding post-fit yields are upscaled by a factor of 1.4 with respect to the pre-fit expectations.
+This upscaling of the continuum background was anticipated by the normalisation discrepancy observed when comparing simulated continuum background and off-resonance data in the bins of the signal search region at the end of \cref{sec:bdtc}.
+
+\cref{fig:63_fit_pulls} (bottom) shows the correlation between the signal strength $\mu$, defined at the beginning of \cref{sec:da_pyhf}, and the strengths $\mu_s$ of the seven background sources.
+The signal strength is anti-correlated to the strength of the charged \B meson background, because this background is similar to signal in the most sensitive bins of the signal search region (\cref{fig:63_post_fit} in \cref{sec:first_iteration}).
+In addition, the strength of the charged \B meson background is strongly anti-correlated to the strength of the neutral \B meson background, meaning that these two background sources are hard to distinguish from each other.
+Similarly, the strengths of the two main sources of continuum background, $\epem\to\ccbar$ and $\epem\to\ssbar$, are strongly anti-correlated.
+
+\figs{63_fit_pulls}
+{0.65}
+{figs/search_for_b2hnn/first_iteration/bg_shift.pdf}
+{0.85}
+{figs/search_for_b2hnn/first_iteration/corr_data_fit.pdf}
+{
+At the top, post-fit normalisation shifts and uncertainties of the background sources as obtained by the \sghf fit to the data.
+The normalisation shift is defined as $\mu_{\mathrm{bkg}}-1$, where $\mu_{\mathrm{bkg}}$ is the background strength (i.e.~the background normalisation nuisance parameter).
+At the bottom, correlation between the signal strength $\mu$ and the strengths of the seven background sources.
+The strength of the neutral $B$ meson background is noted $\mu_{\mathrm{mxd}}$, and the strength of the charged $B$ meson background is noted $\mu_{\mathrm{chg}}$.
+}

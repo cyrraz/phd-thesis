@@ -1,0 +1,52 @@
+% Include all the tex files needed to compile the document
+\documentclass[a4paper,twoside,11.5pt]{scrbook}
+
+% Include
+\input{include/packages.tex}
+\input{include/styles.tex}
+\input{include/belle2sym.tex}
+\input{include/definitions.tex}
+\input{include/glossary.tex}
+
+\begin{document}
+% Mute warning
+\pdfsuppresswarningpagegroup=1
+
+% Chapters
+\input{chapters/title.tex}
+\input{chapters/abstract.tex}
+\tableofcontents
+\clearpage
+\input{chapters/1_introduction.tex}
+\input{chapters/2_theoretical_motivation.tex}
+\input{chapters/3_experimental_setup.tex}
+\input{chapters/4_data_analysis_techniques.tex}
+\input{chapters/5_1_search_for_b2knn_decays_simulation.tex}
+\input{chapters/5_2_search_for_b2knn_decays_data.tex}
+\input{chapters/6_conclusion.tex}
+
+\appendix
+\chapter{Appendix}
+\input{chapters/appendix_variables.tex}
+\input{chapters/appendix_background_composition.tex}
+\input{chapters/appendix_weights.tex}
+\input{chapters/appendix_yield_stability.tex}
+\input{chapters/appendix_pyhf_vs_sghf.tex}
+\input{chapters/appendix_pulls.tex}
+
+% GLossary
+\newpage
+\printnoidxglossaries
+
+% Bibliography
+\newpage
+\bibliographystyle{include/jhep}
+\bibliography{include/bibliography}
+
+% Acknowledgments
+\input{chapters/acknowledgments.tex}
+
+\end{document} 
+
+% Opinionis enim commenta delet dies, naturae iudicia confirmat.
+

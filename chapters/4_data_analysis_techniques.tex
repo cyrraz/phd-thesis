@@ -1,0 +1,423 @@
+%====================================================================================================
+\chapter{Data analysis techniques} \label{ch:data_analysis}
+%====================================================================================================
+This chapter presents a collection of data analysis techniques and tools that will be used in the next chapter to search for \BKnn decays.
+Since the content of this chapter is rather technical, the reader may skip it and come back to it when the tools are effectively employed in the next chapter.
+
+In \cref{sec:da_binary_cls}, binary classification algorithms, decision trees and boosted decision trees, are introduced.
+In \cref{sec:da_variables}, a set of discriminative variables are defined.
+In \cref{sec:da_covariance}, the definition of a covariance matrix and of a correlation matrix are recalled, as well as a method to estimate them.
+\Cref{sec:da_pyhf} introduces a tool to measure a branching fraction from a binned maximum-likelihood fit.
+\Cref{sec:da_upper_limit} presents a statistical method to determine an upper limit on a branching fraction.
+\Cref{sec:da_kernel} defines a non-parametric probability density estimator called the kernel density estimator.
+%====================================================================================================
+\section{Binary classification} \label{sec:da_binary_cls}
+%====================================================================================================
+Given $N_{\mathrm{variable}}$ explanatory variables, two classes, signal ($y=1$) and background ($y=0$), and a set of $N_{\mathrm{train}}$ examples
+\be
+\{(\mathbf{x}_1,y_1),\,...,\,(\mathbf{x}_{N_{\mathrm{train}}},\,y_{N_{\mathrm{train}}})\},
+\ee
+where $\mathbf{x}_i\in\mathbb{R}^{N_{\mathrm{variable}}}$ is an observation of the explanatory variables associated with class $y_i\in\{0,1\}$, the goal of binary classification is to define, based on the set of examples, an algorithm that outputs a signal probability prediction $\hat{y}\in(0,1)$ for any input $\mathbf{x}\in\mathbb{R}^{N_{\mathrm{variable}}}$.
+The construction of the algorithm, learning from the set of examples, is called training.
+
+A loss function $\ell(\cdot,\cdot)$, which measures the distance between a class example $y_i$ and a corresponding prediction $\hat{y}_i$, is defined and a na\"ive training would minimise the sum
+\be
+\sum_{i=1}^{N_{\mathrm{train}}}\ell\left(y_i,\,\hat{y}_i\right).
+\ee
+The usual loss function used in binary classification is called the negative binomial log-likelihood (or cross-entropy), and is defined as \cite{hastie01statisticallearning}
+\be \label{eq:loss}
+\ell\left(y,\,\hat{y}\right)=-\left[y\log\hat{y}+(1-y)\log(1-\hat{y})\right].
+\ee
+
+Below are presented two binary classification algorithms: the decision tree, and the gradient-boosted decision tree.
+An important difference between the two algorithms is their behaviour regarding the bias-variance trade-off: if no limit is imposed on the model complexity, it is possible to train a model that separates perfectly the signal from the background when this model is applied on its own training set (low bias), but that makes poor predictions when applied to an independent dataset (high variance); this regime is called overfitting.
+On the other hand, if the model is too simple, then its performance does not depend on the dataset (low variance), but its predictions are inaccurate (high bias); this regime is called underfitting.
+
+%====================================================================================================
+\subsection{Decision tree}
+%====================================================================================================
+A decision tree is a recursive partitioning of the explanatory variable space \cite{hastie01statisticallearning}.
+The first node of a decision tree divides the space into two subspaces (branches) according to the value of a single variable with respect to a certain threshold (\cref{fig:tree}).
+This procedure is repeated by the following nodes, until reaching the terminal nodes, called leaves.
+Each leaf corresponds to a certain region of the variable space and is associated with a weight, a negative weight corresponding to a background prediction, and a positive weight corresponding to a signal prediction (\cref{fig:tree}).
+
+\figss{tree}{\input{figs/data_analysis/tree.tex}}{
+Example of binary decision tree with three layers and four explanatory variables $\mathbf{x}\equiv(x^1,x^2,x^3,x^4)$, where the superscripts are indices, not exponents.
+The decision tree is organised in layers of nodes, and each node divides the remaining space in two, depending on the value of an explanatory variable $x^i$ with respect to a certain threshold.
+Each terminal node is associated with a weight $f_t(\mathbf{x})\in(-\infty,+\infty)$, a large weight corresponding to a high predicted signal probability.
+Adapted from \cite{Keck:2017gsv}.}
+
+For a given observation $\mathbf{x}\in\mathbb{R}^{N_{\mathrm{variable}}}$, a decision tree classifier $t$ assigns a weight $f_t(\mathbf{x})\in(-\infty,+\infty)$ to the observation $\mathbf{x}$.
+The corresponding predicted signal probability $\hat{y}(\mathbf{x})\in(0,1)$ is computed as 
+\be \label{eq:map_into_probability}
+\hat{y}(\mathbf{x})=P\left(f_t(\mathbf{x})\right)=\frac{1}{1+\exp(-f_t(\mathbf{x}))},
+\ee
+where $P(\alpha)\equiv 1/(1+\exp(-\alpha))$ maps the raw weight $\alpha\in(-\infty,+\infty)$ into a predicted signal probability $P(\alpha)\in(0,1)$.
+
+The main disadvantage of a simple decision tree is that it falls rapidly in an overfitting regime when the depth of the tree increases.
+For example, an arbitrary set of $10^6$ data points can be exactly classified by a decision tree with a depth of 20, because $2^{20}>10^6$.
+%====================================================================================================
+\subsection{Gradient-boosted decision tree} \label{sec:dt_bdt}
+%====================================================================================================
+By contrast with relying on a single high-complexity decision tree to make predictions, the idea behind boosted decision trees is to base the prediction on a set of $N_{\mathrm{tree}}\gg 1$ low-complexity tree classifiers \cite{Friedman:2002we, Chen:2016:XST:2939672.2939785}.
+
+For a given observation $\mathbf{x}\in\mathbb{R}^{N_{\mathrm{variable}}}$, and $t\in\{1,2,...,N_{\mathrm{tree}}\}$, the low-complexity tree classifier $t$ assigns a weight $f_t(\mathbf{x})\in(-\infty,+\infty)$ to the observation $\mathbf{x}$.
+The weights of the trees are added together to obtain a global prediction weight
+\be \label{eq:bdt_prediction}
+f^{(N_{\mathrm{tree}})}(\mathbf{x})=
+\sum_{t=1}^{N_{\mathrm{tree}}}f_t(\mathbf{x}),
+\ee
+and the predicted signal probability $\hat{y}^{(N_{\mathrm{tree}})}(\mathbf{x})$ is given by
+\be
+\hat{y}^{(N_{\mathrm{tree}})}(\mathbf{x})=P\left(f^{(N_{\mathrm{tree}})}(\mathbf{x})\right),
+\ee
+where $P:\mathbb{R}\rightarrow(0,1)$ is defined in \cref{eq:map_into_probability}.
+
+The training of a boosted decision tree is done in a forward-stagewise additive manner.
+An initial uniform weight $f^{(0)}(\mathbf{x})=0\implies P(f^{(0)}(\mathbf{x}))=0.5$ is set for all $\mathbf{x}$.
+Then, each decision tree classifier $t=1,\,2,\,...,\,N_{\mathrm{tree}}$ is trained by iteratively solving \cite{Chen:2016:XST:2939672.2939785}
+\be \label{eq:bdt_training}
+f_t(\mathbf{x})=\mathrm{arg}\min_{f(\mathbf{x})}\left\{\sum_{i=1}^{N_{\mathrm{train}}}\ell\left[y_i,\,P\left(f^{(t-1)}(\mathbf{x}_i)+f(\mathbf{x})\right)\right]+\Omega(f_t)\right\},
+\ee
+where $f^{(t-1)}(\mathbf{x}_i)$ is the sum of the weights up to the previous iteration (\cref{eq:bdt_prediction}), $\l(\cdot,\cdot)$ is the loss function (\cref{eq:loss}), and $\Omega(f_t)$ is a term that penalises the complexity of the updated model $f_t$.
+
+The minimisation of the objective function defined in \cref{eq:bdt_training} is done by computing the gradient of the loss function.
+For this reason, this family of models are called gradient-boosted decision trees.
+
+It is shown in \cite{Friedman:2000} that the forward-stagewise additive modelling approach (\cref{eq:bdt_training}) with an exponential loss function is equivalent to the AdaBoost algorithm \cite{FREUND1997119}.
+In AdaBoost, a sequence of low-complexity classifiers is trained on iteratively reweighted versions of the training sample.
+At each iteration, the weight of each element of the training sample is increased if it is not correctly classified.
+This procedure allows the later low-complexity classifiers to focus on the elements of the training sample that are more difficult to classify.
+%====================================================================================================
+\subsection{Classifier parameters} \label{sec:da_cls_parameters}
+%====================================================================================================
+Two implementations of the gradient-boosted decision tree algorithm, FastBDT \cite{Keck:2017gsv} and XGBoost \cite{Chen:2016:XST:2939672.2939785}, are employed later in this thesis.
+In both implementations, the following parameters are tunable during the training:
+\bi
+\item The total number of trees in the model;
+\item The maximal depth of each tree;
+\item The learning rate $0<\eta\le1$, which is a factor that scales down the newly added weights at each iteration of the boosting, in order to reduce the influence of each individual tree;
+\item The sampling rate $0<s\le1$, which is the fraction of the training sample that is randomly sampled for each iteration of the training;
+\item The number of equal-frequency bins in which each training variable is divided into (see \autocite{Keck:2017gsv});
+\ei
+Increasing the value of any of the above parameters increases the complexity of the model, making it less robust against overfitting.
+%====================================================================================================
+\subsection{Classifier overfitting and performance} \label{sec:da_cls_performance}
+%====================================================================================================
+As mentioned above, a high-complexity model may fall in an overfitting regime, in which the classification performance of the model is significantly better when the model is applied on its own training sample than when applied on an independent sample called a test sample.
+A method to check whether a model is overfitting is to compare the output of the classifier for the training and the test samples (\cref{fig:roc_curve}, left).
+If the comparison does not show an important difference, the model is not overfitting.
+
+An equivalent method is to examine the receiver operating characteristic (\ROC) curve \cite{peterson1954theory}, which represents the evolution of the true positive rate and the false positive rate when scanning all possible lower thresholds on the classifier output (\cref{fig:roc_curve}, right).
+If the \ROC curve for the training sample is close to the \ROC curve for the test sample, as it is the case in \cref{fig:roc_curve}, the model is not overfitting.
+
+In addition, the area under the \ROC curve, noted \AUC, is a measure of the classification performance.
+A perfect classification is characterised by $\mathrm{AUC}=1$, meaning that there exists a lower threshold on the classifier output that selects a sample with a true positive rate of unity and a false positive rate of zero.
+The opposite case is a purely random classification, where the classifier output is uniform for both signal and background inputs.
+In that case, the \ROC curve would be a straight line going from $(0,0)$ to $(1,1)$ in \cref{fig:roc_curve} (right), and $\mathrm{AUC}=0.5$.
+
+\figs{roc_curve}
+{0.52}{figs/data_analysis/bdt_output.pdf}
+{0.4}{figs/data_analysis/roc_curve.pdf}
+{On the left, example of boosted decision tree output for signal and background inputs issued from the training sample (train) and an independent sample (test) of same size.
+On the right, corresponding \ROC curves.}
+%====================================================================================================
+\subsection{Input variable importance} \label{sec:da_variable_importance}
+%====================================================================================================
+In order to quantify the relative importance of an input variable\footnote{Input variable is another name for explanatory variable.} in the classification, one starts by defining the gain provided by a tree node (\cref{fig:tree}).
+The gain of a particular node is the quantity by which the objective function (\cref{eq:bdt_training}) is improved with the introduction of this node.
+From this, the importance of a variable $v$ in the classification is defined as the sum of the gains across all the nodes in which the variable $v$ is used, normalised by the total gain:
+\be \label{eq:importance}
+\mathrm{Importance}(v)\equiv\frac{\sum\limits_{s\in\{\mathrm{splits\,on\,}v\}}\mathrm{Gain}(s)}{\sum\limits_{s\in\{\mathrm{splits\}}}\mathrm{Gain}(s)}.
+\ee
+Other methods to quantify the importance of an input variable are possible.
+For example, one can examine how the classification performance varies when including or not the variable in the training.
+%====================================================================================================
+\section{Topological discrimination variables} \label{sec:da_variables}
+%====================================================================================================
+
+In this section, several variables characterising the distribution of the momenta in an event resulting from a electron-positron collision are defined.
+These variables will prove useful to distinguish between signal and background events, and are employed in the next chapter as input variables of boosted decision trees.
+All of the variables presented in this section are defined for a set of $N$ three-momenta ${\mathbf{p}_1,\,\mathbf{p}_2,\,...,\,\mathbf{p}_N}$ measured in the centre-of-mass system.
+The respective norms are noted ${p_1,\,p_2,\,...,\,p_N}$.
+
+%====================================================================================================
+\subsection{Sphericity} \label{sec:sphericity}
+%====================================================================================================
+The sphericity matrix $\mathbf{S}$ is the symmetric $3\times 3$ matrix whose elements $S^{\alpha\beta}$ ($\alpha,\beta=x,y,z$) are defined as (chapter 9 of \autocite{BaBar:2014omp}):
+\begin{equation}
+S^{\alpha\beta}=\frac{\sum\limits_{i=1}^{N} p_i^\alpha p_i^\beta}{\sum\limits_{i=1}^{N} p_i^2}.
+\end{equation}
+The event sphericity $S$ is the real number
+\be
+S=\frac{3}{2}(\lambda_2+\lambda_3),
+\ee
+where $\lambda_2$ and $\lambda_3$ are the two smallest eigenvalues of $S^{\alpha\beta}$.
+
+The event sphericity $S$ is a number between 0 and 1.
+An event that has a spherical topology is characterised by a sphericity close to unity.
+This is understood intuitively from the fact that a perfectly spherical distribution is described by a diagonal matrix with the single eigenvalue $\lambda_1=\lambda_2=\lambda_3=1/3$, and that an event where all momenta are collinear is characterised by $\lambda_1=1>\lambda_2=\lambda_3=0$.
+
+%====================================================================================================
+\subsection{Thrust} \label{sec:thrust}
+%====================================================================================================
+The thrust axis $\mathbf{T}$ of an event is defined as the unit vector along which the sum of the projections of the momenta $\sum_{i=1}^{N} |\mathbf{T}\cdot\mathbf{p}_i|$ is maximal (chapter 9 of \autocite{BaBar:2014omp}).
+
+The thrust magnitude of an event is the positive number
+\be
+T=\frac{\sum\limits_{i=1}^{N} |\mathbf{T}\cdot\mathbf{p}_i|}{\sum\limits_{i=1}^{N} |\mathbf{p}_i|}.
+\ee
+A spherical event has a thrust close to zero, and a jet-like event has a thrust close to unity. 
+%====================================================================================================
+\subsection{Fox-Wolfram moments} \label{sec:da_fw}
+%====================================================================================================
+The normalised Fox-Wolfram moments were introduced by Geoffrey C.~Fox and Stephen Wolfram in \cite{Fox:1978vu, Fox:1978vw}. They are noted $R_\ell$ ($\ell=1,\,2,\,...$) and defined recursively as follows:
+\begin{align}
+H_0&=\sum_{i,j=1}^{N}p_i\,p_j,\\
+H_1&=\sum_{i,j=1}^{N}p_i\,p_j\,\cos\alpha_{ij},\\
+H_\ell&=\sum_{i,j=1}^{N}p_i\,p_j\,P_\ell\left(\cos\alpha_{ij}\right),\\
+R_\ell&=\frac{H_\ell}{H_0},
+\end{align}
+where $P_\ell(\cdot)$ is the Legendre polynomial of $\ell$-th order and $\alpha_{i,j}$ is the angle between $\mathbf{p}_i$ and $\mathbf{p}_j$.
+The first Legendre polynomials are
+\begin{equation} \label{eq:legendre}
+  P_l(x) = \left\{\begin{array}{ll}
+  l = 0: & 1, \\
+  l = 1: & x, \\
+  l = 2: & \frac{1}{2}\,(3x^2-1), \\
+  l = 3: & \frac{1}{2}\,(5x^3-3x), \\
+  l = 4: & \frac{1}{8}\,(35x^4-30x^2+3).
+  \end{array}
+  \right.
+\end{equation}
+%====================================================================================================
+\subsection{Harmonic moments} \label{sec:da_harmonic}
+%====================================================================================================
+The harmonic moments $B_\ell$ ($\ell=0,1,...$) with respect to an axis $\mathbf{A}$ are defined as \cite{Fox:1978vu}
+\begin{align}
+B_0&=\sum_{i=1}^{N}\frac{p_i}{\sqrt{s}},\\
+B_1&=\sum_{i=1}^{N}\frac{p_i}{\sqrt{s}}\,\cos\alpha_{i},\\
+B_\ell&=\sum_{i=1}^{N}\frac{p_i}{\sqrt{s}}\,P_\ell\left(\cos\alpha_{i}\right),
+\end{align}
+where $\sqrt{s}$ is the available energy in the centre-of-mass frame, and the angle $\alpha_i$ is measured between $\mathbf{p}_i$ and the axis $\mathbf{A}$.
+%====================================================================================================
+\subsection{Modified Fox-Wolfram moments} \label{sec:da_mfw}
+%====================================================================================================
+The modified Fox-Wolfram moments were introduced by the Belle collaboration in \autocite{Lee2003} in a search for $\Bz\to\piz\piz$ decays.
+Below, the definitions and notations are close to what is found in chapter 9 of \autocite{BaBar:2014omp}.
+
+Before defining these modified Fox-Wolfram moments, a few quantities are introduced, assuming as before an event composed of $N$ particle candidates.
+First, a signal $B$ meson candidate is formed from a collection of $N_B$ particle candidates.
+The rest of the event (\roe) is defined as the set of the $N_{\mathrm{ROE}}=N-N_B$ particle candidates that are not associated with the $B$ meson candidate.
+The number of charged particle candidates in the \roe is noted $N_c$, and the number of neutral particle candidates in the \roe is noted $N_n$, meaning that $N_c+N_n=N_{\mathrm{ROE}}$.
+In addition, the missing momentum in the event $\mathbf{p}_{\mathrm{miss}}$ is defined as the momentum needed to cancel the sum of all the other momenta in the event in the centre-of-mass frame:
+\be \label{eq:pmiss}
+\mathbf{p}_{\mathrm{miss}}=-\sum_{i=1}^{N}\mathbf{p}_{i}.
+\ee
+
+The signal-ROE ($so$) modified Fox-Wolfram moment of degree $\ell\in\mathbb{N}$ and of category $\xi\in\{\mathrm{charged}\,(n),\,\mathrm{neutral}\,(n),\mathrm{missing}\,(m)\}$ is defined as
+\be \label{eq:hso}
+H^{so}_{\xi,\ell} = \frac{1}{Z}\sum_{i=1}^{N_B}\sum_{j_\xi=1}^{N_\xi} C^\ell_{ij_\xi}\,p_{j_\xi}\,P_\ell(\cos\alpha_{ij_\xi}), 
+\ee
+where from left to right:
+\bi
+\item the normalisation factor $Z=2(\sqrt{s}-E^*_B)$ depends on the available energy in the centre-of-mass frame ($\sqrt{s}$) and the energy of the signal $B$ meson candidate in the centre-of-mass frame ($E^*_B$).
+\item the first sum runs over the $N_B$ children of the signal $B$ meson candidate;
+\item the second sum runs over the $N_c$ charged candidates in the ROE, or the $N_n$ neutral candidates in the ROE, or the unique missing momentum ($N_m=1$);
+\item the factor $C^\ell_{ij_\xi}\in\{-1,\,0,\,+1\}$ is the product of the charges of candidate $i$ and candidate $j_\xi$ if $\ell$ is odd (the missing momentum is assumed to correspond to a neutral charge), and $C^\ell_{ij_\xi}=1$ if $\ell$ is even;
+\item $P_\ell(\cdot)$ is the Legendre polynomial of $\ell$-th order (\cref{eq:legendre});
+\item $\alpha_{i,j_\xi}$ is the angle between $\mathbf{p}_i$ and $\mathbf{p}_{j_\xi}$.
+\ei
+
+The ROE-ROE ($oo$) modified Fox-Wolfram moment of degree $\ell\in\mathbb{N}$ is
+\be \label{eq:hoo}
+R_\ell^{oo} = \frac{1}{Z^2}\sum_{i=1}^{N_{\mathrm{ROE}}}\sum_{j=1}^{N_{\mathrm{ROE}}}C^\ell_{ij}\,p_i\,p_j\,P_\ell(\cos\alpha_{ij}), 
+\ee
+with the same notations as in \cref{eq:hso}.
+%====================================================================================================
+\section{Covariance matrix estimate} \label{sec:da_covariance}
+%====================================================================================================
+This section recalls the definition of a covariance matrix and of a correlation matrix, and presents a method to estimate them.
+
+Given a $p$-dimensional real random variable
+\be
+\mathbf{x} =
+\begin{pmatrix}
+x_1 \\
+\vdots \\
+x_p
+\end{pmatrix},
+\ee
+the corresponding covariance matrix $\mathbf{\Sigma}$ is the $p\times p$ symmetric matrix defined as
+\be
+\mathbf{\Sigma}=\mathbb{E}[(\mathbf{x}-\mathbb{E}[\mathbf{x}])(\mathbf{x}-\mathbb{E}[\mathbf{x}])^T].
+\ee
+The correlation matrix of $\mathbf{x}$ is the covariance matrix of the normalised random variable $\mathbf{x'}$ defined as
+\be
+\mathbf{x'} =
+\begin{pmatrix}
+x_1/\sigma(x_1) \\
+\vdots \\
+x_p/\sigma(x_p)
+\end{pmatrix}
+,
+\ee
+where $\sigma$ stands for the square root of the variance.
+
+Typically, the covariance and the correlation matrices are unknown and need to be estimated from a set of $N$ observations $\mathbf{x}^1,\,...,\,\mathbf{x}^N$.
+The $(i,j)$-th element of an estimate of the covariance matrix $\mathbf{\hat{\Sigma}}$ is given by 
+\be \label{eq:covariance_estimate}
+\hat{\Sigma}_{ij}=\sum_{r=1}^{N}\frac{\left(x^r_i-\sum\limits_{r'=1}^{N}\frac{x^{r'}_i}{N}\right)\left(x^r_j-\sum\limits_{r'=1}^{N}\frac{x^{r'}_j}{N}\right)}{N}.
+\ee
+
+Since the covariance matrix is real, symmetric and positive semi-definite, it exists $p$ orthogonal unit eigenvectors $\mathbf{v}_1,\,...,\,\mathbf{v}_p$, and corresponding eigenvalues $\sigma_1^2\ge...\ge\sigma_p^2\ge0$ such that
+\be
+\mathbf{\Sigma}=\mathbf{Q}\mathbf{\Lambda}\mathbf{Q}^T=\sum_{i=1}^p\sigma_i^2\mathbf{v}_i\mathbf{v}_i^T,
+\ee
+where $Q$ is the $p\times p$ matrix whose columns are the eigenvectors, and $\Lambda$ is the diagonal matrix whose diagonal elements are the eigenvalues.
+
+If some eigenvalues are significantly larger than others, a reasonable approximation is given by
+\begin{align} \label{eq:truncation}
+\mathbf{\Sigma}&\approx\sum_{i=1}^t\sigma_i^2\mathbf{v}_i\mathbf{v}_i^T+\mathrm{diag}\left(\sum_{i=t+1}^p\sigma_i^2\mathbf{v}_i\mathbf{v}_i^T\right),
+\end{align}
+where only the first $t<p$ terms associated with the $t$ largest eigenvalues are fully considered, while only the diagonal elements of the $p-t$ smallest terms are added.
+
+The variation vectors $\boldsymbol{\sigma}_i\equiv\sigma_i\,\boldsymbol{v}_i$ for $i=1,...,t$ are used to propagate correlated uncertainties, in the same manner as what was done for the form factor variations (\cref{eq:covariance_ff} and following lines in \cref{sec:branching_ratio}), and the remaining terms in \cref{eq:truncation} are treated as uncorrelated uncertainties on each element of the random variable $\mathbf{x}$.
+%====================================================================================================
+\section{Binned maximum-likelihood fit} \label{sec:da_pyhf}
+%====================================================================================================
+The main goal of this thesis is to measure the branching fraction of $\BKnn$, or equivalently, the signal strength $\mu$ defined as a factor with respect to the standard model prediction for $\Br(\BKnn)$:
+\be \label{eq:mu}
+\mu=\frac{\Br(\BKnn)}{\Br(\BKnn)_{\mathrm{SM}}}.
+\ee
+
+To extract $\mu$ from data, a binned maximum-likelihood fit is applied.
+The procedure, explained in details in \cite{Cranmer2012, Heinrich2021}, is summarised below, starting by introducing each element used to define the likelihood model.
+Since this presentation is rather abstract, the reader may prefer to come back to this section when the method is concretely used from \cref{sec:systematics}.
+
+Given a set of $N_b$ bins counting events after a certain selection, the expected numbers of events in each bin, noted $\nu_1,\,...,\,\nu_{N_b}$, are derived from simulation and modelled as the sum of several contributions, coming from one signal sample and $n\ge1$ background samples:
+\be \label{eq:nub1}
+\nu_{b}(\mu,\boldsymbol{\theta})=
+\sum_{s\in\{\mathrm{samples}\}}\nu_{bs}(\mu,\boldsymbol{\theta}),
+\ee
+where $\nu_{bs}$ is the number of expected events in bin $b$ for the sample $s$, $\mu$ is the signal strength defined above, and $\boldsymbol{\theta}$ is a vector of $N$ nuisance parameters that apply variations to the nominal expectations.
+Assuming $n\ge1$ background samples, $\boldsymbol{\theta}$ contains $n$ normalisation parameters $\mu_{1},\,...,\,\mu_{n}$, one for each background sample, and $N-n$ other nuisance parameters:
+\be
+\boldsymbol{\theta}=
+\begin{pmatrix}
+\mu_{1},\,...,\,\mu_{n},\,\theta_{N-n+1},\,...,\,\theta_{N}
+\end{pmatrix}^T.
+\ee
+The notation $\mu_{i}\,(i=1,\,...,\,n)$ is not accidental: similarly to the signal strength $\mu\equiv\mu_{\mathrm{signal}}$, each $\mu_i$ corresponds to a certain background strength.
+From this, \cref{eq:nub1} can be developed as 
+\be
+\nu_{b}(\mu,\boldsymbol{\theta})=
+\sum_{s\in\{\mathrm{samples}\}}\mu_s\left(\nu^{0}_{bs}+\Delta_{bs}(\boldsymbol{\theta})\right),
+\ee
+where $\nu^{0}_{bs}$ is the nominal number of expected events in bin $b$ for sample $s$, $\mu_s$ is a normalisation variation for sample $s$ (it is the same for all the bins), and $\Delta_{bs}(\boldsymbol{\theta})$ is an additive variation in bin $b$ for sample $s$. More explicitly,
+\be \label{eq:delta_ibs}
+\Delta_{bs}(\boldsymbol{\theta})=\sum_{i=N-n+1}^{N}\theta_i\,\delta^i_{bs},
+\ee
+with $\delta^i_{bs}$ an additive variation for bin $b$ and sample $s$.
+This additive variation is scaled up or down by the nuisance parameter $\theta_i$.
+The set of numbers $\delta^i_{bs}$ is an input of the model and describes the systematic uncertainties beyond the background normalisation uncertainties.
+Note that $\delta^i_{bs}=0$ is possible (meaning that the nuisance parameter $\theta_i$ has no influence in bin $b$ for sample $s$).
+If for a given nuisance parameter $\theta_i$, $\delta^i_{bs}\neq0$ for multiple bins $b$ or samples $s$, then the numbers $\delta^i_{bs}$ are describing correlated uncertainties among the bins or the samples, and are interpreted as the components of a variation vector of correlated uncertainties.
+
+Given now the same set of $N_b$ bins counting events after a certain selection, in which $n_1,\,...,\,n_{N_b}$ data events are observed, the likelihood of the observations is modelled as
+\be \label{eq:pyhf}
+\mathcal{L}(\mu,\boldsymbol{\theta}|n_1,\,...,\,n_{N_b})=
+\frac{1}{Z}
+\prod_{b\in\{\mathrm{bins}\}}\mathrm{Pois}(n_b|\nu_b(\mu,\boldsymbol{\theta}))\,
+p(\boldsymbol{\theta}),
+\ee
+where $Z$ is a normalisation parameter that has no influence on the fit, and $\mathrm{Pois}(n_b|\nu_b(\mu,\boldsymbol{\theta}))$ denotes the Poisson density function with expectation $\nu_b(\mu,\boldsymbol{\theta})$ evaluated at the point $n_b$, and $p(\boldsymbol{\theta})$ is the prior probability given to the nuisance parameters.
+
+This prior probability term contains information on how the systematic uncertainties are modelled.
+It is the product of Gaussian densities centered at unity for the normalisation variations and at zero for the additive variations:
+\be \label{eq:prior}
+p(\boldsymbol{\theta})=
+\prod_{i=1}^{n}\mathrm{Gauss}(\theta_i\,|\,1,\,\sigma^2_{\mathrm{norm},\,i})\,
+\prod_{j=N-n+1}^{N}\mathrm{Gauss}(\theta_j\,|\,0,\,1),
+\ee
+where $\mathrm{Gauss}(x\,|\,m,\,\sigma^2)$ is the Gaussian density with expectation $m$ and variance $\sigma^2$.
+The background normalisation uncertainties $\sigma_{\mathrm{norm},\,i}$ are inputs of the model, similarly to the $\delta^i_{bs}$ factors of \cref{eq:delta_ibs}.
+Note that the parameter of interest $\mu$ does not appear in \cref{eq:prior}, because this parameter is unconstrained, or, in other words, it has a uniform prior distribution.
+
+The signal strength $\mu$ is extracted from data by maximising the likelihood defined in \cref{eq:pyhf}.
+The employed software package that implements this method and the statistical model is called pure-python HistFactory (\pyhf) \cite{Heinrich2021}. Since this tool is relatively new, a simplified Gaussian model (\sghf) is implemented to validate the results from \pyhf.
+
+The simplified Gaussian model is identical to the model described by \cref{eq:pyhf}, except that the Poisson density $\mathrm{Pois}(n_b|\nu_b(\mu,\boldsymbol{\theta}))$ in \cref{eq:pyhf} is replaced by a Gaussian density centered at $\nu_b(\mu,\boldsymbol{\theta})$ and with a standard deviation corresponding to the square root of the expected yield, $\sqrt{\nu^0_{b}}$, for each $b\in\{\mathrm{bins}\}$.
+%====================================================================================================
+\section{Upper-limit determination} \label{sec:da_upper_limit}
+%====================================================================================================
+If no significant signal is observed, as it was the case for the previous searches for $\BKnn$ decays (see \cref{sec:previous_searches}), a method called \CLs \cite{Read2002} is employed to determine an upper limit on the signal strength $\mu$ defined in \cref{eq:mu}.
+
+Given a likelihood model like the one defined in \cref{eq:pyhf} and a hypothesised value of $\mu$, one defines the likelihood ratio \cite{Cowan2011}
+\be
+\lambda(\mu)=
+\frac{\mathcal{L}(\mu,\boldsymbol{\hat{\hat{\theta}}}\,|\,n_1,\,...,\,n_{N_b})}
+{\mathcal{L}(\hat{\mu},\boldsymbol{\hat{\theta}}\,|\,n_1,\,...,\,n_{N_b})},
+\ee
+where $(\hat{\mu},\boldsymbol{\hat{\theta}})$ are the parameters that maximise the likelihood for the set of observations $n_1,\,...,\,n_{N_b}$ (the same notations as in \cref{sec:da_pyhf} are used here), and where $\boldsymbol{\hat{\hat{\theta}}}$ maximises the likelihood for a given value of $\mu$.
+
+The property $0\le\lambda(\mu)\le1$ follows from the definition above.
+When $\lambda(\mu)$ is close to unity, the data and the hypothesised value of $\mu$ are in good agreement.
+
+The next step is to define a test statistic $q_\mu$ as \cite{Cowan2011}
+\be \label{eq:qmu}
+q_\mu=
+\begin{cases}
+-2\ln\lambda(\mu) & \text{if } \mu\ge\hat{\mu}, \\
+0 & \text{otherwise}.
+\end{cases}
+\ee
+
+From this, the level of agreement between the data and the hypothesised value of $\mu$ is quantified with the $p$-value
+\be \label{eq:p_splusb}
+p_{s+b}=P(q_\mu>q_{\mu,\mathrm{obs}}\,|\,\mu)=\int_{q_{\mu,\mathrm{obs}}}^{\infty}p(q_\mu|\mu)\,\dd q_{\mu},
+\ee
+where $q_{\mu,\mathrm{obs}}$ is the observed value of $q_{\mu}$, and $p(q_\mu|\mu)$ denotes the probability density function of $q_\mu$ under the assumption of a signal strength of $\mu$.
+An approximation of this density is computed in \cite{Cowan2011}.
+
+From \cref{eq:p_splusb}, it is already possible to determine an upper limit.
+For example, a $90\%$ confidence level (CL) upper limit on $\mu$ is the largest value of $\mu$ such that $p_{s+b}$ stays above 0.1.
+
+In the \CLs method, one extra step is needed: a $p$-value for the background-only hypothesis is defined as 
+\be
+p_{b}=P(q_\mu>q_{\mu,\mathrm{obs}}\,|\,0)=\int_{q_{\mu,\mathrm{obs}}}^{\infty}p(q_\mu|0)\,\dd q_{\mu},
+\ee
+where $p(q_\mu|0)$ denotes the probability density function of $q_\mu$ under the assumption of a signal strength of zero (background-only hypothesis). As before, an approximation of this density is computed in \cite{Cowan2011}.
+
+Finally, the ratio
+\be
+\CLs=\frac{p_{s+b}}{p_{b}}
+\ee
+is computed, and the $90\%$ CL upper limit on $\mu$ is the largest value of $\mu$ such that \CLs stays above 0.1.
+An advantage of the \CLs method is that it gives more robust upper limits in situations where there is little information to distinguish between the background-only hypothesis and the signal+background hypothesis \cite{Read2002}.
+
+As for the likelihood maximisation, the \pyhf package \cite{Heinrich2021} is employed for the upper-limit determination.
+%====================================================================================================
+\section{Kernel density estimator} \label{sec:da_kernel}
+%====================================================================================================
+This section presents a tool called kernel density estimator, which is used in \cref{sec:systematics} in the study of the systematic uncertainties.
+
+A kernel density estimator \cite{10.1214/aoms/1177704472, 10.1214/aoms/1177728190} is a function that approximates the probability density of a random variable.
+This estimator has the particularity of being non-parametric, by contrast for example with the likelihood model defined in \cref{eq:pyhf}, which depends on a potentially large number of (nuisance) parameters.
+
+Given $N$ observations $x^1,\,x^2,\,...,\,x^N$ of a one-dimensional random variable $x$ with a variance $0<\sigma^2<\infty$, the gaussian-kernel density estimator is defined as
+\be
+f_h(x)=\frac{1}{Z}\sum_{i=1}^N\exp\left[-\frac{1}{2}\left(\frac{x-x^i}{h\sigma}\right)^2\right],
+\ee
+where $Z>0$ is a normalisation factor and $h>0$ a smoothing factor.
+
+This construction is easily generalised for multi-dimensional random variables.
+Given $N$ observations $\mathbf{x}^1,\,\mathbf{x}^2,\,...,\,\mathbf{x}^N$ of a multi-dimensional random variable $\mathbf{x}$ with an invertible covariance matrix $\mathbf{\Sigma}$, the gaussian-kernel density estimator is
+\be \label{eq:2dkde}
+f_h(\mathbf{x})=\frac{1}{Z'}\sum_{i=1}^N\exp\left[-\frac{1}{2}(\mathbf{x}-\mathbf{x}^i)^T(h^{-2}\mathbf{\Sigma}^{-1})(\mathbf{x}-\mathbf{x}^i)\right],
+\ee
+where $Z'>0$ is a normalisation factor and $h>0$ a smoothing factor.
+
+The SciPy package \cite{2020SciPy-NMeth} provides a software implementation of the gaussian-kernel density estimator.
+%====================================================================================================
+%====================================================================================================

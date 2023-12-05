@@ -1,0 +1,61 @@
+% Style of the document
+
+% Margins
+\usepackage{vmargin}
+\setpapersize{A4}
+\setmarginsrb{3cm}{3cm}{3cm}{2cm}{6mm}{7mm}{5mm}{15mm}
+\setlength{\marginparwidth}{2cm}
+
+% Sections
+\setkomafont{chapter}{\Huge\rmfamily\color{RoyalBlue}}
+\setkomafont{section}{\LARGE\rmfamily\color{RoyalBlue}}
+\setkomafont{subsection}{\Large\rmfamily\color{RoyalBlue}}
+\setkomafont{subsubsection}{\large\rmfamily\color{RoyalBlue}}
+\renewcommand*{\chapterformat}{{\color{RoyalBlue}\thechapter}}
+\renewcommand\chapterlinesformat[3]{#2\par#3\vspace{5cm}}
+
+% Paragraphs
+\parindent 0cm % Do not indent beginning of paragraph
+\parskip1.5ex plus0.5ex minus0.5ex % Margin between paragraphs
+\renewcommand{\baselinestretch}{1.25} 
+
+% Headers
+\usepackage{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\lehead{{\headfont\thepage}} % Left/right header for even/odd pages
+\rohead{{\headfont\thepage}} % Left/right header for even/odd pages
+\lohead{\headfont\uppercase{\rightmark}} % Header for left page (odd)
+\rehead{\headfont\uppercase{\leftmark}} % Header for right page (even)
+\cfoot{}
+\lefoot{}
+\rofoot{}
+
+% Captions, footnotes
+\usepackage{caption}
+\captionsetup{labelfont={color=RoyalBlue,bf},justification=RaggedRight, format=plain, font=small}
+\deffootnote[2em]{0em}{1em}{\thefootnotemark.\ }
+
+% Back reference
+% See tex.stackexchange.com/questions/15971
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+    \ifcase #1 %
+    \or        (cited on page~#2)%
+    \else      (cited on pages~#2)%
+    \fi}
+
+% Refer to subsection and subsubsection as "section"
+\addto\extrasenglish{
+\renewcommand{\chapterautorefname}{Chapter}
+\renewcommand{\sectionautorefname}{Section}
+\let\subsectionautorefname\sectionautorefname
+\let\subsubsectionautorefname\sectionautorefname}
+
+% Abstracts
+\newenvironment{abstractpage}[1]
+{
+\clearpage
+\thispagestyle{empty}
+{\vspace*{1.0cm}\Huge\color{RoyalBlue}\textbf{#1}}
+\par\bigskip
+}{\clearpage}

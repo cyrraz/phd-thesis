@@ -1,0 +1,32 @@
+%====================================================================================================
+\clearpage
+\section{Correction weights for simulated events} \label{sec:weights}
+%====================================================================================================
+
+\cref{tab:weights} summarises the weights that are applied to simulated events to correct for multiple sources of mis-modelling:
+\bi
+\item The selection efficiency of the \PID requirement imposed on signal \Kp candidates (\cref{sec:candidate_selection}) differs between data and simulation.
+The Belle II performance group provides weights, noted $w_{\mathrm{PID}}$, that correct for this efficiency difference.
+These weights are functions of the transverse momentum $p_T$ and the polar angle $\theta$ of the signal \Kp candidate.
+\item By default, simulation does not take into account the \qq-dependence of the form factor entering in the computation of the \BKnn branching fraction (\cref{sec:branching_ratio}).
+A correction weight, noted $w_{ff}$, is applied to the simulated signal events to produce a realistic \qq-dependence of the signal branching fraction.
+This weight is computed as the ratio between the two distributions shown in \cref{fig:form_factor} (\cref{sec:branching_ratio}).
+\item In \cref{sec:bdtc}, a correction weight is introduced to correct for the mis-modelling of the continuum background simulation.
+This weight is noted $w_{c}$ and is function of the \bdtc output.
+\ei
+The total correction weight applied to a simulated event is the product of the individual correction weights.
+\vspace{1cm}
+
+\begin{table}[hb]
+\caption{
+The product of a set of correction weights is applied to each simulated event.
+The weights in the table are defined for the selection of \BKpnn decays.
+For the neutral mode (\BKznn), the \PID weight $w_{\mathrm{PID}}$ is absent, because there is no \PID requirement (\cref{sec:candidate_selection}), and the other weights are the same as for the charged mode.
+}
+\begin{center}
+\begin{tabular}{ll}
+\input{tables/weights.tex}
+\end{tabular}
+\end{center}
+\label{tab:weights}
+\end{table}

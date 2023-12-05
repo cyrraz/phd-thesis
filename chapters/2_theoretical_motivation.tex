@@ -1,0 +1,463 @@
+%====================================================================================================
+\chapter{Theoretical motivation} \label{ch:theory}
+%====================================================================================================
+
+This chapter presents the theoretical motivation to search for \BKnn decays.
+\cref{sec:sm} gives an overview of elements of the standard model (\SM) that are important to describe these decays.
+\cref{sec:b_factories}  defines what is a $B$ factory.
+\cref{sec:bsnn_theory} shows how the \BKnn decay probability is computed in the \SM, explains how new physics (\NP) may affect this probability, and finally summarises previous experimental results.
+
+%====================================================================================================
+\section{The Standard Model} \label{sec:sm}
+%====================================================================================================
+As stated in the introduction, the \SM describes the known elementary particles and their interactions. 
+The three interactions of the \SM are the electromagnetic interaction, the strong interaction, and the weak interaction.
+These interactions are mediated by elementary bosons of spin-1.
+The photon ($\gamma$) is the mediator of the electromagnetic interaction, the gluons ($g_i$ : $i=1,...,8$) are the mediators of the strong interaction, and the weak bosons ($W^+,W^-,Z^0$) are the mediators of the weak interaction.
+The strong interaction is described by a theory called quantum chromodynamics (\QCD), and the electromagnetic and the weak interactions are described by the electroweak theory (\EW) \cite{Glashow:1961tr, Weinberg:1967tq,Salam:1968rm}.
+In the \SM, the bosons presented above emerge from the requirement for the theory to be invariant under local phase transformations \cite{Aitchison:2004cs}.
+These local phase transformations are called gauge transformations, and the bosons are therefore called gauge bosons.
+
+Besides the gauge bosons, matter is built from elementary fermions of spin-$\frac{1}{2}$, which come in two kinds, the leptons and the quarks:
+\bi
+\item There are three charged leptons ($\en,\mun,\taum$), three neutral leptons, called neutrinos ($\nue,\num,\nut$), and six corresponding antileptons: ($\ep,\mup,\taup$) and ($\nueb,\numb,\nutb$).
+The neutrinos are coupled only to the weak interaction, making them hard to detect.
+The charged leptons are coupled to the weak and the electromagnetic interactions.
+The leptons are organised in three generations (\en\nue), (\mun\num), (\taum\nut) with similar properties, but different masses.
+\item There are six quarks ($u,d,c,s,t,b$) and six corresponding anti-quarks ($\ubar,\dbar,\cbar,\sbar,\tbar,\bbar$).
+They all are coupled to the weak, the strong and the electromagnetic interactions.
+Quarks are not observed free, but are confined within particles called hadrons.
+A meson is a hadron formed by a quark-antiquark pair, and a baryon is a hadron made of three quarks.
+A specificity of the $t$ quark is that it decays before hadronising, because of the shortness of its lifetime. 
+Since the quarks are coupled to the strong interaction, they also carry a strong charge $c$ called color $c\in\{r,g,b\}$.
+Similarly to the leptons, the quarks are organised in three generations ($ud$), ($cs$), ($tb$) with similar properties, but different masses.
+\ei
+
+The weak interaction plays a central role in this thesis and is now examined further.
+An important fact is that the weak charged bosons $\W^{\pm}$ couple only to fermions of left chirality.
+The left-handed fermions are grouped in doublets of the weak isospin group $SU(2)_L$.
+These $SU(2)_L$ doublets are listed in \cref{tab:weak_isospin_doublets}.
+\tab{weak_isospin_doublets}{lll}{\input{tables/isospin_doublets.tex}}{$SU(2)_L$ doublets in the \SM made of left-handed leptons and quarks.
+The prime notation designs the weak eigenstate (see text for details).}
+The lepton-flavour universality principle states that the coupling strength to the $W^\pm$ bosons is identical among the lepton doublets.
+
+In the \SM with massless neutrinos, no transition is possible between two lepton generations.
+In the quark sector, transitions between the generations are possible, because the mass eigenstates $d,s,b$ are different from the weak eigenstates $d',s',b'$ of \cref{tab:weak_isospin_doublets}.
+The mass and the weak eigenstates are related through the Cabibbo-Kobayashi-Maskawa (\CKM) matrix \cite{Kobayashi1973}:
+\be
+\begin{pmatrix}
+d'\\
+s'\\
+b'\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+V_{ud} & V_{us} & V_{ub} \\
+V_{cd} & V_{cs} & V_{cb} \\
+V_{td} & V_{ts} & V_{tb} \\
+\end{pmatrix}
+\begin{pmatrix}
+d\\
+s\\
+b\\
+\end{pmatrix}
+,
+\ee
+
+where $V_{ij}\in\mathbb{C}$. Originally, the \CKM matrix was introduced to explain the violation of the charge-parity ($\CP$) symmetry by the weak interaction.
+The $\CP$ violation is possible only if some of the terms $V_{ij}\notin\mathbb{R}$, or equivalently, $V_{ij}\neq V_{ij}^*$.
+Kobayashi and Maskawa show in \cite{Kobayashi1973} that while it is possible to have a fully real $2\times 2$ matrix by a suitable definition of the quark phases, this is not possible anymore for a $3\times 3$ matrix.
+This prediction of a third generation of quarks came before the discovery of the $b$ and $t$ quarks.
+
+In the \SM, the \CKM matrix, noted $V_{\mathrm{CKM}}$, is unitary, meaning that $V_{\mathrm{CKM}}^{-1}=V_{\mathrm{CKM}}^\dagger$, which is equivalent to the unitary conditions
+\be \label{eq:unitary_conditions}
+\sum_{i\in\{u,d,s\}}V_{ij}V^{*}_{ik}=\delta_{jk},\hspace{2cm}
+\sum_{j\in\{u,d,s\}}V_{ij}V^{*}_{kj}=\delta_{ik},
+\ee
+where $\delta_{ij}$ is unity if $i=j$, zero otherwise.
+The cancellation of the off-diagonal terms in the sum is at the basis of the Glashow–Iliopoulos–Maiani (\GIM) mechanism \cite{Glashow:1970gm}, which forbids flavour-changing neutral currents (\FCNC) at the lowest order and also suppresses them at higher order.
+The \GIM mechanism is discussed more concretely in \cref{sec:branching_ratio} (see also Section 20.7 in \cite{Aitchison:2004cs}).
+
+The vanishing sums of complex numbers in \cref{eq:unitary_conditions} can be represented as triangles in the complex plane.
+Out of the six sums, the following one is conventionally chosen:
+\be \label{eq:unitary_triangle_raw}
+V_{ud}V^*_{ub}+V_{cd}V^*_{cb}+V_{td}V^*_{tb}=0.
+\ee
+To draw the conventional unitary triangle, \cref{eq:unitary_triangle_raw} is reordered and divided by $V_{cd}V^*_{cb}$ to give
+\be \label{eq:unitary_triangle}
+1+\frac{V_{td}V^*_{tb}}{V_{cd}V^*_{cb}}+\frac{V_{ud}V^*_{ub}}{V_{cd}V^*_{cb}}=0,
+\ee
+so that the unitary triangle is represented as the null sum of three complex numbers $1+z_1+z_2$ (\cref{fig:ckm}).
+One of the main goals of flavour physics is to measure the parameters of this triangle.
+
+\fig{ckm}{0.5}{figs/theoretical_motivation/ckm.pdf}
+{Unitary triangle in the complex plane defined as the sum of the three complex numbers in \cref{eq:unitary_triangle}.
+The two real parameters $\bar{\rho}$ and $\bar{\eta}$ are defined as $\bar{\rho}+i\bar{\eta}=-V_{ud}V^*_{ub}/V_{cd}V^*_{cb}$.
+Credits to \cite{ParticleDataGroup:2020ssz}.}
+
+The experimental amplitudes of the \CKM matrix components are approximately \cite{ParticleDataGroup:2020ssz}:
+\be
+\begin{pmatrix}
+|V_{ud}| & |V_{us}| & |V_{ub}| \\
+|V_{cd}| & |V_{cs}| & |V_{cb}| \\
+|V_{td}| & |V_{ts}| & |V_{tb}| \\
+\end{pmatrix}
+\approx
+\begin{pmatrix}
+0.974 & 0.226 & 0.004 \\
+0.226 & 0.973 & 0.041 \\
+0.009 & 0.040 & 0.999 \\
+\end{pmatrix}.
+\ee
+
+When getting away from the diagonal, the magnitudes are getting smaller, meaning that the transition probability between two generations of quarks, which is proportional to the square of the magnitude, is also getting lower.
+
+To conclude this first section, \cref{tab:particle_list} lists the \SM leptons, bosons, and a selection of mesons and baryons that are referred to in this thesis.
+
+\tab{particle_list}{lllll}{\input{tables/particle_list.tex}}{List of \SM leptons, bosons, and of a selection of mesons and baryons.
+The experimental values of the particle spin, parity and mass are taken from \cite{ParticleDataGroup:2020ssz}.
+Only rounded values of the particle masses are given, even if they are measured with greater precision.}
+
+\clearpage
+%====================================================================================================
+\section[Physics of $B$ factories]{Physics of {\boldmath\B} factories} \label{sec:b_factories}
+%====================================================================================================
+
+A $B$ factory is an experimental setup designed to produce $B$ mesons and to detect the product of their decays.
+The basic principle is to collide electrons and positrons at the energy of a $\bbbar$ resonance, the \Y4S boson, whose mass is 10.58\gevcc.
+When a \Y4S is produced, it decays into a pair of $B$ mesons with a probability higher than 96\% \cite{ParticleDataGroup:2020ssz} .
+
+The first generation of $B$ factories, Babar \cite{BaBar:2001yhh, BaBar:2013byz} and Belle \cite{Belle:2000cnh, Belle:2012iwr}, collected data in the first decade of the third millennium.
+\babar was located along the PEP-II accelerator in Stanford, it has collected 433\invfb of data at the \Y4S-resonance energy between 1999 and 2008, and the analysis of the data is still ongoing \cite{BaBar:2014omp}.
+Belle was located along the KEKB accelerator in Tsukuba, Japan, it has collected 711\invfb of data at the \Y4S-resonance energy between 1999 and 2010, and the analysis of the data is also ongoing \cite{BaBar:2014omp}.
+The only representative of the second generation of $B$ factories is the direct successor of Belle, Belle II, which is presented in more details in \cref{ch:setup}.
+Belle II started to record data in 2018 and has collected so far a dataset of approximately 400\invfb.
+
+The decays of \B mesons provide a rich set of observables that are both tests of the \SM and probes of potential physics beyond the \SM.
+One reason for this is that the \Bp and \Bz mesons are the lightest hadrons containing a $b$ quark, implying that their decays are necessarily based on a flavour-changing process.
+And the only mechanism in the \SM allowing for this kind of process is the weak interaction, known to have interesting properties such as the violation of the $P$ and the $\CP$ symmetries.
+The objectives of the $B$ factories include:
+\bi
+\item The study of the violation of the $\CP$ symmetry.
+Belle and Babar independently observed for the first time the presence of $\CP$ violation in a system of neutral $B$ mesons \cite{Belle:2001zzw, BaBar:2001pki}.
+\item  The determination of the \CKM quark-mixing matrix parameters, in particular $|V_{cb}|$ and $|V_{ub}|$, by studying $B$ meson decays involving the transition of a $b$ quark into a $c$ quark or a $u$ quark, a charged lepton and a neutrino \cite{BaBar:2009zxk, Belle:2015pkj, BaBar:2016rxh, Belle:2021eni, Belle:2018ezy}.
+\item The search of rare decays forbidden at the tree level in the \SM such as \BKll ($\ell=e,\mu,\tau$) \cite{BaBar:2008jdv, Belle:2009zue, BaBar:2016wgb, BELLE:2019xld} (more on that in \cref{sec:new_physics}).
+\item The measurement of the properties of other particles than \B mesons.
+A $B$ factory is also a $D$ factory and a $\tau$ factory (see \cref{sec:superkekb}).
+For example, the mass of the $\tau$ lepton was measured by both Belle and Babar with a precision of the order of 0.02\% \cite{Belle:2006qqw, BaBar:2009qmj}, and the Belle II measurement of the $D^0$ meson and $D^+$ meson lifetimes is the most precise to date \cite{Belle-II:2021cxx}.
+\ei
+
+$B$ factories do not hold a monopoly on the study of $B$ mesons.
+Another experiment whose attention is focused on $B$ mesons is the LHCb experiment \cite{LHCb:2008vvz, LHCb:2014set}, located along the Large Hadron Collider (\LHC) \cite{Evans:2008zzb}, a proton-proton collider operated by the European organisation for nuclear research (CERN) across the Franco-Swiss border near Geneva.
+The \LHC is working at an energy of 13\tev in centre-of-mass system, far higher than the energy at $B$ factories, and the current world record.
+This energy allows the experiments working with the \LHC to explore the high-energy frontier, where potential new heavy particles are directly produced.
+By contrast, the \B factories explore the high-precision frontier, where heavy particles contribute virtually to the Feynman diagrams.
+
+An important advantage of a \B factory is that the initial state, i.e.~the four-momentum of the \epem system, is fully known, allowing to efficiently reject background and also infer information about the final-state particles that are not detected (neutrinos or particles outside of the detector acceptance for example), thanks to the energy-momentum conservation.
+This is more difficult at LHCb, where the $B$ mesons are produced from interactions of partons, whose initial energy and momentum are unknown (for example, a gluon issued from one proton beam may interact with a quark from the other proton beam).
+
+%====================================================================================================
+\section[The \BKnn decay]{The {\boldmath\BKnn} decay} \label{sec:bsnn_theory}
+%====================================================================================================
+This section focuses on the \BKnn decay, which is based on the weak transition of a $b$ quark into a $s$ quark and a pair of neutrinos (\bsnn).
+This decay has never been observed and is rare in the \SM, because there is no possibility of flavour-changing neutral current at the tree level.
+The lowest-order Feynman diagrams that contribute to the decay amplitude are either of the loop type or the box type, and involve virtual $Z^0$ and $W^\pm$ bosons (\cref{fig:feynman_bsnn}).
+
+\Cref{sec:ope} presents a technique called operator product expansion, which is employed when computing the amplitude of the weak decays of a hadron.
+\Cref{sec:branching_ratio} summarises how the branching fraction of \BKnn, noted $\mathrm{\Br}(\BKnn)$, is calculated.
+\Cref{sec:new_physics} explains why an experimental measurement of $\mathrm{\Br}(\BKnn)$ is a good probe of physics beyond the \SM.
+\Cref{sec:previous_searches} gives an overview of previous experimental searches for \BKnn decays.
+
+\figss{feynman_bsnn}{
+\includegraphics[width=0.4\textwidth]{figs/theoretical_motivation/feynman/feynman_loop.pdf}
+\includegraphics[width=0.4\textwidth]{figs/theoretical_motivation/feynman/feynman_box.pdf}\\
+}
+{Lowest-order Feynman diagrams of the transition of a $b$ quark into an $s$ quark and a pair of neutrinos.
+The diagrams are of the loop type (left), or of the box type (right).
+}
+%====================================================================================================
+\subsection{Operator product expansion} \label{sec:ope}
+%====================================================================================================
+In this section and the next one (\cref{sec:branching_ratio}), the natural system of units is used, in which $c=\hbar=1$, where $c$ is the speed of light, and $\hbar$ is the reduced Planck constant.
+The operator product expansion \cite{Wilson:1969zs, Wilson:1972ee} is a technique that simplifies the computation of the amplitude of the weak decays of a hadron.
+The core of the method is to work with an effective Hamiltonian written as the sum of local operators $\mathcal{O}_i$ representing effective point-like vertices depending on the weak decay under consideration \cite{Buras:1998vd, Buras:1998raa, Buras:2005xt}.
+Each operator $\mathcal{O}_i$ is multiplied by an effective coupling constant $C_i$ called a Wilson coefficient, which captures the short-distance contributions from the virtual $W^\pm$ bosons, $Z^0$ boson, and $t$ quark in particular.
+
+More explicitly, in an operator product expansion, the effective Hamiltonian of the weak decay of a hadron is
+\be \label{eq:h_eff_general}
+\mathcal{H}_{\mathrm{eff}}=-\frac{4G_F}{\sqrt{2}}\,\sum_{i=1}^{N}\lambda_i^{\mathrm{CKM}}\,C_i\,\mathcal{O}_i+\mathrm{h.c.},
+\ee
+where
+\bi
+\item $G_F$ is the Fermi constant, which is a function of the universal coupling constant of the weak interaction and the mass of $W$ boson;
+\item $\lambda_i^{\mathrm{CKM}}$ are factors depending on the components of the \CKM matrix;
+\item h.c.~stands for Hermitian conjugate.
+\ei
+The Wilson coefficients $C_i$ are derived from the evaluation of box and loop diagrams in perturbation theory.
+By contrast, the evaluation of the matrix elements of the local operators $\mathcal{O}_i$ involves long-distance contributions and requires non-pertubative techniques, such as lattice computation and light-cone sum rules.
+
+The presence of the Fermi constant in \cref{eq:h_eff_general} is not accidental.
+This development is similar to the modern understanding of the Fermi description of $\beta$-decays \cite{Fermi:1934hr, Feynman:1958ty}, in which the full Feynman diagram that includes a $W^-$ boson is replaced by a four-fermion effective vertex (\cref{fig:feynman_diagram}).
+\figss{feynman_diagram}{
+\includegraphics[width=0.4\textwidth]{figs/theoretical_motivation/feynman/feynman_beta_decay.pdf}
+\includegraphics[width=0.4\textwidth]{figs/theoretical_motivation/feynman/feynman_beta_decay_effective_vertex.pdf}
+}
+{Lowest-order Feynman diagram of the $\beta$-decay of a neutron $(ddu)$ into a proton $(udu)$, an electron and an anti-neutrino (left), and 4-fermion effective vertex of the same process in the modern understanding of the Fermi description (right).
+The spectator quarks $(du)$ are not shown.}
+%====================================================================================================
+\subsection{Branching fraction} \label{sec:branching_ratio}
+%====================================================================================================
+\figss{feynman_bsnn_ope}{
+\includegraphics[width=0.4\textwidth]{figs/theoretical_motivation/feynman/feynman_effective_vertex.pdf}
+}
+{
+In the operator product expansion, the \bsnn transition is described with a single effective vertex.
+}
+This section explains how the \SM predicts the value of the branching fraction of \BKnn, following mainly \cite{Buras:2014fpa}.
+In the operator product expansion, the effective Hamiltonian for the \BKnn decay is given as a function of a single operator $\mathcal{O}_L$ corresponding to the effective vertex shown in \cref{fig:feynman_bsnn_ope}.
+The effective Hamiltonian is
+\be \label{eq:h_eff}
+\mathcal{H}_{\mathrm{eff}}^{\mathrm{SM}}=-\frac{4G_F}{\sqrt{2}}\,V_{tb}\,V_{ts}^*\,C_L^{\mathrm{SM}}\,\mathcal{O}_L+\mathrm{h.c.},
+\ee
+where
+\bi
+\item $V_{tb}$ and $V_{ts}$ are elements of the CKM matrix defined in \cref{sec:sm};
+\item $C_L^{\mathrm{SM}}$ is a dimensionless Wilson coefficient defined as $C_L^{\mathrm{SM}}=-X(x_t)/\sin^2(\theta_W)$,
+where $\theta_W$ is the electroweak mixing angle \cite{Glashow:1961tr, Weinberg:1967tq}, and $X(x_t)$ is an Inami-Lim function \cite{Inami:1980fz} that describes the short-distance $t$-quark contribution ($x_t$ is the ratio between the $t$-quark mass and the $W$-boson mass) \cite{Buchalla:1993wq, Buchalla:1998ba, Brod:2010hi};
+\item $\mathcal{O}_L$ is an operator defined as
+\be
+\mathcal{O}_{L}=\frac{e^2}{16\pi^2}\,
+(\bar{s}_L\gamma_{\mu}b_L)\,
+(\bar{\nu}_L\gamma^\mu\nu_L),
+\ee
+where $e$ is the electric charge of the positron, $\gamma_\mu$ are the Dirac matrices, and $s_L$, $b_L$, $\nu_L$ are the left-handed spinors describing the fermion fields.
+\ei
+
+In principle, contributions from the $u$ quark and the $c$ quark should also appear in \cref{eq:h_eff}, resulting in the following sum:
+\be \label{eq:gim2}
+\sum_{q\in\{u,c,t\}}V_{qb}V_{qs}^*X(x_q),
+\ee
+where $x_q\equiv m_q/m_W$.
+If the three quarks had an equal mass, this sum would cancel because of the unitarity of the CKM matrix, and \FCNC processes would not be possible.
+However, the quarks have very different masses at this energy scale ($m_t>m_W\gg m_c,m_u$), and the $t$-quark term fully dominates in the result \cite{Buchalla:1993wq}.
+This is an example of breakdown of the \GIM mechanism, due to the dispersion of the quark masses \cite{Buras:1998raa}.
+
+The total branching fraction of the \BKnn decay is derived from Fermi's golden rule:
+\be
+\mathrm{\Br}(\BKnn)=N\tau_{B}\left|\left\langle K\nu\bar{\nu}\right|\mathcal{H}_{\mathrm{eff}}^{\mathrm{SM}}\left|B\right\rangle\right|^2\rho,
+\ee
+where N is a normalisation factor, $\tau_{B}$ stands for the lifetime of the \B meson, and $\rho$ is a phase-space factor.
+
+However, for reasons that will become clear later, it is more convenient to work with a differential branching fraction, which can be evaluated for different regions of the squared invariant mass of the two-neutrino system ($q^2$).
+The result of the calculation gives \cite{Buras:2014fpa}
+\be \label{eq:dBdq2}
+\frac{\dd\text{\Br}(\BKnn)_\text{SM}}{\dd q^2}
+=3\,
+\tau_{B}\,
+\left|
+\frac{G_F \alpha}{16\pi^2}\,
+\sqrt{\frac{m_B^3}{3\pi}}\,
+V_{tb}V_{ts}^*\,
+C_L^{\mathrm{SM}}\,
+f_+(q^2)\,
+\right|^2
+\left(\frac{\lambda_K(q^2)}{m_B^4}\right)^{\frac{3}{2}},
+\ee
+where, in addition to the quantities already defined above,
+\bi
+\item the factor of 3 in front is the number of neutrino flavours, each contributing equally;
+\item $\alpha$ is the electromagnetic coupling (see section 10.2.2 of \cite{ParticleDataGroup:2020ssz});
+\item $m_B$ is the mass of the \B meson;
+\item $f_+(q^2)$ is a hadronic form factor, which is parametrised below, and that captures the $q^2$-dependence of the matrix element $\left\langle K\right|\bar{s}\gamma_{\mu}b\left|B\right\rangle$;
+\item $\lambda_K(q^2)$ is a phase-space factor, defined as $\lambda_K(q^2)\equiv\lambda(m_B^2,m_K^2,q^2)$, with $\lambda(a,b,c)\equiv a^2+b^2+c^2-2(ab+bc+ac)$. The normalisation by $m_B^4$ makes it a dimensionless factor.
+\ei
+The only factors that have a dimension on the right-hand side of \cref{eq:dBdq2} are $\tau_{B}$ ($\gev^{-1}$), $G_F^2$ ($\gev^{-4}$), and $m_B^3$ ($\gev^3$). Combined together, they result in a quantity with dimension $\gev^{-2}$, as expected.
+
+Integrated over the full $\qq$ range, the branching fractions of the decay in the charged case and the neutral case are \cite{BLAKE201750}
+\ba \label{eq:full_br}
+\Br(\BKpnn)_{\mathrm{SM}}&=\mypow{(4.6\pm0.5)}{-6}, \\
+\Br(\BKzznn)_{\mathrm{SM}}&=\mypow{(4.3\pm0.5)}{-6}, \\
+\ea
+where the difference comes from the lifetime ratio $\tau_{B^+}/\tau_{B^0}=1.076$ \cite{ParticleDataGroup:2020ssz}.
+Experimentally, \KS is easier to identify than \KL.
+For this reason, the branching fraction of the \BKznn decay proves more useful:
+\ba \label{eq:br_kshort}
+\Br(\BKznn)_{\mathrm{SM}}&=\frac{\Br(\BKzznn)_{\mathrm{SM}}}{2}. \\
+\ea
+The main source of theoretical uncertainty in \cref{eq:full_br} comes from the hadronic form factor $f_+(q^2)$, which is now examined.
+%====================================================================================================
+\subsubsection*{Form factor parametrisation}
+%====================================================================================================
+In \cite{Buras:2014fpa}, the form factor $f_+(q^2)$ is parametrised with three numbers $\alpha_1,\alpha_2,\alpha_3$ as 
+\begin{equation} \label{eq:ff_parametrisation}
+f_+(q^2) = \frac{1}{1-q^2/m_+^2}\left[
+\alpha_1 + \alpha_2 z(q^2) + \alpha_3 z^2(q^2)+\frac{z^3(q^8)}{3}(-\alpha_2+2\alpha_3)
+\right],
+\end{equation}
+%
+where
+%
+\begin{equation} \label{eq:ff_z_definition}
+z(t) = \frac{\sqrt{t_+-t}-\sqrt{t_+-t_0}}{\sqrt{t_+-t}+\sqrt{t_+-t_0}}\,,
+\end{equation}
+%
+with
+$t_\pm=(m_B\pm m_K)^2$, $t_0=t_+(1-\sqrt{1-t_-/t_+})$, and $m_+=m_B+0.046\gev$.
+Combining the results from lattice computation valid at high $\qq$ and from light-cone sum rules valid at low $\qq$, a fit gives the following result \cite{Buras:2014fpa}:
+\be \label{eq:nominal_alpha}
+\boldsymbol{\alpha} =
+\begin{pmatrix}
+\alpha_1\\
+\alpha_2\\
+\alpha_3 
+\end{pmatrix}
+=
+\begin{pmatrix}
+0.432\\
+-0.664\\
+-1.20
+\end{pmatrix}
+.
+\ee
+
+Moreover, the covariance matrix of $\boldsymbol{\alpha}$, noted $\boldsymbol{\Sigma}_{\boldsymbol{\alpha}}$, which is necessary for propagating the uncertainties, is determined from the correlation matrix and uncertainties given in \cite{Buras:2014fpa}.
+The computation gives
+\be \label{eq:covariance_ff}
+\boldsymbol{\Sigma}_{\boldsymbol{\alpha}} =
+\begin{pmatrix}
+1.2\times10^{-4} & 3.4\times10^{-4} & -2.8\times10^{-3} \\
+3.4\times10^{-4} & 9.2\times10^{-3} & 1.7\times10^{-2} \\
+-2.8\times10^{-3} & 1.7\times10^{-2} & 4.8\times10^{-1}
+\end{pmatrix}
+.
+\ee
+
+\cref{fig:form_factor} gives a visualisation of the above result by comparing the \qq-dependence of simulated $\BKpnn$ decays when taking into account or not the form factor $f_+(q^2)$ present in \cref{eq:dBdq2}.
+The uncertainty band in \cref{fig:form_factor} is obtained as follows:
+\begin{enumerate}
+\item The three orthogonal unit eigenvectors $\boldsymbol{v}_1,\,\boldsymbol{v}_2,\,\boldsymbol{v}_3$ of $\boldsymbol{\Sigma}_{\boldsymbol{\alpha}}$ are extracted together with the respective eigenvalues $\sigma^2_1,\,\sigma^2_2,\,\sigma^3_2$\,;
+\item The varied form factors $f_+(q^2,\boldsymbol{\alpha}\pm\boldsymbol{\sigma}_i)$ are computed for $i=1,2,3$, with the variation vectors given by $\boldsymbol{\sigma}_i\equiv\sigma_i\,\boldsymbol{v}_i$\,;
+\item The uncertainty band is defined as the region covering the varied form factors.
+\end{enumerate}
+
+\figss{form_factor}{
+\includegraphics[width=0.6\textwidth]{figs/theoretical_motivation/phase_space_vs_ff.pdf}
+}
+{
+Number of simulated $\BKpnn$ decays in bins of \qq when taking into account only the variation coming from the phase space factor (blue histogram), and comparison with the expectation when including the \qq-dependence of the form factor (red line) and the theoretical uncertainty (red band).}
+%====================================================================================================
+\subsection{Search for New Physics} \label{sec:new_physics}
+%====================================================================================================
+In case of presence of physics beyond the \SM, other operators contribute to the Hamiltonian of the effective field theory (\cref{eq:h_eff}).
+If a violation of the lepton-flavour universality exists, there could be one left-handed operator per neutrino flavour.
+Moreover, a right-handed operator per neutrino flavour is also possible, giving a total of six operators (section 9.5 of \cite{Kou2020}):
+\begin{align}
+\mathcal{O}^\ell_{L}&=\frac{e^2}{16\pi^2}\,
+(\bar{s}_L\gamma_{\mu}b_L)\,
+(\bar{\nu}_{\ell L}\gamma^\mu\nu_{\ell L}),\\
+\mathcal{O}^\ell_{R}&=\frac{e^2}{16\pi^2}\,
+(\bar{s}_R\gamma_{\mu}b_R)\,
+(\bar{\nu}_{\ell L}\gamma^\mu\nu_{\ell L}),
+\end{align}
+where $\ell=e,\mu,\tau$.
+One advantage of the operator product expansion is that it is possible to parametrise the \NP contributions in a model-independent way, relying only on a set of six complex Wilson coefficients associated to the six operators above.
+In \cite{Buras:2014fpa}, the Wilson coefficients are combined to define the following real parameters that parametrise the \NP effects:
+\be
+\epsilon_\ell=\frac{\sqrt{\left|C^\ell_L\right|^2+\left|C^\ell_R\right|^2}}{\left|C^{\mathrm SM}_L\right|},
+\hspace{0.5cm}
+\eta_\ell=\frac{-\mathrm{Re}\left(C^\ell_L C^{\ell*}_R\right)}{\left|C^\ell_L\right|^2+\left|C^\ell_R\right|^2}.
+\ee
+In the \SM, $\epsilon_e=\epsilon_\mu=\epsilon_\tau=1$ and $\eta_e=\eta_\mu=\eta_\tau=0$.
+
+There are reasons to believe that \NP effects may show up in $\bsnn$ transitions.
+The next paragraphs give a summary of recent experimental results that deviate from the \SM predictions in the sector of the $b\to s\ell^+\ell^-$ transitions, and the end of this section gives three examples of \NP models that have implications for $\bsnn$ transitions.
+%====================================================================================================
+\subsubsection{Experimental anomalies} \label{sec:anomalies}
+%====================================================================================================
+In the last years, several experimental results were in tensions with the predictions of the \SM for the family of decays \BKll $(\ell=e,\mu)$, which are based on the transition \bsll.
+One important observable in these experimental studies is the ratio
+\be
+\label{eq:rk}
+R_{H}\equiv
+\frac{\mathrm{\Br}(B\to H\mumu)}{\mathrm{\Br}(B\to H\epem)},
+\ee
+where $H\in\{K^+,K^0,K^{*+},K^{*0}\}$.
+The ratio of branching fractions is predicted with higher accuracy than the branching fractions themselves, because the form factor terms cancel out in the division.
+In the \SM, the ratio $R_H$ is close to unity because of the universality of the weak coupling.
+
+Below are listed a selection of recent published results showing tensions with the \SM.
+The tensions are quantified as a certain number of standard deviations ($\sigma$).
+\bi
+\item In 2017 \cite{LHCb:2017avl}, LHCb reported a value of $R_{K^{*0}}$ $2.3\,\sigma$ smaller than the \SM prediction;
+\item In 2020 \cite{LHCb:2020lmf}, LHCb reported the result of a fit to the angular variables of $\Bz\to K^{*0}\mumu$ decays showing a $3.3\,\sigma$ deviation from the predicted \SM value of a Wilson coefficient specific to \BKll decays called $C_9$;
+\item In 2021 \cite{LHCb:2020gog}, LHCb reported the result of a fit to the angular variables of $\B^+\to K^{*+}\mumu$ decays showing a $3.1\,\sigma$ deviation from the predicted \SM value of the same Wilson coefficient $C_9$;
+\item In 2022 \cite{LHCb:2021trn}, LHCb reported a value of $R_{K^+}$ $3.1\,\sigma$ smaller than the \SM prediction.
+\ei
+The experimental picture is not completely clear.
+For example, Belle reported in 2021 \cite{Belle:2019oag, BELLE:2019xld} values of $R_{H}$ with $H\in\{K^+,K^0,K^{*+},K^{*0}\}$ compatible with the \SM, but with larger uncertainties than LHCb.
+And recently, LHCb also reported values compatible with the \SM for $R_{\KS}$ and $R_{K^{*+}}$ \cite{LHCb:2021lvy}. 
+
+These tensions further motivate the study of $\BKnn$ decays to clarify the experimental picture, and to also impose constraints on \NP models, some of them trying to explain the experimental anomalies.
+%====================================================================================================
+\subsubsection*{Leptoquark}
+%====================================================================================================
+Leptoquarks are hypothetical particles that couple to quark-lepton pairs \cite{Buchmuller:1986zs}.
+Recently, a family of scenarii of scalar and vector leptoquarks with a mass of the order of 1$\tev/c^2$ were proposed to explain the experimental anomalies observed on the $R_{K^{(*)}}$ observables \cite{Becirevic:2018afm,Angelescu:2021lln}.
+The existence of leptoquarks would have consequences on the branching fraction of \BKnn decays by contributing to the Feynman diagrams, one example of scenario being shown in \cref{fig:leptoquark}.
+In particular, this would imply a shift in the Wilson coefficient $C_L$ with respect to the \SM prediction \cite{Becirevic:2018afm}.
+
+\fig{leptoquark}{0.4}{figs/theoretical_motivation/feynman/feynman_leptoquark.pdf}
+{Feynman diagram of the transition of a $b$ quark into an $s$ quark and a pair of neutrinos mediated by a hypothetical leptoquark ($LQ$).}
+%====================================================================================================
+\subsubsection*{Axion}
+%====================================================================================================
+Axions $(A^0)$ are hypothetical bosons than could explain why the strong interaction conserves the \CP symmetry \cite{Peccei:1977hh, Peccei:1977ur, Weinberg:1977ma, Wilczek:1977pj}.
+In \cite{MartinCamalich:2020dfe}, the focus is given to invisible axions with a mass $m_{A^0}\ll \ev/c^2$ and a lifetime larger than the age of the universe.
+While it is possible to search specifically for the two-body decay $B\to K A^0$, an experimental search for \BKnn decays is also imposing bounds on the $A^0$ coupling if $q^2\approx 0\gevcccc$ is included in the search region \cite{MartinCamalich:2020dfe}.
+
+%====================================================================================================
+\subsubsection*{Dark matter}
+%====================================================================================================
+In \cite{Filimonova:2019tuy}, a new hypothetical scalar $S$ with a mass in the \gevcc range is proposed as the mediator of a new force between the \SM particles and dark matter.
+In particular, the decay $B\to KS(\to \chi \bar{\chi})$, with $\chi$ an invisible dark matter fermion, would be possible.
+Noting that the final state of a $B\to KS(\to \chi \bar{\chi})$ decay is experimentally identical to the final state of a $\BKnn$ decay, a study of $\mathrm{\Br}(\BKnn)$ in bins of $\qq$ can be reinterpreted to impose constraints on this model \cite{Filimonova:2019tuy}.
+%====================================================================================================
+\subsection{Overview of previous searches} \label{sec:previous_searches}
+%====================================================================================================
+While the search for \BKnn decays has a strong theoretical motivation, it is experimentally challenging, because the two neutrinos escape the detection.
+The previous generation of \B factories allowed the Belle experiment and the \babar experiment to search for this decay, but it has never been observed so far, so only experimental upper limits on its branching fraction are available.
+
+All the previous searches for \BKnn decays where relying on either the hadronic tagging method or the semileptonic tagging method (\cref{fig:tagging}).
+The first step of both methods is to reconstruct the accompanying $B$ meson in the $\epem\to\Y4S\to\BB$ event either in a hadronic decay or in a semileptonic decay.
+The second step is select the signal kaon from the remaining particles in the event.
+
+\fig{tagging}{0.8}{figs/theoretical_motivation/bsig_btag.pdf}
+{Tagging method to search for \BKpnn decays.
+The accompanying $B$ meson ($B^-_{\mathrm{tag}}$), is reconstructed either in a hadronic decay or in a semileptonic decay.
+The signal kaon is selected from the remaining particles in the event.}
+
+Below, a brief chronological review of the most recent published results is given, and numerical results are reported in \cref{tab:previous_measurements}.
+The quoted integrated luminosities correspond to data collected at the \Y4S resonance along a \epem collider.
+\begin{itemize}
+\item In 2010 \cite{BaBar:2010oqg}, the Babar experiment used the semileptonic tagging method on a data sample corresponding to 418\invfb of integrated luminosity.
+First, $B_{\mathrm{tag}}\to D^{(*)}\ell\nu_\ell$ ($\ell=e,\mu$) decays were reconstructed, with the $D^{(*)}$ meson decaying hadronically.
+Then, signal kaon candidates (\Kp or $\KS\to\pipi$) were selected in the rest of the event, and the background was reduced with the use of boosted decision trees (see \cref{sec:da_binary_cls}).
+\item In 2013 \cite{BaBar:2013npw}, the Babar experiment used the hadronic tagging method on a data sample corresponding to 429\invfb of integrated luminosity.
+First, $B_{\mathrm{tag}}\to SX_{\mathrm{had}}$ decays were reconstructed, were $S$ stands for $D^{(*)}$, $D_s^{(*)}$, or \jpsi decaying hadronically, and $X_{\mathrm{had}}$ is a set of at most five mesons, each being either a kaon or a pion.
+Then, signal kaon candidates (\Kp or $\KS\to\pipi$) were selected in the rest of the event.
+In addition to the upper limits on the branching fraction obtained from the hadronic tagging method, upper limits combining the two tagging methods were also derived.
+For the \Kp mode, the combined upper limit of $\Br(\BKpnn)<1.6\times 10^{-5}$ at the 90\% confidence level is the value currently reported by the Particle Data Group \cite{ParticleDataGroup:2020ssz}.
+\item In 2013 \cite{Belle:2013tnz}, the Belle experiment used the hadronic tagging method on a data sample corresponding to 711\invfb of integrated luminosity.
+First, $B_{\mathrm{tag}}$ candidates were reconstructed with a neural network-based algorithm \cite{Feindt:2011mr} capable of recognizing $>1000$ exclusive hadronic decays of the $B$ meson.
+Then, signal kaon candidates (\Kp or $\KS\to\pipi$) were selected in the rest of the event.
+\item In 2017 \cite{Belle:2017oht}, the Belle experiment used the semileptonic tagging method on a data sample corresponding to 711\invfb of integrated luminosity.
+First, $B_{\mathrm{tag}}\to D^{(*)}\ell\nu_\ell$ ($\ell=e,\mu$) decays were reconstructed with a neural network-based tagging algorithm described in \autocite{Feindt:2011mr,Belle:2015odw} and capable of recognising $\mathcal{O}(100)$ different semileptonic decays.
+Then, signal kaon candidates (\Kp or $\KS\to\pipi$) were selected in the rest of the event, and the background was reduced with the use of another neural network algorithm.
+In particular, the determined upper limit $\Br(\BKzznn)<2.6\times 10^{-5}$ at the 90\% confidence level is the best to date and is the value currently reported by the Particle Data Group \cite{ParticleDataGroup:2020ssz}.
+\end{itemize}
+
+\tab{previous_measurements}{llllllll}{\input{tables/previous_measurements.tex}}
+{Experimental results of previous searches for \BKpnn and \BKzznn decays.
+Are given the name of the experiment, the year of publication, the employed method (SL stands for semileptonic tagging, HAD stands for hadronic tagging, and COM stands for the combination of the two), the integrated luminosity of the data sample (L), the decay mode (either \Kp or \Kz), the total signal selection efficiency ($\varepsilon_{\mathrm{sig}}$), and the observed upper limit on the branching fraction at the 90\% confidence level.
+The results of \autocite{BaBar:2010oqg} are shown with an asterisk (*), because the \qq-dependence of the predicted branching fraction is not properly taken into account in the method, causing the signal selection efficiency to be approximately 10\% greater than its correct value according to \autocite{BaBar:2013npw}.}
+

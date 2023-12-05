@@ -1,0 +1,810 @@
+%====================================================================================================
+\chapter[Search for \BKnn decays]{Search for {\boldmath \BKnn} decays} \label{ch:search_for_b2knn}
+%====================================================================================================
+The previous chapters prepared the ground for the main objective of this thesis, the search for \BKnn decays.
+More specifically, the goal of this chapter is to measure two observables: the branching fraction of the \BKpnn and the \BKznn modes, noted as $\mathrm{\Br}(\BKpnn)$ and $\mathrm{\Br}(\BKznn)$, respectively\footnote{Charge-conjugate modes are implied throughout this chapter.}.
+If, at the end, the amount of observed signal is not large enough for a precise measurement of the branching fractions, upper limits are determined.
+
+This chapter begins with the list of the input data and simulated samples (\cref{sec:input_samples}) and a presentation of the event selection strategy (\cref{sec:strategy}).
+\cref{sec:object_reconstruction,sec:candidate_selection,sec:basic_event_selection,sec:input_variables,sec:binary_classification,sec:signal_search_region} detail each step of the selection and are concluded by the definition of the signal search region.
+\cref{sec:data_mc} compares data and simulation in different regions of the phase space to validate the selection procedure.
+\cref{sec:systematics} studies multiple sources of systematic uncertainties that affect the measurement of the branching fractions.
+\cref{sec:fit} presents the likelihood model that is used to determine the branching fractions, and expected upper limits are derived from simulation.
+\cref{sec:first_iteration,sec:discussion} conclude this chapter by presenting and discussing the obtained results.
+%====================================================================================================
+\section{Input samples} \label{sec:input_samples}
+%====================================================================================================
+The search for \BKpnn and \BKznn decays is conducted with a sample of data collected by Belle II between 2019 and 2021.
+Most of the data sample (\lumion) was collected at the energy of the \Y4S resonance. This sample is referred to as the on-resonance data.
+The remaining data (\lumioff) were collected at an energy 60\mev below the \Y4S resonance and are referred to as the off-resonance data.
+The later sample does not contain decays of \B mesons, because the energy is not sufficient to produce them, but this data sample is useful to study the continuum background (\epem\to $q\bar{q}$ with $q=u,d,s,c$, and $e^+e^- \to \tau^{+} \tau^{-}$).
+
+In addition, the following samples of simulated events are used:
+\begin{itemize}
+\item \nsignalmc simulated events containing a \BKpnn decay.
+\item \nsignalmc simulated events containing a \BKznn decay.
+\item Simulated background events corresponding to \lumimc of equivalent integrated luminosity.
+Seven dominant background categories are simulated: the non-signal \B meson decays (\epem\to\BpBm and \epem\to\BzBzb), and five continuum contributions (\epem\to $q\bar{q}$ with $q=u,d,s,c$, and $e^+e^- \to \tau^{+} \tau^{-}$).
+\end{itemize}
+
+The simulated samples are taken from the official Belle II simulation production, that made use of the software libraries listed in \cref{sec:software}.
+\cref{tab:samples} gives an overview of the data and simulated samples.
+
+\tab{samples}{l@{\hskip 0.5cm}ll}{\input{tables/samples.tex}}{
+Data and simulated samples, and corresponding integrated luminosity ($L$) or number of events (\# events), and energy in the centre-of-mass frame ($\sqrt{s})$.}
+
+%====================================================================================================
+\section{Event selection strategy} \label{sec:strategy}
+%====================================================================================================
+As already detailed in \cref{sec:previous_searches}, the previous searches for \BKnn decays were using a hadronic tagging method, a semileptonic tagging method, or a combination of both.
+A disadvantage of these methods is their small signal selection efficiency, well below 1\%, caused by the explicit reconstruction of the accompanying \B meson in the \epem\to\BB event.
+
+In the following, another method is developed and followed: the \textit{inclusive tagging}.
+In this method, the accompanying \B meson is not explicitly reconstructed.
+Instead, the event selection relies on a set of variables that distinguish an event containing a \BKnn decay from the more common \epem\to\BB, \epem\to\qqbar ($q=u,d,s,c$), and $\epem\to\tautau$ events.
+A similar method that inspires this work was recently developed by the Belle collaboration in a search for \Bp\to\mup\!\num decays \cite{Belle:2019iji}.
+
+The steps of the event selection method are enumerated below and each is linked to a corresponding section:
+\begin{enumerate}
+\item Particle candidate lists (\cref{sec:object_reconstruction}): lists of particle candidates are defined in each event, based on the information collected by the Belle II subdetectors.
+\item Signal candidate selection (\cref{sec:candidate_selection}): in each event, one signal kaon candidate is chosen.
+\item Basic event selection (\cref{sec:basic_event_selection}): simple criteria are applied to reject background events.
+\item Input variable computation (\cref{sec:input_variables}): a set of discriminative variables are defined and computed for each event.
+\item Binary classification (\cref{sec:binary_classification}): the variables defined in the previous step are computed on simulated events, and used to train binary classifiers that are employed to finalise the event selection.
+\end{enumerate}
+%====================================================================================================
+\section{Particle candidate lists} \label{sec:object_reconstruction}
+%====================================================================================================
+This section defines general lists of particle candidates reconstructed in each event.
+The charged particle candidates are all the reconstructed tracks\footnote{Information about how tracks are reconstructed at Belle II can be found in \cite{Bertacchi2021}.} satisfying the following conditions:
+\bi
+\item The transverse momentum \pt of the track is between $0.1$ and $5.5\gevc$.
+The lower threshold suppresses the impact from the beam background and the upper threshold is a security threshold suppressing potentially mis-reconstructed tracks.
+\item The transverse impact parameter \dr of the track with respect to the average interaction point (\IP) is smaller than 0.5\cm and the longitudinal impact parameter $|\dz|$ of the track with respect to the \IP is smaller than 3\cm (see \cref{fig:belle_ii} in \cref{sec:belleii} for a definition of the Belle II coordinate system). 
+This condition filters out charged particles that come from a region away from the \IP.
+\item The polar angle $\theta$ of the track is within the \CDC acceptance.
+This condition suppresses charged particles due to the beam background whose trajectory is close to the beam line and that are only detected by the \VXD.
+\ei
+At Belle II, tracks are mainly produced by pions, kaons, electrons, muons, and protons.
+The likelihood of each mass hypothesis is computed by combining \PID information from the Belle II subdetectors.
+Each track is associated with its most-likely mass hypothesis, with a prior probability derived from simulated $\epem\to\BB$ events (\cref{tab:charged_priors}).
+
+\tab{charged_priors}{l@{\hskip 1cm}l}{\input{tables/charged_priors.tex}}
+{Fraction of charged particles expected from $\B$ meson decays.
+The numbers are derived from simulated $\epem\to\BB$ events \cite{Bertacchi2021}.}
+
+The photon candidates are built from \ECL clusters fulfilling the following requirements:
+\bi
+\item The cluster energy $E$ is between $0.1$ and $5.5\gev$.
+Similarly to the \pt requirement for the tracks, the lower threshold suppresses the impact from the beam background, and the upper threshold is a security threshold suppressing potentially mis-reconstructed \ECL clusters.
+\item The cluster is within the \CDC acceptance.
+This condition suppresses clusters produced by charged particles potentially missed by the tracking system.
+\ei
+
+The \KS candidates are reconstructed from two tracks of opposite charges that are fit to a common vertex, meaning that only the decay $\KS\to\pip\pim$, which has a branching fraction of approximately 70\% \cite{ParticleDataGroup:2020ssz}, is reconstructed.
+The fully-neutral decay $\KS\to\piz\piz\to4\gamma$, which has a branching fraction of approximately 30\% \cite{ParticleDataGroup:2020ssz}, is not considered, because of a large number of potential wrong combinations of photon candidates and the presence of neutral hadrons in the photon candidate list (mis-identified photons).
+The following selection is applied on the reconstructed \KS candidates:
+\bi
+\item As for the charged particle candidates, each track satisfies $0.1<p_T<5.5\gevc$ and $\theta\in\text{CDC acceptance}$.
+\item The mass of the \KS candidate is in the interval $[0.485,0.510]\gevcc$ defined around the nominal \KS mass, which is 0.498\gevcc \cite{ParticleDataGroup:2020ssz}.
+\item The cosine of the angle between the momentum of the \KS candidate and the vector from the average interaction point to the \KS candidate vertex is greater than 0.98.
+This requirement ensures that the \KS candidate comes from a region close to the average interaction point.
+\ei
+
+No explicit list of \KL candidates is defined, but since the requirements on the photon candidates are loose, it is expected that the \KL contribution to the visible energy is taken into account for \KL producing \ECL clusters.
+
+%====================================================================================================
+\section{Signal candidate selection} \label{sec:candidate_selection}
+%====================================================================================================
+In a \BKnn decay, the kaon is the only particle that can be detected, since the two neutrinos escape the detector without any interaction.
+An important variable that is used during the selection of the signal candidate is the invariant mass squared of the two-neutrino system, noted \qq, which was already introduced when computing the branching fraction of the \BKnn decay in \cref{sec:branching_ratio}.
+
+If $\mathbf{P}^*_B\equiv(E^*_B,\mathbf{p}^*_B)$ and $\mathbf{P}^*_K\equiv(E^*_K,\mathbf{p}^*_K)$ are the 4-momenta of the $B$ meson and the kaon in the centre-of-mass system, then the invariant mass squared of the two-neutrino system is
+\be \label{eq:qgen}
+q^2=(\mathbf{P}^*_B-\mathbf{P}^*_K)^2=m_B^2+m_K^2-2\,E^*_BE^*_K+2\,\mathbf{p}^*_B\cdot\mathbf{p}^*_K,
+\ee
+where $m_B$ and $m_K$ are the mass of the $B$ meson and the kaon, respectively.
+Experimentally, the 4-momentum of the $B$ meson is not accessible.
+For this reason, an approximated \qq, called reconstructed \qq, and noted \qrec, is defined as
+\be \label{eq:qrec}
+q_{\mathrm{rec}}^2=m_B^2+m_K^2-2\,m_BE^*_K.
+\ee
+\cref{eq:qrec} is equivalent to \cref{eq:qgen} if the 3-momentum of the $B$ meson in the centre-of-mass frame is neglected.
+This is a valid approximation since the \B mesons are nearly at rest in this frame, as already mentioned in \cref{sec:superkekb}.
+
+\cref{fig:q2rec_vs_q2} presents the correlation between \qq and \qrec in $10^5$ simulated \BKnn decays, and shows that \qrec approximates \qq with a resolution of the order of $1\gevcccc$.
+The tail observed in the \BKpnn case that is absent in \BKznn is due to radiative $\BKpnn(\gamma)$ events causing an underestimation of $E^*_K$.
+\figs{q2rec_vs_q2}
+{0.495}
+{figs/search_for_b2hnn/q2rec_vs_q2gen/Bplus2Kplus_Bsig_H_reconstructed_q2_vs_Q2_gen.pdf}
+{0.495}
+{figs/search_for_b2hnn/q2rec_vs_q2gen/Bzero2Kshort_Bsig_H_reconstructed_q2_vs_Q2_gen.pdf}
+{
+Generated ($q^2_{\mathrm{gen}}$) and reconstructed ($q^2_{\mathrm{rec}}$) invariant mass squared of the two-neutrino system of $10^5$ simulated \BKpnn decays (left) and \BKznn decays (right).
+}
+
+Now that this variable is defined, the signal candidate selection is done as follows.
+%====================================================================================================
+\subsubsection*{Signal $\boldsymbol{\Kp}$ candidate}
+%====================================================================================================
+For the charged mode (\BKpnn), the signal \Kp candidate is a track that satisfies the criteria for charged particle candidates listed in \cref{sec:object_reconstruction}.
+In addition, the following conditions are imposed:
+\bi
+\item The track contains at least one \PXD hit. This ensures an optimal resolution on the candidate trajectory.
+\item The track contains at least 20 \CDC hits.
+This requirement is recommended by the Belle II performance group to ensure that enough information is available for the particle identification, which is, in particular, a function of the energy loss $dE/dX$ within the \CDC, where $E$ is the energy of the particle candidate, and $X$ is a distance measured along the trajectory of the particle candidate.
+\item The candidate has a kaon-hypothesis likelihood (\PID score) of at least 0.9.
+This requirement retains approximately 60\% of true kaons and rejects approximately 95\% of mis-identified kaons (mainly pions).
+\item Finally, in each event, all the candidates are ranked according to \qrec, and the one with the smallest \qrec is chosen as the signal candidate.
+This choice is motivated by the signal simulation, that shows that if a list of multiple candidates contains the true signal \Kp, then the true signal \Kp has the smallest \qrec in more than $90\%$ of the cases. %91%
+\ei
+
+\cref{fig:overlays_q2} (left) shows simulated \BKpnn and background events in bins of \qrec.
+In the background histogram, seven background categories are stacked: the non-signal \B meson decays (\epem\to\BpBm and \epem\to\BzBzb), and the five continuum contributions (\epem\to $q\bar{q}$ with $q=u,d,s,c$, and $e^+e^- \to \tau^{+} \tau^{-}$).
+
+In \cref{fig:overlays_q2}, a correction weight is applied to the simulated signal events in order to obtain a realistic \qq-dependence of the signal branching fraction.
+This correction is necessary, because simulation does not take into account the \qq-dependence of the form factor entering in the computation of the \BKnn branching fraction (\cref{sec:branching_ratio}).
+The correction weight is computed as the ratio between the two distributions shown in \cref{fig:form_factor} (\cref{sec:branching_ratio}).
+Unless specified otherwise, this correction weight is applied to all the simulated signal events in the following.
+
+\def \overlaytext {The histograms are obtained by selecting a total of approximately $10^6$ simulated signal events and $10^6$ simulated background events with the criteria listed in \cref{sec:object_reconstruction,sec:candidate_selection,sec:basic_event_selection}.
+The signal histogram and the stacked background histogram are divided by the total number of events that they contain.
+}
+
+\figs{overlays_q2}
+{0.495}
+{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/Bsig_H_reconstructed_q2.pdf}
+{0.495}
+{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/Bsig_H_reconstructed_q2.pdf}
+{
+Simulated signal and background events in bins of the reconstructed invariant mass squared of the two-neutrino system for the \BKpnn mode (left) and the \BKznn mode (right).
+\overlaytext
+}
+%====================================================================================================
+\subsubsection*{Signal $\boldsymbol{\KS}$ candidate}
+%====================================================================================================
+For the neutral mode (\BKznn), the signal \KS candidate is taken from the list of \KS candidates defined in \cref{sec:object_reconstruction}.
+Similarly to the charged mode, the signal \KS candidate with the smallest \qrec is chosen in each event.
+Signal simulation shows that if a list of multiple candidates contains the true signal \KS, then the true signal \KS has the smallest \qrec in more than $90\%$ of the cases. %92%
+
+\cref{fig:overlays_q2} (right) shows simulated \BKznn and background events in bins of \qrec, and \cref{fig:overlays_basic_event_selection} (top left) shows that the mass of the selected signal \KS candidates is peaking at the nominal \KS mass, which is 0.498\gevcc \cite{ParticleDataGroup:2020ssz}.
+%====================================================================================================
+\section{Basic event selection} \label{sec:basic_event_selection}
+%====================================================================================================
+Now that a single signal kaon candidate is selected in each event, a set of basic requirements, which are listed below, are imposed on each event.
+Signal and background distributions of the variables mentioned in this section are shown in \cref{fig:overlays_basic_event_selection}.
+\bi
+\item An event containing a \BKnn decay tends to have a smaller number of tracks than a background event, because the decay of a signal $B$ meson produces only one track in the $\BKpnn$ case, and two tracks in the \BKznn case.
+For this reason, an event must have at most 10 (11) charged particle candidates in total when selecting \BKpnn (\BKznn) events.
+This requirement causes a small signal loss, of the order 0.4\%, while suppressing background events that have a large number of tracks.
+\item In addition, an event must have at least four charged particle candidates in total.
+The reason for this requirement is that at least one track is missing in an event with three tracks, because of charge conservation, and the remaining information in such an event is too limited.
+The same argument of information limitation applies to events with less than three tracks.
+\item The visible energy in an event in the centre-of-mass frame must be greater than 4\gev.
+This requirement is necessary to suppress non-simulated low-multiplicity background.
+An example of such background is the process $\e^+e^-\to\e^+e^-\pi^+\pi^-\pi^+\pi^-$, mediated by a pair of virtual photons, where the electron and the positron in the final state are outside of the detector acceptance, because their trajectories are too close to the beam line (see \cite{L3:2005dor, Belle:2007qae, Belle:2013eck} for experimental results regarding this class of processes).
+\item The polar angle $\theta$ of the missing momentum in an event must be within the \CDC acceptance (see \cref{eq:pmiss} for a definition of the missing momentum).
+This requirement also suppresses the low-multiplicity background and more generally ensures that the missing momentum is not due to particles travelling outside of the detector acceptance.
+\item Finally, only events whose signal kaon candidate is such that $\qrec\ge-1\gevcccc$ are retained, because the events with $\qrec<-1\gevcccc$ are mainly background events (\cref{fig:q2rec_vs_q2,fig:overlays_q2}).
+\ei 
+\cref{tab:selection_efficiency} summarises the evolution of the signal selection efficiency when applying the criteria listed in \cref{sec:object_reconstruction,sec:candidate_selection,sec:basic_event_selection}.
+For the charged mode (\BKpnn), the drop of the signal selection efficiency from 89.2\% to 52.1\% after the definition of the signal candidate list is mainly due to the \PID requirement used to reject the pion background (\cref{sec:candidate_selection}).
+After the first step of the selection (\cref{sec:object_reconstruction}), the signal selection efficiency is smaller for the neutral mode (43.3\%) than for the charged mode (89.2\%), because only the channel $\KS\to\pip\pim$ is considered to define \KS candidates, and both pions need to be in the detector acceptance.
+
+At this stage of the event selection, background largely dominates, and the role of the next section is to define a set of variables that will be used in binary classification algorithms for background suppression.
+
+\figss{overlays_basic_event_selection}
+{
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_K_M.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/nTracksCleaned.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_weMissPTheta_ipMask_0.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/visibleEnergyOfEventCMS.pdf}
+}
+{
+Simulated signal and background events in bins of the mass of the signal \KS candidate (top left), the number of charged candidates in the event (top right), the polar angle of the missing momentum (bottom left), and the visible energy in the centre-of-mass frame (bottom right).
+The top-left plot corresponds to the neutral mode (\BKznn), the other three plots correspond to the charged mode (\BKpnn).
+\overlaytext
+}
+
+\tab{selection_efficiency}{lll}{\input{tables/selection_efficiency.tex}}
+{
+Evolution of the signal selection efficiency for the charged mode (\BKpnn) and the neutral mode (\BKznn) when applying the criteria listed in \cref{sec:object_reconstruction,sec:candidate_selection,sec:basic_event_selection}.
+The efficiency is computed by reconstructing a total of $10^5$ simulated signal events.
+}
+%====================================================================================================
+\clearpage
+\section{Input variables} \label{sec:input_variables}
+%====================================================================================================
+After the basic event selection presented in \cref{sec:basic_event_selection}, a set of variables are computed for each event.
+These variables are used to classify events in two categories: signal or background.
+This section gives a list of variables that are candidates to serve as discriminative variables used during the event classification.
+The classification itself, and the set of variables that are retained for the final selection are discussed later.
+
+The variables are organised in four categories and defined in dedicated subsections.
+\bi
+\item Variables related to all the particle candidates in an event (\cref{sec:var_entire_event}).
+\item Variables related to the properties of the signal kaon candidate (\cref{sec:var_signal_kaon}).
+\item Variables related to the rest of the event (\ROE), which refers to all the particle candidates in an event that are not the signal kaon candidate (\cref{sec:var_roe}).
+\item Variables designed to suppress the background from $D$ meson decays (\cref{sec:var_dmeson_suppression}).
+\ei
+
+The reference frame is the laboratory, unless specified otherwise.
+Some variables are computed in the centre-of-mass system (\CMS).
+
+Multiple overlays of signal and background distributions are shown in this section.
+Similarly to \cref{fig:overlays_q2,fig:overlays_basic_event_selection}, the histograms are obtained by selecting with the criteria listed in \cref{sec:object_reconstruction,sec:basic_event_selection,sec:candidate_selection} a total of approximately $10^6$ simulated signal events and $10^6$ simulated background events.
+
+\cref{sec:app_variable_definition} contains summary tables with the list of all variables defined in this section and complementary figures.
+%====================================================================================================
+\subsection{Entire event} \label{sec:var_entire_event}
+%====================================================================================================
+The variables listed below are defined as a function of the momentum distribution in an event, or as a function of observables that depend on the entire event (signal+\ROE).
+The definition of most of these variables is given in \cref{sec:da_variables}.
+Signal and background distributions are shown in \cref{fig:overlays_fw_kp,fig:overlays_entire_kp} for the \BKpnn mode.
+They are similar for the \BKznn mode (\cref{sec:app_variable_definition}).
+
+The variables shown in \cref{fig:overlays_fw_kp} are (from left to right and top to bottom):
+\bi
+\item The normalised Fox-Wolfram moments $R_1$, $R_2$, and $R_3$, defined in \cref{sec:da_fw}, and computed in the \CMS.
+\item The signal-\ROE modified Fox-Wolfram moments $H^{so}_{c,2}$, $H^{so}_{n,2}$, $H^{so}_{m,0}$, $H^{so}_{m,2}$, and $H^{so}_{m,4}$, defined in \cref{sec:da_mfw}, and computed in the \CMS.
+The moments that depend on the missing momentum (i.e.~those with a $m$ subscript) are particularly discriminative, because a signal event has a large missing momentum due to the two undetected neutrinos.
+\item The harmonic moments $B_0$ and $B_2$, defined in \cref{sec:da_harmonic}, with respect to the thrust axis in the event, defined in \cref{sec:thrust}, and computed in the \CMS.
+The $B_0$ moment, which is a normalised sum of the momenta of the detected particles, is smaller for signal events because of the two undetected neutrinos.
+\ei
+
+In the following, the tracks in the \ROE are fit to a common vertex called the tag vertex.
+In addition, for a given track $T$ and a given point $P$, the point of closest approach of $T$ with respect to $P$, noted \POCA, is defined as the point on the track $T$ whose distance to the point $P$ is minimal in the transverse plane \cite{Bertacchi2021}.
+
+The variables shown in \cref{fig:overlays_entire_kp} are (from left to right and top to bottom):
+\bi
+\item The radial and the longitudinal distances between the \POCA of the \Kp candidate track and the tag vertex, noted $dr(K^+,\,\mathrm{Tag\,Vertex})$ and $dz(K^+,\,\mathrm{Tag\,Vertex})$, respectively.
+\item The event sphericity, defined in \cref{sec:sphericity}, and computed in the \CMS.
+The momentum distribution of a typical $\epem\to\BB$ event tends to be spherical, and the momentum distribution of an $\epem\to\qqbar$ event tends to be jet-like (\cref{fig:sphericity_scheme}).
+\fig{sphericity_scheme}{0.5}{figs/data_analysis/sphericity_v4.pdf}{
+Momentum distribution of a typical $\epem\to\BB$ event, which tends to be spherical (left), an $\epem\to\B(\to K\nu\nub)\Bbar$ event (middle), and an $\epem\to\qqbar$ event, which tends to be jet-like (right).
+}
+\item The missing mass squared in the event ${M_{\mathrm{missing}}}^2$, defined as
+\be
+{M_{\mathrm{missing}}}^2=E^2_{\mathrm{missing}}-p^2_{\mathrm{missing}},
+\ee
+where $E_{\mathrm{missing}}$ and $p_{\mathrm{missing}}$ are the missing energy and the missing momentum in the event, respectively, defined in \cref{sec:da_mfw}, and computed in the \CMS.
+\item The polar angle of the missing momentum, noted in $\theta(p_{\mathrm{missing}})$, and computed in the \CMS.
+\item The square of the sum of the electric charges in the event.
+\item The number of tracks $N_{\mathrm{tracks}}$, of photons $N_{\gamma}$, and of leptons $N_{\mathrm{lepton}}$ in the event that pass the criteria listed in \cref{sec:object_reconstruction}.
+Lepton candidates are obtained by selecting tracks with an electron-hypothesis likelihood or a muon-hypothesis likelihood (\PID score) of at least 0.9.
+\item The magnitude of the event thrust, defined in \cref{sec:thrust}, and computed in the \CMS.
+\item The cosine of the polar angle of the event thrust axis, noted $\mathrm{cos(\theta(thrust))}$, and computed in the \CMS.
+\item The cosine of the angle between the momentum line of the signal kaon candidate and the thrust axis of the \ROE, noted $\mathrm{cos}(\mathrm{thrust}_B,\,\mathrm{thrust_{ROE}})$, and computed in the \CMS.
+In a signal event, the momentum of the signal kaon is not correlated to the momentum of the \ROE particles, implying that the distribution of this variable is approximately uniform for signal events (bottom right of \cref{fig:overlays_entire_kp}).
+\ei
+
+\figss{overlays_fw_kp}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/foxWolframR1.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/foxWolframR2.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/foxWolframR3.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso02.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso12.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso20.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso22.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hso24.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/harmonicMomentThrust0.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/harmonicMomentThrust2.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the momentum distribution in the entire event for the \BKpnn mode.
+\overlaytext
+}
+
+\figss{overlays_entire_kp}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_K_dr_to_TagV.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_K_dz_to_TagV.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/sphericity.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_weMissM2_ipMask_0.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_weMissPTheta_ipMask_0.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/total_charge2.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/nTracksCleaned.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/nGammasCleaned.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/nLepton.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/thrust.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/thrustAxisCosTheta.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_cosTBTO.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the entire event for the \BKpnn mode.
+\overlaytext
+}
+%====================================================================================================
+\subsection{Signal kaon candidate} \label{sec:var_signal_kaon}
+%====================================================================================================
+The variables listed below depend on the properties of the signal kaon candidate.
+Signal and background distributions are shown in \cref{fig:overlays_kaon_kpz} for the \BKpnn mode and the \BKznn mode, some variables being specific to a certain mode.
+
+In the following, the average interaction point is noted \IP.
+
+The variables shown in \cref{fig:overlays_kaon_kpz} are (from left to right and top to bottom):
+\bi
+\item The radial and the longitudinal distances between the \poca of the \Kp candidate track and the \IP, noted $dr(K^+)$ and $dz(K^+)$, respectively.
+\item The azimuthal angle of the \Kp candidate momentum at the \poca with respect to the \IP, noted $\phi(K^+)$.
+\item The mass of the \KS candidate, noted $M(K^0_\mathrm{S})$.
+\item The cosine of the angle between the \KS candidate momentum line and the line from the \IP to the \KS candidate vertex, noted $\mathrm{cos}(p_{K^0_{\mathrm{S}}},\,\mathrm{line}(\mathrm{IP},\,K^0_\mathrm{S}\,\mathrm{vertex}))$.
+\item The cosine of the angle between the thrust axis of the signal kaon candidate and the $z$ axis, noted $\mathrm{cos}(\mathrm{thrust}_B,\,z)$.
+\item The radial and the longitudinal distances between the $\KS$ candidate momentum line and the \IP, noted $dr(p_{K^0_{\mathrm{S}}})$ and $dz(p_{K^0_{\mathrm{S}}})$, respectively.
+\ei
+
+\figss{overlays_kaon_kpz}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_K_drS.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_K_dzS.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_K_phi0.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_K_M.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_K_cosAngleBetweenMomentumAndVertexVector.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_cosTBz.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_K_drS_momentum_line.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_BDT1_training/B_sig_K_dzS_momentum_line.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the properties of the signal kaon candidate.
+The first line of plots corresponds to the \BKpnn mode, the second and the third lines of plots correspond to the \BKznn mode.
+\overlaytext
+}
+
+%====================================================================================================
+\subsection{Rest of the event} \label{sec:var_roe}
+%====================================================================================================
+The variables listed below are functions of the properties of the \ROE.
+Signal and background distributions are shown in \cref{fig:overlays_roe_kp} for the \BKpnn mode.
+They are similar for the \BKznn mode (\cref{sec:app_variable_definition}).
+
+The variables shown in \cref{fig:overlays_roe_kp} are (from left to right and top to bottom):
+\bi
+\item The difference between the \roe energy in the \cms and the energy of one beam in the \cms ($\sqrt{s}/2$), noted $\Delta E_{\mathrm{ROE}}$.
+This variable is one of the most discriminative ones.
+The \ROE with respect to a mis-identified signal kaon typically has an energy larger than $\sqrt{s}/2$ (i.e.~$\Delta E_{\mathrm{ROE}}>0\gev$), because in this case, the \ROE is a combination of decay products of both \B mesons in an $\epem\to\BB$ event.
+A similar argument holds for continuum background events (\epem\to $q\bar{q}\,$ with $q=u,d,s,c$, and $e^+e^- \to \tau^{+} \tau^{-}$).
+\item The \ROE-\ROE modified Fox-Wolfram moments $R^{oo}_{0}$ and $R^{oo}_{2}$, defined in \cref{sec:da_mfw}, and computed in the \CMS.
+\item The invariant mass of the \roe, noted $M(\mathrm{ROE})$.
+\item The polar angle of the \roe momentum, noted $\theta(p_{\mathrm{ROE}})$.
+\item The magnitude of the \roe momentum, noted $p_{\mathrm{ROE}}$.
+\item The magnitude of the \roe thrust, noted $\mathrm{thrust_{ROE}}$, and computed in the \cms.
+\item The quality of the tag vertex fit, quantified with a $p$-value, noted $p$-value(Tag Vertex).
+The $p$-value is close to unity when the quality of the vertex fit is good.
+\item The components of the vector from the \IP to the tag vertex, noted $dx(\mathrm{Tag\,Vertex})$, $dy(\mathrm{Tag\,Vertex})$ and $dz(\mathrm{Tag\,Vertex})$.
+The Belle II coordinate system is defined in \cref{sec:belleii}.
+\item The variance of the transverse momentum of the \ROE tracks, noted $\mathrm{Variance_{ROE}}(p_T)$.
+\ei
+
+\figss{overlays_roe_kp}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_roeDeltae_ipMask.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hoo0.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_KSFWVariables_hoo2.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_roeM_ipMask.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_roePTheta_ipMask.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_roeP_ipMask.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/B_sig_thrustOm.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/TagVpVal.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/TagVxBeam.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/TagVyBeam.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/TagVzBeam.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/roePi_var_pt.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the \ROE for the \BKpnn mode.
+\overlaytext
+}
+%====================================================================================================
+\subsection[$D$ meson suppression]{$\boldsymbol{D}$ meson suppression} \label{sec:var_dmeson_suppression}
+%====================================================================================================
+The variables defined below serve to suppress the background coming from $D$ mesons decaying into a kaon and one or two pions, and where the kaon is selected as the signal kaon candidate.
+In order to suppress this background, $D$ meson candidates are defined by combining the signal kaon candidate with tracks in the \ROE, and by fitting the tracks to a common vertex.
+The $D$ meson candidates are ranked according to the quality of the vertex fit, and the best $D$ meson candidate refers to the one with the best vertex fit.
+
+For the \BKpnn mode, \Dz candidates are obtained by combining the signal \Kp candidate with each track of opposite charge in the \ROE, and \Dp candidates are obtained by combining the signal \Kp candidate with two tracks of opposite charge in the \ROE.
+
+For the \BKznn mode, \Dp candidates are obtained by combining the signal \KS candidate with each track in the \ROE, and \Dz candidates are obtained by combining the signal \KS candidate with two tracks of opposite charges in the \ROE.
+
+Signal and background distributions are shown in \cref{fig:overlays_dmeson_kp} for the \BKpnn mode.
+Figures for the \BKznn mode are shown in \cref{sec:app_variable_definition}.
+
+The variables shown in \cref{fig:overlays_dmeson_kp} are (from left to right and top to bottom):
+\bi
+\item The radial and the longitudinal distances between the best $\Dp$ candidate vertex and the \IP, noted $dr(\Dp)$ and $dr(\Dp)$, respectively.
+\item The quality of the vertex fit of the best $\Dp$ candidate, quantified with a $p$-value, noted $p$-value(\Dp).
+\item The radial and the longitudinal distances between the best $\Dz$ candidate vertex and the \IP, noted $dr(\Dz)$ and $dr(\Dz)$, respectively.
+\item The quality of the vertex fit of the best $\Dz$ candidate, quantified with a $p$-value, noted $p$-value(\Dz).
+\item The median of the fit quality of the \Dz candidate vertices, noted Median($p$-value($D^0$)).
+\item The mass of the best $\Dz$ candidate, noted $M(D^0)$.
+The distribution of this variable for background events has a peak close to 1.87\gevcc, which is the nominal mass of the \Dz meson \cite{ParticleDataGroup:2020ssz} (bottom right of \cref{fig:overlays_dmeson_kp}).
+The other peaks in the distribution at lower masses are likely due to the $K^{*0}(892)$ and $\phi(1020)$ resonances \cite{ParticleDataGroup:2020ssz}.
+\ei
+
+\figss{overlays_dmeson_kp}
+{
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/DPveto_drS.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/DPveto_dzS.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/DPveto_chiProb.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/D0veto_drS.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/D0veto_dzS.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/D0veto_chiProb.pdf}\\
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/D0_pValue_med.pdf}
+\includegraphics[width=0.327\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_BDT1_training/D0veto_M.pdf}
+}
+{
+Simulated signal and background events in bins of variables related to the $D$ meson suppression for the \BKpnn mode.
+\overlaytext
+}
+
+
+%====================================================================================================
+\clearpage
+\section{Binary classification} \label{sec:binary_classification}
+%====================================================================================================
+This section presents the central part of the event selection: binary classification.
+The definition of binary classification and of the algorithms that are used to achieve it are detailed in \cref{sec:da_binary_cls}.
+
+In order to separate signal and background events, two boosted decision trees, \bdto and \bdtt, are trained for each mode (\BKpnn and \BKznn):
+\bi
+\item \bdto serves as a first layer of background suppression.
+It uses a limited set of discriminative variables, common for both \BKpnn and \BKznn modes, to filter out the most obvious background.
+\item \bdtt is trained on events that pass the first layer of background suppression and uses additional discriminative variables, including mode-specific variables, to reject background events that are similar to signal events.
+The signal search region is defined from the output of \bdtt (\cref{sec:signal_search_region}).
+\ei
+The reason why two classification layers are needed is the limited memory size of the computers on which the classifiers are trained.
+As an illustration, if one background event out of $L\gg1$ is similar to a signal event, and if $M\gg1$ such background events are required for a proper training, then the total number of background events that need to fit into memory during the training a single classification layer is $LM$.
+By contrast, if \bdto filters out the most obvious background and retains only one background event out of $N\gg1$, then \bdtt can be trained with only $LM/N$ background events selected from a large sample of $LM$ background events.
+
+In the next paragraphs (\cref{sec:bdto} and \cref{sec:bdtt}), the classifiers \bdto and \bdtt are defined, and in \cref{sec:classification_performance}, the expected classification performance is measured.
+
+For each classifier, the same steps are followed:
+\bi
+\item selection of the input variables;
+\item choice of the classifier parameters;
+\item check for potential overfitting.
+\ei
+%====================================================================================================
+\subsection[First classifier (\bdto)]{First classifier (BDT$\mathbf{_1}$)} \label{sec:bdto}
+%====================================================================================================
+The first classifier, \bdto, relies on the FastBDT algorithm \cite{Keck:2017gsv}, presented in \cref{sec:da_binary_cls}.
+\bdto is trained on simulated signal and background events that pass the basic selection criteria listed in \cref{sec:basic_event_selection}.
+The seven background categories are present in the background sample: \epem\to\BpBm, \epem\to\BzBzb, \epem\to\qqbar ($q=u,d,s,c$), and  $\epem\to\tautau$.
+The total number of selected events for the training of \bdto are listed in \cref{tab:nevents_bdt12}.
+An independent sample with the same number of events is used to test the performance of the classifier.
+
+\tab{nevents_bdt12}{llll}{\input{tables/nevents_bdt12.tex}}
+{Number of simulated events employed in the training of the \bdto and \bdtt classifiers, depending on the targeted mode.}
+
+During the training, the events are assigned the following weights:
+\bi
+\item The signal events are weighted to reproduce the \qq-dependence of the signal branching fraction (see \cref{fig:form_factor} in \cref{sec:branching_ratio}).
+\item A weight is assigned to the background events to balance the signal class and the background class, such that the sum of the background weights is equal to the sum of the signal weights.
+With this global weight, the output of \bdto is interpreted as a predicted signal probability, assuming a prior of 0.5 for both the signal and the background classes.
+\ei
+%====================================================================================================
+\subsubsection*{Input variables}
+%====================================================================================================
+The \bdto input variables are selected from the list of variable candidates presented in \cref{sec:input_variables}.
+The variable selection relies on the variable importance, defined by \cref{eq:importance} in \cref{sec:da_variable_importance}.
+An initial training is done with the full list of variable candidates to measure the importance of each variable in the classification, and, for simplicity, the 12 most important variables that are common to both modes are retained for the final training of \bdto (\cref{tab:variable_importance_bdto}).
+The simple variable selection strategy of taking the 12 most important variables is sufficient for \bdto, whose role is to reject the most obvious background.
+For the training of \bdtt, which serves as the final step of the event selection, a more elaborate variable selection strategy is developed in \cref{sec:bdtt}.
+
+\cref{tab:variable_importance_bdto} shows that the two most important variables are $\Delta E_{\mathrm{ROE}}$ and the modified Fox-Wolfram moment $H^{so}_{m,2}$, which totalise approximately 70\% of the separation power.
+These two variables strongly depend on the missing energy and momentum in the event, and are thus expected to provide a good discrimination between signal and background events, because in a signal event, the energy and momentum of the two neutrinos is not detected.
+
+\tab{variable_importance_bdto}
+{lll}
+{\input{tables/feature_importance_BDT1.tex}}
+{Importance of the 12 input variables entering the training of \bdto.
+The variable importance is defined by \cref{eq:importance} in \cref{sec:da_variable_importance}.
+The variables are defined in \cref{sec:input_variables} and the used notations are summarised in \cref{sec:app_variable_definition}.
+}
+%====================================================================================================
+\subsubsection*{Choice of the classifier parameters}
+%====================================================================================================
+The classifier parameters are tuned to maximise the area under the receiver-operating-characteristic (\ROC) curve evaluated on the test sample (\auctest), while avoiding to fall in an overfitting regime.
+The concept of \ROC curve is introduced in \cref{sec:da_cls_performance}. 
+Only the \BKpnn mode is considered for the parameter tuning, assuming the optimal parameters to be similar for the \BKznn mode.
+
+A grid search in the parameter space is conducted: for each of the 900 combinations of parameter values listed in \cref{tab:bdt12_parameters}, a classifier is trained and the classification performance is reported in \cref{fig:grid_search_bdto} (left), where the results are ranked according to the \auc measured on the training sample (\auctrain).
+
+\tab{bdt12_parameters}{l@{\hskip 1cm}l@{\hskip 1cm}l@{\hskip 1cm}l}{\input{tables/bdt12.tex}}{Tested and chosen values of the \bdto and \bdtt parameters. In total, $4\cdot5\cdot3\cdot3\cdot5=900$ combinations of parameters are tested.
+The definition of the parameters is given in \cref{sec:da_cls_parameters}.}
+
+On the left part of the \cref{fig:grid_search_bdto} (left), \auctrain becomes significantly larger than \auctest, meaning that the classifiers are in an overfitting regime.
+On the right part of \cref{fig:grid_search_bdto} (left), \auctrain and \auctest are closer, but the classification performance is lower, meaning that the classifiers are in an underfitting regime.
+
+A trade-off is found by plotting the parameter to maximise, \auctest, as a function of the overfitting ratio
+\be
+\frac{\mathrm{AUC_{train}}-\mathrm{AUC_{test}}}{\mathrm{AUC_{test}}}\ge0.
+\ee
+An overfitting regime is characterised by a large overfitting ratio.
+The result is shown in \cref{fig:grid_search_bdto} (right), where the retained combination of classifier parameters is highlighted.
+The chosen parameters are listed in \cref{tab:bdt12_parameters}.
+
+\figs{grid_search_bdto}
+{0.495}
+{figs/search_for_b2hnn/classification/hyperparameter_optimisation_v33_16files_rank.pdf}
+{0.495}
+{figs/search_for_b2hnn/classification/hyperparameter_optimisation_v33_16files_ratio.pdf}
+{
+Comparison of 900 classifiers, each trained with a certain combination of input parameters.
+On the left, the classifiers are ranked according to \auctrain, and, for each, \auctrain and \auctest are shown.
+On the right, \auctest as a function of the overfitting ratio.
+The selected combination of input parameters for \bdto is highlighted on both plots.
+}
+%====================================================================================================
+\subsubsection*{Overfitting check}
+%====================================================================================================
+As an additional check, the output of \bdto is compared for the training and the test samples (\cref{fig:overfitting_check_bdto}, top).
+As expected from the parameter selection procedure, the overfitting is under control.
+An equivalent check is to show that the \ROC curves computed on the training and the test samples nearly overlap (\cref{fig:overfitting_check_bdto}, bottom).
+
+\figss{overfitting_check_bdto}
+{
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/classification/BDT1_Bplus2Kplus_v34_overfitting_b2logo.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/classification/BDT1_Bzero2Kshort_v34_overfitting_b2logo.pdf}
+\includegraphics[width=0.39\textwidth]{figs/search_for_b2hnn/classification/BDT1_Bplus2Kplus_v34_roc_curve_b2logo.pdf}
+\includegraphics[width=0.39\textwidth]{figs/search_for_b2hnn/classification/BDT1_Bzero2Kshort_v34_roc_curve_b2logo.pdf}
+}
+{
+Simulated signal and background events taken from the training and the test samples in bins of the \bdto output for the \BKpnn mode (upper left) and the \BKznn mode (upper right), and corresponding \ROC curves (bottom left and bottom right), showing how the true positive rate and the false positive rate evolve when scanning all possible lower thresholds on the \bdto output.
+}
+%====================================================================================================
+\subsection[Second classifier (\bdtt)]{Second classifier (BDT$\mathbf{_2}$)} \label{sec:bdtt}
+%====================================================================================================
+The second classifier, \bdtt, relies on the XGBoost implementation of the tree boosting algorithm \cite{Chen:2016:XST:2939672.2939785}, presented in \cref{sec:dt_bdt}. 
+The advantage of XGBoost is that it offers the possibility of using a graphics processing unit (GPU) during the training, which drastically reduces the training time compared to FastBDT\footnote{FastBDT is chosen for \bdto, because unlike XGBoost, it is fully integrated into the software used for the distributed computing needed for the first steps of the selection.}.
+
+\bdtt is trained on simulated background and signal events that pass the selection criteria listed in \cref{sec:basic_event_selection} and that also satisfy $\bdto>0.9$.
+For both modes (\BKpnn and \BKznn), the selection $\bdto>0.9$ retains approximately 85\% of the signal events and reject 98\% of the background events in the test sample of \bdto.
+The total number of selected events for the training of \bdtt are listed in \cref{tab:nevents_bdt12}.
+An independent sample with the same number of events is used to test the performance of the classifier.
+As for \bdto, a global weight is used to balance the signal class and the background class.
+
+%====================================================================================================
+\subsubsection*{Input variables}
+%====================================================================================================
+The input variable selection strategy for \bdtt is more elaborate than the strategy used for \bdto, because \bdtt is the final stage of the event selection, so it is important to not reject an input variable that could contribute to the classification performance.
+
+For the \BKpnn mode and the \BKznn mode, a total of 47 and 46 input variable candidates are considered, respectively.
+For each mode, a first classifier is trained with the entire set of input variable candidates.
+The next step is to remove the least important variable and to train a new classifier on the restricted set of input variable candidates.
+The loss in \auctest caused by the removal of the variable, noted $\mathrm{\Delta(AUC_{test})}$, is stored.
+This process is repeated until all the variables but one are removed from the training.
+
+\figs{variable_removal_bdtt}
+{0.495}
+{figs/search_for_b2hnn/classification/variable_selection_Bplus2Kplus_v34.pdf}
+{0.495}
+{figs/search_for_b2hnn/classification/variable_selection_Bzero2Kshort_v34.pdf}
+{
+Cumulative sum of the \auctest loss caused by the iterative removal of input variables from the training of \bdtt for the \BKpnn mode (left) and the \BKznn mode (right).
+}
+
+\cref{fig:variable_removal_bdtt} shows the result of this procedure by plotting the cumulative sum of the \auctest loss as a function of the number of removed variables.
+The removal of approximately 10 variables has no impact on the classification performance.
+For each mode, the 35 variables with the largest loss are retained for the final training of \bdtt (\cref{tab:variable_importance_bdtt_kp,tab:variable_importance_bdtt_kz}).
+
+\tabs{variable_importance_bdtt_kp}
+{ll}
+{\input{tables/feature_importance_BDT2_Bplus2Kplus_v34_col1.tex}}
+{ll}
+{\input{tables/feature_importance_BDT2_Bplus2Kplus_v34_col2.tex}}
+{
+Input variable candidates ranked according to the \auctest loss caused by their removal from the \bdtt training for the \BKpnn mode.
+The 35 variables with the largest loss (above the dotted line) are retained for the final training of \bdtt.
+The variables are defined in \cref{sec:input_variables} and the used notations are summarised in \cref{sec:app_variable_definition}.
+}
+
+\tabs{variable_importance_bdtt_kz}
+{ll}
+{\input{tables/feature_importance_BDT2_Bzero2Kshort_v34_col1.tex}}
+{ll}
+{\input{tables/feature_importance_BDT2_Bzero2Kshort_v34_col2.tex}}
+{
+Input variable candidates ranked according to the \auctest loss caused by their removal from the \bdtt training for the \BKznn mode.
+The 35 variables with the largest loss (above the dotted line) are retained for the final training of \bdtt.
+The variables are defined in \cref{sec:input_variables} and the used notations are summarised in \cref{sec:app_variable_definition}.
+}
+%====================================================================================================
+\subsubsection*{Choice of the classifier parameters}
+%====================================================================================================
+For the choice of the \bdtt parameters, the method used for \bdto is replicated.
+Again, only the \BKpnn mode is considered for the parameter tuning, assuming the optimal parameters to be similar for the \BKznn mode.
+
+A grid search in the parameter space is conducted: for each of the 900 combinations of parameter values listed in \cref{tab:bdt12_parameters}, a classifier is trained and the classification performance is reported in \cref{fig:grid_search_bdtt}.
+
+The chosen parameters result from a trade-off between the parameter to maximise, \auctest, and the overfitting ratio (\auctrain\!\!$-$\auctest)/\auctest.
+These parameters are highlighted in \cref{fig:grid_search_bdtt} and listed in \cref{tab:bdt12_parameters}.
+
+\figs{grid_search_bdtt}
+{0.495}
+{figs/search_for_b2hnn/classification/hyperparameter_optimisation_v34_100invfb_rank.pdf}
+{0.495}
+{figs/search_for_b2hnn/classification/hyperparameter_optimisation_v34_100invfb_ratio.pdf}
+{
+Comparison of 900 classifiers, each trained with a certain combination of input parameters.
+On the left, the classifiers are ranked according to \auctrain, and, for each, \auctrain and \auctest are shown.
+On the right, \auctest as a function of the overfitting ratio.
+The selected combination of input parameters for \bdtt is highlighted on both plots.
+}
+
+%====================================================================================================
+\subsubsection*{Overfitting check}
+%====================================================================================================
+The check for potential \bdtt overfitting is the same as the one used for \bdto.
+The \bdtt output and the \ROC curves computed on the training and the test samples are shown in \cref{fig:overfitting_check_bdtt}.
+As for \bdto, the overfitting is under control.
+
+\figss{overfitting_check_bdtt}
+{
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/classification/BDT2_Bplus2Kplus_v34_overfitting_b2logo.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/classification/BDT2_Bzero2Kshort_v34_overfitting_b2logo.pdf}
+\includegraphics[width=0.39\textwidth]{figs/search_for_b2hnn/classification/BDT2_Bplus2Kplus_v34_roc_curve_b2logo.pdf}
+\includegraphics[width=0.39\textwidth]{figs/search_for_b2hnn/classification/BDT2_Bzero2Kshort_v34_roc_curve_b2logo.pdf}
+}
+{
+Simulated signal and background events taken from the training and the test samples in bins of the \bdtt output for the \BKpnn mode (upper left) and the \BKznn mode (upper right), and corresponding \ROC curves (bottom left and bottom right), showing how the true positive rate and the false positive rate evolve when scanning all possible lower thresholds on the \bdtt output.
+}
+%====================================================================================================
+\subsection{Expected classification performance} \label{sec:classification_performance}
+%====================================================================================================
+A more concrete idea of the classification performance is given by comparing the expected significance $S/\sqrt{S+B}$ of the selection and the signal efficiency when scanning lower thresholds on the output of \bdto and \bdtt, where $S$ and $B$ are the expected number of signal and background events, respectively.
+
+In a data sample corresponding to an integrated luminosity of $L$, and for a given signal selection efficiency $\varepsilon_{\mathrm{sig}}$, the expected number of selected events containing a \BKpnn decay is 
+\be \label{eq:Splus}
+S=\varepsilon_{\mathrm{sig}}\cdot L\cdot\sigma(\epem\to\Y4S)\cdot2\cdot\mathrm{Br}(\Y4S\to\BpBm)\cdot\mathrm{Br}(\BKpnn) ,\\
+\ee
+where $\sigma(\epem\to\Y4S)$ is the cross-section of the \Y4S production, and the factor of two is due to the two \B mesons present in each \Y4S decay.
+For the \BKznn mode, the equation becomes
+\be \label{eq:Szero}
+S=\varepsilon_{\mathrm{sig}}\cdot L\cdot\sigma(\epem\to\Y4S)\cdot2\cdot\mathrm{Br}(\Y4S\to\BzBzb)\cdot\mathrm{Br}(\BKznn).
+\ee
+The predicted branching fraction of \BKpnn and \BKznn is given by \cref{eq:full_br} in \cref{sec:branching_ratio}.
+The values of the other factors are \cite{ParticleDataGroup:2020ssz,BaBar:2004rrm}: 
+\ba
+\sigma(\epem\to\Y4S)&=(1.10\pm0.02)\times10^{6}\,\fb,\\
+\mathrm{Br}(\Y4S\to\BpBm)&=0.514\pm0.06,\\
+\mathrm{Br}(\Y4S\to\BzBzb)&=0.486\pm0.06.\\
+\ea
+
+To correct for multiple sources of mis-modelling, and to obtain a more realistic value of the significance, each simulated event is given a correction weight in the calculation of $S$ and $B$:
+\bi
+\item The selection efficiency of the \PID requirement imposed on signal \Kp candidates (\cref{sec:candidate_selection}) differs between data and simulation.
+By comparing data and simulation, the Belle II performance group provides weights that correct for the efficiency difference.
+These weights are functions of the transverse momentum $p_T$ and the polar angle $\theta$ of the signal \Kp candidate.
+They apply to all signal and background samples, but only when searching for the charged mode (\BKpnn), because there is no \PID requirement for the neutral mode (\BKznn).
+\item As already mentioned in \cref{sec:candidate_selection}, simulation does not take into account the \qq-dependence of the form factor entering in the computation of the \BKnn branching fraction (\cref{sec:branching_ratio}).
+A correction weight is applied to the simulated signal events to produce a realistic \qq-dependence of the signal branching fraction.
+This weight is computed as the ratio between the two distributions shown in \cref{fig:form_factor} (\cref{sec:branching_ratio}).
+\ei
+The total correction weight for a simulated event is the product of all the weights that apply to this events.
+\cref{sec:weights} gives an overview of all the correction weights that are used at the end of the analysis. 
+
+\cref{fig:significance_efficiency} presents the expected significance for an integrated luminosity of \lumion as a function of the signal selection efficiency when scanning lower thresholds on the \bdto and \bdtt outputs.
+The classification performance is evaluated on test samples where the requirement $\bdto>0.9$ is already applied.
+As expected, \bdtt has a better performance than \bdto, since \bdtt is trained with more input variables and more events in the region $\bdto>0.9$.
+
+The maximum of significance is obtained for signal selection efficiencies of the order of 4\%, far greater than the efficiencies obtained with the hadronic or the semileptonic tagging method (see \cref{tab:previous_measurements} in \cref{sec:previous_searches}).
+
+\figs{significance_efficiency}
+{0.495}{figs/search_for_b2hnn/classification/Bplus2Kplus_v34_significance_efficiency.pdf}
+{0.495}{figs/search_for_b2hnn/classification/Bzero2Kshort_v34_significance_efficiency.pdf}
+{
+Evolution of the signal selection efficiency and expected significance for an integrated luminosity of \lumion when scanning lower thresholds on the \bdto and \bdtt outputs, for the \BKpnn mode (left) and the \BKznn mode (right).
+The selection $\mathrm{\bdto>0.9}$ is already applied at this stage.
+}
+%====================================================================================================
+\clearpage
+\section{Signal search region} \label{sec:signal_search_region}
+%====================================================================================================
+Now that the event classifiers are trained, the role of this section is to finalise the event selection strategy by defining a region of the phase space where a binned-likelihood model will be fit to data in order to determine $\mathrm{\Br}(\BKnn)$.
+\cref{sec:ssr_definition} defines this region, called the signal search region.
+\cref{sec:ssr_expectation} discusses the expected background events that survive the selection.
+%====================================================================================================
+\subsection{Definition} \label{sec:ssr_definition}
+%====================================================================================================
+The signal search region is defined by a lower threshold on the \bdtt output.
+However, the \bdtt output has no intuitive physical interpretation.
+For this reason, before defining the signal search region, lower thresholds on the \bdtt output are first translated into corresponding signal selection efficiencies.
+This is done in \cref{fig:bdt_to_eff}, which shows the signal selection efficiency $\varepsilon_{\mathrm{sig}}$ as a function of the lower threshold on the \bdtt output.
+A fit with a piecewise-linear function allows to define a bijection between $\varepsilon_{\mathrm{sig}}$ and \bdtt.
+The next step is to define the signal selection efficiency quantile $\tilde{\varepsilon}_{\mathrm{sig}}$ as
+\be \label{eq:eff_quantile_definition}
+\tilde{\varepsilon}_{\mathrm{sig}}\equiv 1-\varepsilon_{\mathrm{sig}}(\bdtt),
+\ee
+where $\varepsilon_{\mathrm{sig}}(\bdtt)$ is the signal selection efficiency resulting from the fit shown in \cref{fig:bdt_to_eff}.
+For example, imposing the condition $\tilde{\varepsilon}_{\mathrm{sig}}>0.9$ is equivalent to selecting events with the \bdtt classifier such that 10\% of the signal events survive the total selection.
+
+\figs{bdt_to_eff}
+{0.495}{figs/search_for_b2hnn/classification/BDT2_Bplus2Kplus_v34_efficiency_fit.pdf}
+{0.495}{figs/search_for_b2hnn/classification/BDT2_Bzero2Kshort_v34_efficiency_fit.pdf}
+{
+Signal selection efficiency as a function of the lower threshold on the \bdtt output for the \BKpnn mode (left) and the \BKznn mode (right).
+The result of a fit with a piecewise-linear function is overlaid.
+}
+
+
+Building on this, the signal search region is defined as $\tilde{\varepsilon}_{\mathrm{sig}}>0.92$, which for both modes includes the region of maximum of expected significance (see \cref{sec:classification_performance}).
+The signal search region is divided in $4\times 3$ bins in the $\tilde{\varepsilon}_{\mathrm{sig}}\times\qrec$ space: $[0.92,0.94,0.96,0.98,1.00]\times[-1,4,8,25]\gevcccc$.
+The boundaries of the \qrec bins are chosen to match the bins in the theoretical reference \cite{Buras:2014fpa}.
+\cref{fig:ssr} defines the bin numbering scheme of the signal search region that is used in the following.
+
+\fig{ssr}
+{0.50}{figs/search_for_b2hnn/signal_search_region_Bplus2Kplus.pdf}
+{Bin numbering scheme of the signal search region, defined as a function of the signal selection efficiency quantiles, defined in \cref{eq:eff_quantile_definition}, and the reconstructed invariant mass squared of the two-neutrino system \qrec, defined in \cref{eq:qrec} in \cref{sec:candidate_selection}.}
+
+By definition, the total signal selection efficiency in the signal search region is 8\%, but this efficiency is not flat in bins of the invariant mass squared of the two-neutrino system \qq (\cref{fig:signal_efficiency_q2}).
+For $\qq\approx0\gevcccc$, the signal selection efficiency is of the order of $15\%$ for the \BKpnn mode, and of the order of $18\%$ for the \BKznn mode.
+The signal selection efficiency drops as \qq increases, meaning that lower-momentum signal kaons are harder to distinguish from background.
+A peaking signal selection efficiency in the low-\qq region is a interesting property to constrain models that predicts a contribution from new light particles (see \cref{sec:new_physics}).
+Note that a direct comparison between the two modes is not fair, because in the neutral mode, only $\KS$, not $\KL$, are selected, meaning that the selection efficiency of \BKzznn decays at $\qq\approx0\gevcccc$ is $18/2=9\%$.
+
+\figs{signal_efficiency_q2}
+{0.495}
+{figs/search_for_b2hnn/Bplus2Kplus_v34_efficiency_vs_q2.pdf}
+{0.495}
+{figs/search_for_b2hnn/Bzero2Kshort_v34_efficiency_vs_q2.pdf}
+{
+Signal selection efficiency in the signal search region in bins of the invariant mass squared of the two-neutrino system for the \BKpnn mode (left) and the \BKznn mode (right).
+Note that this is the simulated \qq, not \qrec.
+}
+
+%====================================================================================================
+\subsection{Expectation} \label{sec:ssr_expectation}
+%====================================================================================================
+
+\cref{fig:ssr_expectation} shows the expected signal and background yields in the signal search region for an integrated luminosity of \lumion.
+At the top of the figure, four bins of the signal quantiles \esig are displayed, each containing 2\% of the total signal sample.
+By construction, the signal distribution is flat in bins of \esig.
+At the bottom of the same figure, these four \esig bins are further divided in three \qrec bins.
+The fact that the lowest-\qrec bin contains more signal events in the final \esig bin indicates a negative correlation between the \bdtt output, on which \esig is defined, and \qrec.
+In other words, \bdtt tends to select low-\qrec events, as already anticipated above by the signal selection efficiency drop for large \qq (\cref{fig:signal_efficiency_q2}).
+
+To obtain the expected yields in \cref{fig:ssr_expectation}, simulated background samples corresponding to 800\invfb of equivalent integrated luminosity are weighted to match the integrated luminosity of the data sample (\lumion).
+In addition, \nsignalmctest simulated signal events are weighted before the selection to match the total number of expected signal events in \lumion of data (\cref{sec:classification_performance}).
+Note that in \cref{fig:ssr_expectation}, the signal expectation is upscaled by a factor of 100 to help the visualisation.
+
+As explained in \cref{sec:candidate_selection}, a single signal kaon candidate is chosen in each event.
+In the signal search region, the signal kaon candidate is the correct one in $99.9\%$ of the selected simulated \BKpnn events, and in $99.7\%$ of the selected simulated \BKznn events.
+
+For the charged mode (\BKpnn), the background contributing the most in the signal search region is the charged \B meson background.
+For the neutral mode (\BKznn), the neutral \B meson background contributes more than the charged \B meson background, as expected, but the $\epem\to\ccbar$ background remains also a relatively large source of background in the last bins of the signal search region.
+The reason for the large $\epem\to\ccbar$ contribution to the neutral mode is unclear, but may be due to a less effective continuum-background suppression in the neutral case, because several discriminative variables are based on impact parameters, and the precision on the direction of the kaon momentum is lower in the \KS case, where two tracks are fit to a common vertex, than in the \Kp case.
+
+The simulated \B meson decays contributing the most in the signal search region are the semileptonic $\B\to D^{(*)}\ell\nu$ decays ($\ell=e,\mu$), where a kaon from the $D$ meson decay is selected as the signal kaon candidate.
+These decays represent more than 50\% of the $B$ meson background in the signal search region for both the charged and the neutral modes, and their presence motivates the use of discriminative variables focusing on the $D$ meson suppression during the classification.
+Details on the composition of the \B meson background in the signal search region are given in \cref{ch:appendix_bkg_composition}.
+
+\figss{ssr_expectation}
+{
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_with_continuum_weights/BDT2_Bplus2Kplus_v34_signal_inefficiency_zoom.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_with_continuum_weights/BDT2_Bzero2Kshort_v34_signal_inefficiency_zoom.pdf}\\
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_with_continuum_weights/Bsig_H_reconstructed_q2_vs_BDT2_Bplus2Kplus_v34_signal_inefficiency.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_with_continuum_weights/Bsig_H_reconstructed_q2_vs_BDT2_Bzero2Kshort_v34_signal_inefficiency.pdf}
+}
+{
+Expected number of signal and background events for \lumion of data in bins of efficiency quantiles (top), and in bins of the signal search region (bottom), for the \BKpnn mode (left), and the \BKznn mode (right).
+The signal expectation is upscaled by a factor of 100.
+The bins of the signal search region are defined in \cref{fig:ssr}.
+}
+
+Another source of $B$ meson background comes from the cross-feed of non-signal decays that are also of the $B\to K^{(*)}\nu\bar\nu$ type.
+For example, the signal search region of the \BKpnn mode may be polluted by events containing a $\BKzznn$ decay, a $B\to K^{*0}\nu\bar\nu$ decay, or a $B\to K^{*+}\nu\bar\nu$ decay.
+To study this background, simulated events of each decay category are reconstructed, selected, and weighted to match the number of events expected in \lumion of data.
+\cref{fig:crossfeed} shows that the expected cross-feed from the other $B\to K^{(*)}\nu\bar\nu$ modes is at the order of 10\% with respect to the expected signal yield in the signal search region.
+In simulation, these background decays are included in the $\epem\to\BpBm$ and $\epem\to\BzBzb$ background samples and do not receive a special treatment.
+
+\figs{crossfeed}
+{0.495}
+{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_crossfeed/Bsig_H_reconstructed_q2_vs_BDT2_Bplus2Kplus_v34_signal_inefficiency.pdf}
+{0.495}
+{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_crossfeed/Bsig_H_reconstructed_q2_vs_BDT2_Bzero2Kshort_v34_signal_inefficiency.pdf}
+{
+Expected number of signal events for \lumion of data in bins of the signal search region, for the \BKpnn mode (left), and the \BKznn mode (right), and expected number of events from other $B\to K^{(*)}\nu\bar{\nu}$ modes.
+The bins of the signal search region are defined in \cref{fig:ssr}.
+}
+
+%====================================================================================================

@@ -1,0 +1,751 @@
+%====================================================================================================
+% \clearpage
+%====================================================================================================
+\section*{Intermission}
+%====================================================================================================
+In the previous sections (\cref{sec:object_reconstruction,sec:basic_event_selection,sec:candidate_selection,sec:input_variables,sec:binary_classification,sec:signal_search_region}), only simulated samples are used to define the selection of \BKnn decays and to determine the expected significance and efficiency of the selection.
+
+In principle, since the bins of the signal search region are defined in \cref{sec:signal_search_region}, it would be possible to apply the same selection on simulated and data events, to fit the binned-likelihood model introduced in \cref{sec:da_pyhf}, and to determine $\mathrm{\Br}(\BKnn)$ with no further considerations.
+
+However, this na\"ive approach would neglect any kind of discrepancy between data and simulation, and several preparatory steps are still needed:
+\bi
+\item In \cref{sec:data_mc}, data and simulation are compared in different regions of the phase space to validate the selection procedure.
+\item In \cref{sec:systematics}, the impact of mis-modelling on the determination of $\mathrm{\Br}(\BKnn)$ is quantified via the introduction of multiple systematic uncertainties.
+\ei
+Finally, \cref{sec:fit,sec:first_iteration} focus on the fit of the model to the data and the determination of $\mathrm{\Br}(\BKnn)$, or a least of an upper limit on $\mathrm{\Br}(\BKnn)$.
+%====================================================================================================
+\section{Comparison between data and simulation} \label{sec:data_mc}
+%====================================================================================================
+As mentioned above, the role of this section is to validate the selection procedure by comparing data and simulation in several regions where the signal is absent or negligible compared to the background.
+This absence or negligible amount of signal is important to avoid biasing the signal selection strategy (closed-box principle).
+\bi
+\item In \cref{sec:jpsi}, a validation channel, \BKjpsi, is employed to verify that the classifiers behave similarly for events taken from simulation and from data.
+\item In \cref{sec:offres}, the agreement between continuum background simulation and off-resonance data is examined.
+\item In \cref{sec:bdtc}, a method to correct the mis-modelling of the continuum background is presented.
+\item In \cref{sec:sideband}, simulation and on-resonance data events that are close to the signal search region are compared.
+\ei
+%====================================================================================================
+\subsection{Validation channel} \label{sec:jpsi}
+%====================================================================================================
+The \BKjpsi decay, with \jpsi decaying into a pair of muons, is employed to verify that the classifiers \bdto and \bdtt behave similarly for events taken from simulation and from data.
+A first advantage of the \BKjpsi decay is a relatively large branching fraction, of the order of $10^{-3}$ \cite{ParticleDataGroup:2020ssz}.
+Another advantage is that this decay can be selected with high purity with requirements on the invariant mass of the \jpsi candidate and the energy of the \B candidate.
+The following procedure is applied:
+\begin{enumerate}
+\item \label{jpsi_step_1} \BKjpsimumu decays are selected in data and in simulated samples.
+The data sample is the full on-resonance data sample corresponding to \lumion of integrated luminosity, and a dedicated simulated sample of \BKjpsi decays is used in addition.
+The selection of the kaon candidate in \BKjpsimumu is identical as the one used for \BKnn (\cref{sec:candidate_selection}).
+The muon candidates are tracks of opposite charges that satisfy the basic criteria listed in \cref{sec:object_reconstruction}.
+In addition, the muon candidates are required to have a muon-hypothesis likelihood (\PID score) larger than 0.5.
+Finally, the following conditions are imposed to ensure a high-purity sample of \BKjpsi decays:
+\ba
+\left|M_{\mu\mu}-M^{\mathrm{PDG}}_{\jpsi}\right|&<0.05\gevcc, \\
+|\Delta E|\equiv\left|E_B^*-\frac{\sqrt{s}}{2}\right|&<0.1\gev, \\
+M_{\mathrm{bc}}\equiv\sqrt{\left(\frac{\sqrt{s}}{2c^2}\right)^2-\left(\frac{p^*_B}{c}\right)^2}&>5.25\gevcc,
+\ea
+where $M_{\mu\mu}$ is the invariant mass of the two-muon system, $M^{\mathrm{PDG}}_{\jpsi}$ is the known mass of \jpsi \cite{ParticleDataGroup:2020ssz}, $\Delta E$ is the energy difference in the centre-of-mass system between the energy of the \B meson candidate $E_B^*$ and half of the collision energy $\sqrt{s}$, and where the beam-constrained mass $M_{\mathrm{bc}}$ is defined as a function of the momentum of the \B meson candidate in the centre-of-mass system $p^*_B$. \cref{fig:jpsi_skim} shows $M_{\mu\mu}$, $\Delta E$ and $M_{\mathrm{bc}}$ for data and simulated events after this selection.
+As expected, the sample has a high purity.
+
+\figs{jpsi_skim}
+{0.8}
+{figs/search_for_b2hnn/data_mc/jpsi_validation/Bplus2Kplus_v34_jpsi_skim.pdf}
+{0.8}
+{figs/search_for_b2hnn/data_mc/jpsi_validation/Bzero2Kshort_v34_jpsi_skim.pdf}
+{
+Simulated and data events satisfying the \BKjpsimumu selection criteria in bins of the beam-constrained mass of the \B meson candidate (left), the $\Delta E$ of the \B meson candidate (middle), the mass of the two-muon system (right), for the \BKpjpsi mode (top) and the \BKzjpsi mode (bottom).
+}
+
+\item \label{jpsi_step_2} For each selected event in step \ref{jpsi_step_1}, the two muon candidates are removed and the kaon candidate is replaced with a kaon sampled from simulated \BKnn events.
+By doing so, the \BKjpsimumu events (both data and simulated events) are modified in order to mimic \BKnn events.
+This modification is called signal embedding, because the \BKjpsi decay is removed and replaced by a \BKnn decay, while the rest of the event is left unmodified.
+\item All the classifier input variables are recalculated for the modified events resulting from step \ref{jpsi_step_2}, and the outputs of \bdto and \bdtt are examined.
+\end{enumerate}
+
+\cref{fig:jpsi_bdt} presents the result of this procedure.
+Without the muon removal and the kaon replacement, the \BKjpsimumu events are categorised as background, as they should be.
+By contrast, after the signal embedding procedure, the events are categorised as signal, and there is a good agreement between data and simulation.
+
+\figs{jpsi_bdt}
+{0.495}
+{figs/search_for_b2hnn/data_mc/jpsi_validation/Bplus2Kplus_v34_jpsi_validation.pdf}
+{0.495}
+{figs/search_for_b2hnn/data_mc/jpsi_validation/Bzero2Kshort_v34_jpsi_validation.pdf}
+{
+Simulated and data events in bins of \bdto (main figure) and \bdtt when restricting to the region $\mathrm{\bdto}>0.9$ (inset), for the charged mode (left) and for the neutral mode (right).
+Five samples are compared: simulated \BKnn events (filled red histogram), unmodified data and simulated \BKjpsi events (blue dots and blue histogram peaking at $\mathrm{\bdto}=0$), and data and simulated \BKjpsi events after the signal embedding procedure, noted $B\to K\cancel{\jpsi}$ (red dots and red histogram peaking at $\mathrm{\bdtt}=1$).
+The simulation histograms are scaled to the total number of \BKjpsi events selected in data.
+}
+
+
+In \cref{fig:jpsi_ssr}, data and simulated \BKjpsi events after the signal embedding procedure are compared in bins of the signal search region (i.e.~$0.92<\esig\le1$).
+There is a reasonable agreement between data and simulation for the shape of the distribution.
+If the selection efficiency in the signal search region is noted $\varepsilon_{\mathrm{simulation}}$ for simulation and $\varepsilon_{\mathrm{data}}$ for data, the ratio between the two indicates a normalisation discrepancy of 8\%, consistent for the charged and the neutral modes:
+\ba
+\frac{\varepsilon_{\mathrm{data}}}{\varepsilon_{\mathrm{simulation}}}&=1.08\pm0.04 \hspace{1cm} \text{for }\BKpjpsi\text{ events},\\
+\frac{\varepsilon_{\mathrm{data}}}{\varepsilon_{\mathrm{simulation}}}&=1.08\pm0.07 \hspace{1cm} \text{for }\BKzjpsi\text{ events}.
+\ea
+The normalisation discrepancy is not visible in \cref{fig:jpsi_ssr}, because only the shape of the distributions is shown.
+This $8\%$ normalisation discrepancy will be treated as a source of systematic uncertainty in \cref{sec:systematics}.
+
+\def \ssrtext {The bins of the signal search region are defined in \cref{sec:signal_search_region}.}
+
+\figs{jpsi_ssr}
+{0.495}
+{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_jpsi/Bsig_H_reconstructed_q2_vs_BDT2_Bplus2Kplus_v34_signal_inefficiency.pdf}
+{0.495}
+{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_jpsi/Bsig_H_reconstructed_q2_vs_BDT2_Bzero2Kshort_v34_signal_inefficiency.pdf}
+{
+Data and simulated \BKjpsi events after the signal embedding procedure in bins of the signal search region for the charged mode (left) and the neutral mode (right).
+The data and simulation histograms are divided by the total number of events that they contain.
+\ssrtext
+}
+%====================================================================================================
+\subsection{Off-resonance data and simulation} \label{sec:offres}
+%====================================================================================================
+The data sample collected at an energy 60\mev below the \Y4S resonance, corresponding to an integrated luminosity of \lumioff, does not contain $\epem\to\BpBm$ nor $\epem\to\BzBzb$ events and is used for two purposes:
+\bi
+\item To validate and correct the modelling of the continuum background simulation (this section and \cref{sec:bdtc}).
+\item To constrain the normalisation of the continuum background samples in the binned-likelihood model (\cref{sec:fit,sec:first_iteration}).
+\ei
+
+\cref{fig:no_continuum_weights} compares the off-resonance data and the continuum background simulation in bins of $\Delta E_{\mathrm{\ROE}}$ in the region $0.75<\esig\le1.0$ for the charged mode selection (\BKpnn).
+In this region, a global normalisation discrepancy factor $\mathrm{\frac{Data}{Simulation}}$ of 1.33 is observed with respect to the expectation from the measured integrated luminosity.
+In \cref{fig:no_continuum_weights}, the expectations are scaled up by this factor of $1.33$ in order to facilitate the comparison of the distribution shapes.
+In the signal search region (i.e.~$0.92<\esig\le1.0$), the global normalisation discrepancy factor increases to a value of 1.5, which will be taken into account in the systematic uncertainties (\cref{sec:systematics}).
+
+The reason for this normalisation discrepancy is unclear, but may be due to mis-modelling of the quark fragmentation in the PYTHIA library, mentioned in \cref{sec:software}.
+In \cite{Belle:2020pvy}, the Belle collaboration compares several PYTHIA tunings that cause a spread in the simulated cross-sections.
+In \cite{Belle:2017oht}, the Belle collaboration is also mentioning a normalisation discrepancy for the continuum background simulation.
+
+In addition to the normalisation discrepancy, \cref{fig:no_continuum_weights} shows that the continuum background suffers from mis-modelling that affects the shape of $\Delta E_{\mathrm{\ROE}}$.
+This specific variable is chosen as an example, because the effect of the mis-modelling on the distribution is particularly visible.
+This data-simulation disagreement is mitigated by applying correction weights to the simulated events, and these correction weights are defined below.
+
+\fig{no_continuum_weights}
+{0.6}{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_off_resonance_no_continuum_weights/B_sig_roeDeltae_ipMask.pdf}
+{
+Simulated continuum background events and off-resonance data events in bins of $\Delta E_{\mathrm{ROE}}$ in the region $0.75<\esig\le1.0$.
+The simulation histograms are scaled up by 33\% with respect to the expectation to correct for the normalisation discrepancy observed in this region.
+The statistical uncertainty due to simulation is indicated by the hashed area.
+}
+%====================================================================================================
+\subsection{Correction of the continuum mis-modelling} \label{sec:bdtc}
+%====================================================================================================
+Following \cite{Martschei2012}, the continuum background simulation is corrected by applying the method presented below:
+\begin{enumerate}
+\item A new binary classifier, \bdtc, is trained to separate off-resonance \emph{data} events (considered here as signal) and \emph{simulated} continuum events (considered here as background).
+If the modelling of the continuum background was perfect, the classifier would not be able to distinguish between data and simulation, and \bdtc would peak at 0.5 for both data and simulated events.
+In case of mis-modelling, some events are more data-like ($\bdtc>0.5$) and others are more simulation-like ($\bdtc<0.5$).
+\item For each simulated continuum event, \bdtc is interpreted as an estimate of the likelihood for this event to come from data, and $1-\bdtc$ is an estimate of the likelihood for this event to come from simulation.
+Thus, the continuum background simulation is corrected by applying to each simulated event a weight $w_c$ corresponding to the likelihood ratio $w_c\equiv\bdtc/(1-\bdtc)$.
+Since $w_c$ becomes arbitrarily large if $\bdtc\to 1$, a security ensures that weights larger than 5 are set to 5.
+Moreover, to avoid affecting the background normalisation, $w_c$ is divided by its average value.
+\end{enumerate}
+The input variables of \bdtc are the same as the input variables of \bdtt (\cref{sec:bdtt}), plus \qrec and the output of \bdtt.
+The data events used for the \bdtc training are selected from the off-resonance sample corresponding to \lumioff of integrated luminosity.
+The simulated continuum background events are selected from a sample of 100\invfb of equivalent integrated luminosity.
+\bdtc is trained in the region $0.75<\esig\le1.0$, and the number of events used for the training are summarised in \cref{tab:nevents_bdtc}.
+Since the number of data events used in the training is rather small ($\mathcal{O}(10^4)$), the classifier parameters, listed in \cref{tab:bdtc_parameters}, are chosen to strongly suppress the overfitting.
+
+\tab{nevents_bdtc}{l@{\hskip 1cm}ll}{\input{tables/nevents_bdtc.tex}}
+{Number of events employed in the training of the \bdtc classifier, depending on the mode.
+The signal events are off-resonance \emph{data} events, and the background events are \emph{simulated} continuum events.}
+\tab{bdtc_parameters}{l@{\hskip 1cm}l}{\input{tables/bdtc.tex}}
+{Parameters of the \bdtc classifier.}
+
+\cref{fig:bdtc} (left) diplays the output of \bdtc.
+In this figure, only a half of the data and simulated samples are used for the training of \bdtc, and the other half are used as independent test samples, to check that the overfitting is under control.
+For the final training of \bdtc, the entire data and simulated samples are used.
+On the right of \cref{fig:bdtc}, the simulated continuum background events are rescaled with weights $w_c\equiv\bdtc/(1-\bdtc)$.
+As anticipated, the weights make the simulation distribution more similar to the data distribution.
+
+\figss{bdtc}
+{
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/classification/BDTC_Bplus2Kplus_v34_overfitting_b2logo.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/classification/BDTC_Bplus2Kplus_v34_weighted_overfitting_b2logo.pdf}
+}
+{
+Simulated continuum background events and off-resonance data events from the training and the test samples of \bdtc in bins of the \bdtc output for the \BKpnn mode. 
+On the left, no weight is applied.
+On the right, each simulated continuum background event is assigned a weight $w_c\equiv\bdtc/(1-\bdtc)$.
+}
+
+\cref{fig:continuum_weights} shows how the data-simulation agreement for $\Delta E_{\mathrm{ROE}}$ and \qrec is improved when applying the correction weights $w_c$ to each event of the continuum background simulation in the region $0.75<\esig\le1.0$ for the charged mode selection (\BKpnn).
+Unless specified otherwise, the $w_c$ correction weights are always applied to the simulated continuum background events in the following.
+\cref{sec:weights} gives an overview of all the correction weights that are applied to simulated events.
+
+\cref{fig:off_resonance_ssr} compares the off-resonance data and simulated continuum background events in the bins of the signal search region after the application of the $w_c$ weights for the charged and neutral mode selections.
+Data and simulation are in good agreement if the simulation is upscaled by a factor of 1.5 to correct for the normalisation discrepancy already mentioned in the previous section.
+
+\figss{continuum_weights}
+{
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_off_resonance_no_continuum_weights/B_sig_roeDeltae_ipMask.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_off_resonance_with_continuum_weights/B_sig_roeDeltae_ipMask.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_off_resonance_no_continuum_weights/Bsig_H_reconstructed_q2.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_off_resonance_with_continuum_weights/Bsig_H_reconstructed_q2.pdf}
+}
+{
+Simulated continuum background events and off-resonance data events in bins of $\Delta E_{\mathrm{ROE}}$ (top) and \qrec (bottom) in the region $0.75<\esig\le1.0$.
+On the left, no weight is applied.
+On the right, each simulated continuum background event is assigned a weight $w_c\equiv\bdtc/(1-\bdtc)$.
+The simulation histograms are scaled up by 33\% with respect to the expectation to correct for the global normalisation discrepancy observed in this region.
+}
+
+\figs{off_resonance_ssr}
+{0.495}
+{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_off_resonance_with_continuum_weights/Bsig_H_reconstructed_q2_vs_BDT2_Bplus2Kplus_v34_signal_inefficiency.pdf}
+{0.495}
+{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_off_resonance_with_continuum_weights/Bsig_H_reconstructed_q2_vs_BDT2_Bzero2Kshort_v34_signal_inefficiency.pdf}
+{
+Simulated continuum background events and off-resonance data events in bins of the signal search region for the \BKpnn mode (left) and the \BKznn mode (right).
+The simulation histograms are scaled up by 50\% with respect to the expectation to correct for the global normalisation discrepancy observed in this region.
+\ssrtext
+% 51% for charged mode, 48% for neutral mode
+}
+%====================================================================================================
+\subsection{On-resonance data and simulation} \label{sec:sideband}
+%====================================================================================================
+In this section, the on-resonance data and simulation are compared in the region $0.75<\esig<0.90$, where the amount of expected signal with respect to background is negligible.
+The data events are selected from the on-resonance sample corresponding to \lumion of integrated luminosity.
+The simulated background events are selected from a sample of 800\invfb of equivalent integrated luminosity, and the events are weighted to match the integrated luminosity of data.
+The simulated signal events are selected from a sample of \nsignalmctest simulated \BKnn events, and are also weighted to match the expected number of signal events in \lumion of data (\cref{eq:Splus,eq:Szero} in \cref{sec:classification_performance}).
+
+\cref{fig:sideband} compares on-resonance data and simulation for \qrec and \esig in the region $0.75<\esig<0.90$.
+The simulated continuum background events are weighted following the procedure described in \cref{sec:bdtc}.
+In addition, the continuum background normalisation discrepancy factor of 1.5 observed in \cref{sec:offres} is applied to the simulated continuum background events.
+After this upscaling of the continuum background, the normalisation discrepancy between data and simulation is of 2\% for the charged mode (\BKpnn), and 3\% for the neutral mode (\BKznn).
+This shows that the normalisation discrepancy mainly comes from the continuum background, not from the \B meson background.
+This residual discrepancy will be treated as a source of systematic uncertainty in \cref{sec:systematics}.
+If the simulation yields are upscaled to correct for this residual normalisation discrepancy, the agreement between data and simulation is excellent.
+
+\figss{sideband}
+{
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_sideband_with_scaled_continuum/BDT2_Bplus2Kplus_v34_signal_inefficiency.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_sideband_with_scaled_continuum/BDT2_Bzero2Kshort_v34_signal_inefficiency.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bplus2Kplus_v34_Y4S_sideband_with_scaled_continuum/Bsig_H_reconstructed_q2.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/data_mc/overlays_Bzero2Kshort_v34_Y4S_sideband_with_scaled_continuum/Bsig_H_reconstructed_q2.pdf}
+}
+{
+Simulated signal and background events and on-resonance data events in bins of \esig (top) and in bins of \qrec (bottom), for the \BKpnn mode (left) and the \BKznn mode (right), in the region $0.75<\esig<0.9$.
+The simulated continuum background is scaled up by 33\% with respect to the expectation to correct for the normalisation discrepancy observed in \cref{sec:bdtc}.
+After this continuum background scaling, the normalisation discrepancy between data and simulation is of 2\% for the charged mode, and 3\% for the neutral mode.
+This residual normalisation discrepancy is corrected for by upscaling all the simulated samples to match data.
+The signal expectation is independently upscaled by a factor of $10^3$ to help the visualisation.
+}
+%====================================================================================================
+\clearpage
+\section{Systematic uncertainties} \label{sec:systematics}
+%====================================================================================================
+This section is dedicated to the evaluation of the systematic uncertainties that affect the measurement of the signal branching fraction.
+Several tools that are used in this section are introduced in the previous chapter.
+In particular, the reader can refer to \cref{sec:da_covariance,sec:da_pyhf}, which explain in particular how the binned-likelihood model is defined, and how variation vectors are derived from a covariance matrix.
+
+To summarise briefly, a source of systematic uncertainty enters the likelihood model via a set of nuisance parameters that apply variations to the nominal expectations in the bins of the signal search region.
+
+On one hand, nuisance parameters that apply a normalisation variation are noted $\mu_s$, with the index $s$ corresponding to a certain background or signal sample.
+In the likelihood model, the prior distribution of a normalisation nuisance parameter is a Gaussian density centered at unity (no variation) and whose width is an input to the model (\cref{eq:prior}).
+
+On the other hand, nuisance parameters that apply an additive variation are noted $\theta^{(\mathrm{sys})}_i$, with (sys) designating a certain source of systematic uncertainty, and $i$ an index used if multiple nuisance parameters are associated to a single source of systematic uncertainty.
+Each additive nuisance parameter enters the likelihood model together with a variation vector that applies variations that are potentially correlated among the bins of the signal search region and among the samples (\cref{eq:delta_ibs}).
+In the likelihood model, the prior distribution of an additive nuisance parameter $\theta^{(\mathrm{sys})}_i$ is a Gaussian density centered at zero (no variation) and whose width is unity (variation by one variation vector).
+
+The considered systematic uncertainties are listed below and divided into two categories: the ones arising from physics modelling, and the ones arising from detector modelling.
+The uncertainties whose propagation requires a more elaborated treatment are simply named in the list and detailed in dedicated subsections.
+\bi
+\item Physics modelling:
+\bi
+\item Normalisation of each background source (\cref{sec:syst_norm}).
+\item Modelling of the signal form factor (\cref{sec:syst_ff}).
+\item Uncertainties on the branching fractions of $B$ meson decays (\cref{sec:syst_br}).
+\item Modelling of the continuum background.
+Instead of applying the correction presented in \cref{sec:bdtc}, one could use the difference between the uncorrected and corrected continuum background samples as a variation vector in the likelihood model with an associated nuisance parameter $\theta^{(\mathrm{\bdtc})}$.
+However, no impact on the result is observed.
+Thus no nuisance parameter is added to the model for this source of systematic uncertainty.
+\ei
+\item Detector modelling:
+\bi
+\item Modelling of the \PID selection efficiency (\cref{sec:syst_pid}).
+\item Modelling of the \KS reconstruction efficiency (\cref{sec:syst_ks_eff}).
+\item Modelling of the \bdtt selection efficiency for signal events.
+\cref{sec:jpsi} shows an efficiency difference of 8\% between data and simulation in the signal search region.
+For this reason, a nuisance parameter, noted $\theta^{(\jpsi)}$, is added to the likelihood model together with a variation vector that varies the signal yield in every bin of the signal search region by 8\%.
+\item Modelling of the track-finding efficiency (\cref{sec:syst_tracking}).
+\item Modelling of the energy of neutral particles (\cref{sec:syst_neutral}).
+\ei
+\ei
+In addition, \cref{sec:syst_mcstat} defines nuisance parameters used to take into account the statistical uncertainty of the simulated samples, and \cref{sec:syst_summary} gives a summary of the nuisance parameters used in the binned-likelihood model.
+%====================================================================================================
+\subsection{Background normalisation} \label{sec:syst_norm}
+%====================================================================================================
+In \cref{sec:offres}, a normalisation discrepancy of 50\% is observed in the signal search region when comparing off-resonance data and simulated continuum background.
+For this reason, a systematic uncertainty of $50\%$ is assigned to each continuum background sample by adding to the likelihood model five normalisation nuisance parameters $\mu_{\uubar}$, $\mu_{\ddbar}$, $\mu_{\ccbar}$, $\mu_{\ssbar}$, $\mu_{\tautau}$ with a prior Gaussian distribution centered at 1.0 and with a width of 0.5.
+
+A normalisation uncertainty of 50\% is also assigned to the $B$ meson background by adding two nuisance parameters $\mu_{\BpBm}$ and $\mu_{\BzBzb}$.
+This normalisation uncertainty for the $B$ meson background is conservative, given that \cref{sec:sideband} shows that the normalisation discrepancy mainly comes from the continuum background.
+
+The uncertainty on the measured integrated luminosity of the data samples is neglected, because it is fully covered by the background normalisation uncertainty.
+%====================================================================================================
+\subsection{Signal form factor} \label{sec:syst_ff}
+%====================================================================================================
+A source of systematic uncertainty comes from the theoretical uncertainty on the parametrisation of the form factor $f^+(q^2)$, that was introduced in \cref{sec:branching_ratio} to compute the signal branching fraction as a function of \qq.
+The form factor is parametrised with a triplet of real numbers $\boldsymbol{\alpha}=(\alpha_1,\alpha_2,\alpha_3)$ and an associated covariance matrix $\boldsymbol{\Sigma_\alpha}$ (\cref{eq:dBdq2,eq:ff_parametrisation,eq:nominal_alpha,eq:covariance_ff}).
+
+The uncertainties on $\alpha_1,\alpha_2,\alpha_3$ are propagated to the likelihood model as follows:
+\begin{enumerate}
+\item The three orthogonal unit eigenvectors $\boldsymbol{v}_1,\,\boldsymbol{v}_2,\,\boldsymbol{v}_3$ of $\boldsymbol{\Sigma}_{\boldsymbol{\alpha}}$ are extracted together with their respective eigenvalues $\sigma^2_1,\,\sigma^2_2,\,\sigma^2_3$\,;
+\item The varied form factors $f_+(q^2,\boldsymbol{\alpha}+\boldsymbol{\sigma}_i)$ are computed for $i=1,2,3$, with the variation vectors given by $\boldsymbol{\sigma}_i\equiv\sigma_i\,\boldsymbol{v}_i$\,;
+\item The effect of the form factor variations on the shape of the signal is checked in the 12 bins of the signal search region (\cref{fig:syst_ff}).
+If the form factor is computed for a certain $\boldsymbol{\alpha}$, then the number of expected signal events in the $i$-th bin of the signal search region ($i=1,...,12$) is noted $N_i(\boldsymbol{\alpha})$.
+\item Three form-factor variation vectors, noted $\boldsymbol{\delta}^{(ff)}_1,\boldsymbol{\delta}^{(ff)}_2$, and $\boldsymbol{\delta}^{(ff)}_3$, are defined as
+\be
+\boldsymbol{\delta}^{(ff)}_i
+=
+\begin{pmatrix}
+N_1(\boldsymbol{\alpha}+\boldsymbol{\sigma}_i)-N_1(\boldsymbol{\alpha})\\
+\vdots\\
+N_{12}(\boldsymbol{\alpha}+\boldsymbol{\sigma}_i)-N_{12}(\boldsymbol{\alpha})
+\end{pmatrix} \hspace{1cm} i=1,2,3.
+\ee
+\item The three variation vectors are added to the likelihood model with three respective nuisance parameters $\theta^{(ff)}_1,\theta^{(ff)}_2$, and $\theta^{(ff)}_3$.
+\end{enumerate}
+
+As shown in \cref{fig:syst_ff}, the variations due to this source of systematic uncertainty are small, of the order of a few percents.
+
+\figs{syst_ff}
+{0.495}
+{figs/search_for_b2hnn/systematics/Bplus2Kplus_v34_ff_systematic.pdf}
+{0.495}
+{figs/search_for_b2hnn/systematics/Bzero2Kshort_v34_ff_systematic.pdf}
+{Density of simulated signal events in bins of the signal search region for the \BKpnn mode (left) and \BKznn mode (right).
+The twelve bins of the signal search region are defined in \cref{sec:signal_search_region}.
+The filled histogram is weighted according to the standard model form factor, which is parametrised in \cref{eq:ff_parametrisation} as a function of a vector $\boldsymbol{\alpha}$.
+The three empty histograms are weighted according to varied versions of the form factor.
+The variations are obtained by shifting $\boldsymbol{\alpha}$ with three orthogonal vectors $\boldsymbol{\sigma_1},\boldsymbol{\sigma_2},\boldsymbol{\sigma_3}$, derived from the covariance matrix of $\boldsymbol{\alpha}$ (see \cref{eq:covariance_ff} and following lines).
+}
+%====================================================================================================
+\subsection{Particle identification} \label{sec:syst_pid}
+%====================================================================================================
+For the \BKpnn mode only, a source of systematic uncertainty comes from the \PID requirement that is imposed on the $\Kp$ candidate.
+As explained in \cref{sec:classification_performance}, each simulated event is given a weight that corrects for the efficiency difference between data and simulation of the \PID selection (see also \cref{sec:weights}).
+These \PID weights are provided by the Belle II performance group in bins of $(p_T,\cos\theta)$, where $p_T$ is the transverse momentum of the $\Kp$ candidate, and $\theta$ the polar angle of the corresponding track.
+
+The Belle II performance group provides also uncertainties on the \PID weights, and these uncertainties are propagated to the likelihood model as follows:
+\begin{enumerate}
+\item A sample of \nsignalmctest simulated signal events and background samples of \lumimctest of equivalent integrated luminosity are reconstructed.
+The $\epem\to\tautau$ sample is not considered, because it does not contribute significantly in the signal search region.
+\item For each simulated event present in the signal search region, a set of 1000 varied \PID weights are sampled from a probability density function whose standard deviation corresponds to the \PID weight uncertainty, creating 1000 replicas of each simulated sample.
+\item For each replica, the varied weights are summed up in each bin of the signal search region in order to generate 1000 pseudo-observations.
+\item From the pseudo-observations obtained at the previous step, a covariance matrix $\Sigma_{ij}$ is computed with \cref{eq:covariance_estimate}, where the $(i,j)$ indices both run over the samples and the bins of the signal search region.
+The corresponding correlation matrix is shown on the left of \cref{fig:syst_pid_matrix}.
+\item Seven eigenvectors of the covariance matrix corresponding to the seven largest eigenvalues are used to define variation vectors (see \cref{eq:truncation} and following lines), and each variation vector is added to the likelihood model with a dedicated nuisance parameter, for a total of seven nuisance parameters $\theta_1^{(\mathrm{\PID})},\,...,\,\theta_7^{(\mathrm{\PID})}$.
+The number seven is chosen because it is observed that seven eigenvectors are sufficient to reasonably approximate the correlations (\cref{fig:syst_pid_matrix}).
+\item The diagonal of the residual terms in the covariance eigen-decomposition (\cref{eq:truncation} and following lines) are added in quadrature to the uncorrelated systematic uncertainties presented in \cref{sec:syst_mcstat};
+\end{enumerate}
+
+Relative \PID uncertainties are obtained by normalising each variation-vector component by the nominal expectation for the corresponding bin and sample.
+\cref{fig:syst_pid} shows that the relative \PID uncertainties are of the order of 0.5\%.
+
+\fig{syst_pid_matrix}
+{1.0}
+{figs/search_for_b2hnn/systematics/Bplus2Kplus_v34_pid_systematic_correlation.pdf}
+{Matrix of correlation between the expected numbers of events in the bins of the signal search region.
+The correlations are derived by varying the \PID weight of each simulated event present in the signal search region.
+There are 8 samples of simulated signal or background events, and 12 bins in the signal search region, making the correlation matrix to have a size of $(8\cdot12)\times(8\cdot12)=96\times96$.
+On the left, the original correlation matrix.
+On the right, an approximation of the correlation matrix obtained with a truncation of the covariance eigen-decomposition (\cref{eq:truncation}).
+In this approximation, only the 7 eigenvectors corresponding to the 7 largest eigenvalues are considered (i.e. $t=7$ in \cref{eq:truncation}).
+\ssrtext
+}
+
+\fig{syst_pid}
+{0.5}
+{figs/search_for_b2hnn/systematics/Bplus2Kplus_v34_pid_systematic_relative.pdf}
+{
+Components of 7 vectors of correlated relative \PID uncertainties and 1 vector of uncorrelated relative \PID uncertainties.
+Each vector component corresponds to a certain signal or background sample and a certain bin of the signal search region.
+There are 7 samples of simulated signal or background events, and 12 bins in the signal search region, making each vector to have a dimension of $7\cdot12=84$.
+\ssrtext
+}
+%====================================================================================================
+\subsection[Branching fraction of \B meson decays]{Branching fraction of $\boldsymbol{\B}$ meson decays} \label{sec:syst_br}
+%====================================================================================================
+A source of systematic uncertainty comes from the limited knowledge of the branching fractions of the $B$ meson decays contributing to the background present in the signal search region (\cref{sec:ssr_expectation}).
+A list of the $B$ meson decays contributing the most to the background is presented in \cref{ch:appendix_bkg_composition}. 
+
+The branching fraction uncertainties are propagated to the likelihood model as follows:
+\begin{enumerate}
+\item A collection $\mathcal{C}$ of branching fractions and uncertainties taken from \cite{ParticleDataGroup:2020ssz} is created, starting from the decays that appear more often in the signal search region.
+For the \BKpnn mode, 82\% of the charged $B$ meson decays appearing in the signal search region are included in $\mathcal{C}$, and 63\% of the neutral $B$ meson decays are included in $\mathcal{C}$.
+For the \BKznn mode, 78\% of the charged $B$ meson decays are included in $\mathcal{C}$, and 68\% of the neutral $B$ meson decays are included in $\mathcal{C}$.
+\item Two simulated background samples, one of $\epem\to\BzBzb$ events, and one of $\epem\to\BpBm$ events, each corresponding to \lumimctest of equivalent integrated luminosity, are reconstructed.
+\item For each simulated event $e$ present in the signal search region, a set of 1000 weights, noted $w^e_1,\,...,\,w^e_{1000}$, are computed as
+\be
+w^e_i=\max\left(1+\frac{s^e_i}{\mathrm{\Br}(e)},\,0\right),
+\ee
+where the maximum function ensures the positivity of the weights, $\mathrm{\Br}(e)$ is the branching fraction of the $B$ meson decay that is mis-identified as a signal decay in the event $e$, and $s^e_i$ is a number sampled from a Gaussian density function centered at zero and whose width is the uncertainty on $\mathrm{\Br}(e)$.
+This procedure creates 1000 replicas of each simulated sample.
+\item For each replica, the weights are summed up in each bin of the signal search region in order to generate 1000 pseudo-observations.
+\item From the pseudo-observations obtained at the previous step, a covariance matrix $\Sigma_{ij}$ is computed with \cref{eq:covariance_estimate}, where the $(i,j)$ indices both run over the samples and the bins of the signal search region.
+\item Five eigenvectors of the covariance matrix corresponding to the five largest eigenvalues are used to define variation vectors (see \cref{eq:truncation} and following lines), and each variation vector is added to the likelihood model with a dedicated nuisance parameter, for a total of five nuisance parameters $\theta_1^{(\mathrm{\Br})},\,...,\,\theta_5^{(\mathrm{\Br})}$.
+Similarly to what is done for the \PID uncertainties in the previous section, it is checked that five eigenvectors are sufficient in this case to reasonably approximate the correlations.
+\item The diagonal of the residual terms in the covariance eigen-decomposition (\cref{eq:truncation} and following lines) are added in quadrature to the uncorrelated systematic uncertainties presented in \cref{sec:syst_mcstat};
+\end{enumerate}
+
+Corresponding relative uncertainties are obtained by normalising each variation-vector component by the nominal expectation for the corresponding bin and sample.
+\cref{fig:syst_br_rel} shows that the relative uncertainties are of the order of 1\%.
+
+\figs{syst_br_rel}
+{0.495}
+{figs/search_for_b2hnn/systematics/Bplus2Kplus_v34_BR_systematic_relative.pdf}
+{0.495}
+{figs/search_for_b2hnn/systematics/Bzero2Kshort_v34_BR_systematic_relative.pdf}
+{
+Components of 5 vectors of correlated relative uncertainties and 1 vector of uncorrelated relative uncertainties for the \BKpnn mode (left) and the \BKznn mode (right).
+The uncertainties are derived from the uncertainties on the branching fractions of the $B$ meson decays present in the signal search region.
+Each vector component corresponds to a certain background sample and a certain bin of the signal search region.
+There are 2 samples of background events, and 12 bins in the signal search region, making each vector to have a dimension of $2\cdot12=24$.
+\ssrtext
+}
+%====================================================================================================
+\subsection[\KS reconstruction efficiency]{$\boldsymbol{\KS}$ reconstruction efficiency} \label{sec:syst_ks_eff}
+%====================================================================================================
+A source of systematic uncertainty that is specific to the neutral mode \BKznn comes from the mis-modelling of the \KS reconstruction efficiency.
+The Belle II performance group compared data and simulation, and recommends to assign a relative uncertainty on the \KS reconstruction efficiency as a linear function of the \KS-candidate flight distance, noted $\mathrm{distance}(\KS)$:
+\be \label{eq:ks_efficiency}
+\text{Relative uncertainty}=0.004\cm^{-1}\cdot\mathrm{distance}(\KS).
+\ee
+A vector of relative uncertainties is computed on simulated events by multiplying, in each bin of the signal search region, the average value of $\mathrm{distance}(\KS)$ by $0.004\cm^{-1}$.
+\cref{fig:syst_ks_eff} shows that the relative uncertainties are of the order of 5\%.
+One nuisance parameter, noted $\theta^{(\KS)}$, is added to the likelihood model to take into account this source of systematic uncertainty.
+\fig{syst_ks_eff}
+{0.5}
+{figs/search_for_b2hnn/systematics/Bzero2Kshort_v34_ks_efficiency_systematic_relative.pdf}
+{Components of a vector of correlated relative uncertainties.
+The uncertainties are derived from \cref{eq:ks_efficiency}.
+There are 8 samples of simulated signal or background events, and 12 bins in the signal search region, making the vector to have a dimension of $8\cdot12=96$.
+\ssrtext
+}
+%====================================================================================================
+\subsection{Track-finding efficiency} \label{sec:syst_tracking}
+%====================================================================================================
+A source of systematic uncertainty comes from a potential overestimation of the track-finding efficiency in simulation.
+The Belle II tracking group compared data and simulation and recommends to assign a systematic uncertainty of 0.9\% on the track-finding efficiency.
+A recent estimation points to an effect of the order of 0.5\%, but the more conservative value of 0.9\% is assumed here.
+
+The track-finding efficiency uncertainty is propagated to the likelihood model as follows:
+\begin{enumerate}
+\item A sample of \nsignalmctest simulated signal events and background samples of 100\invfb of equivalent integrated luminosity pass through two different versions of the event reconstruction:
+\bi
+\item the standard event reconstruction;
+\item an event reconstruction where each track in the event is dropped with a probability of 0.9\%.
+\ei
+The later modified reconstruction simulates the effect of track-finding inefficiency.
+Note that the $\epem\to\tautau$ and $\epem\to\ddbar$ samples are not considered here, because they do not contribute much in the signal search region.
+\item The number of events in each bin of the signal search region and for each sample is compared between the two versions of the reconstructed samples.
+If, for a given bin $b$ and a given sample $s$, $\nu_{bs}$ events are found after the standard reconstruction, and $\nu^*_{bs}$ events after the modified reconstruction, then the relative uncertainty is estimated to be
+\be \label{eq:tracking_rel_unc}
+\text{Relative uncertainty}=(\nu^*_{bs}-\nu_{bs})/\nu_{bs}.
+\ee
+\item The uncertainties are the components of a vector of correlated uncertainties, and this vector is added to the likelihood model with an associated nuisance parameter $\theta^{(\text{tracking})}$.
+\end{enumerate}
+An additional complexity arises because of the limited size of the simulated background samples corresponding to 100\invfb of equivalent integrated luminosity.
+The procedure above would lead to a significant overestimation of the systematic uncertainty, because the statistical uncertainty of the simulated background samples contributes to the estimate given in \cref{eq:tracking_rel_unc}.
+To overcome this problem, the distributions obtained with the standard and modified reconstructions are both smoothed before their difference is computed.
+
+The smoothing method consists in replacing the distributions with their respective Gaussian kernel density estimators, which are introduced in \cref{sec:da_kernel}.
+Since the signal search region is defined in bins of $\qrec$ and $\esig$, a two-dimensional kernel density estimator $f_h(\qrec,\esig)$ is computed for each distribution, where $h$ is the smoothing factor of \cref{eq:2dkde}.
+Several values of the smoothing factor between 0.1 and 1.0 are tested.
+If the smoothing is too weak, the effect of statistical uncertainty is not reduced; if the smoothing is too strong, the systematic uncertainty may be underestimated.
+A reasonable value for $h$ is found to be $0.5$.
+No smoothing of the simulated signal sample is necessary, because the statistical uncertainty of this sample is small in the signal search region.
+
+\fig{syst_tracking_smoothing}
+{1.0}
+{figs/search_for_b2hnn/systematics/Bplus2Kplus_v34_tracking_efficiency_0991_systematic_variation.pdf}
+{
+Number of events in each bin of the \BKpnn signal search region for 5 simulated background samples of 100\invfb of equivalent integrated luminosity.
+\ssrtext$ $
+On the left, the effect of the smoothing procedure is illustrated by comparing the expected number of events before and after the smoothing procedure.
+On the right, simulated background samples reconstructed with a modified track-finding efficiency are compared to the nominal expectations; both distributions are smoothed and visually nearly overlap.
+}
+
+
+The left part of \cref{fig:syst_tracking_smoothing} illustrates the smoothing procedure, and the right part of \cref{fig:syst_tracking_smoothing} compares the smoothed distributions resulting from the standard and modified reconstructions.
+The top part of \cref{fig:syst_tracking_gamma_neutral_rel} shows the relative systematic uncertainties obtained with the method presented above.
+Uncertainties obtained with and without smoothing are compared to the statistical uncertainties of the simulated samples.
+For the signal sample, the statistical uncertainty is small, and the relative systematic uncertainty due to the mis-modelling of the track-finding efficiency is stable and of the order of a few percents.
+For the background samples, the systematic uncertainties fluctuate more in regions of large statistical uncertainty.
+These fluctuations, which motivate the smoothing procedure, are likely due to migrations of individual events between bins, which cause a large effect when the total number of events in a bin is small.
+
+\figss{syst_tracking_gamma_neutral_rel}
+{
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/systematics/Bplus2Kplus_v34_tracking_efficiency_0991_systematic_relative.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/systematics/Bzero2Kshort_v34_tracking_efficiency_0991_systematic_relative.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/systematics/Bplus2Kplus_v34_matched_neutral_scale_0995_systematic_relative.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/systematics/Bzero2Kshort_v34_matched_neutral_scale_0995_systematic_relative.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/systematics/Bplus2Kplus_v34_unmatched_neutral_scale_09_systematic_relative.pdf}
+\includegraphics[width=0.495\textwidth]{figs/search_for_b2hnn/systematics/Bzero2Kshort_v34_unmatched_neutral_scale_09_systematic_relative.pdf}
+}
+{
+Components of vectors of relative uncertainties for the \BKpnn mode (left) and the \BKznn mode (right).
+The uncertainties are derived from a modification of the track-finding efficiency (top), of the photon energy (middle), or of the neutral hadron energy (bottom).
+There are 6 samples of simulated signal or background events, and 12 bins in the signal search region (\cref{sec:signal_search_region}), implying that each vector has a dimension of $6\cdot12=72$.
+In each plot, the vectors of relative uncertainties are shown with and without the smoothing procedure, and compared to the relative statistical uncertainty coming from the limited size of the simulated samples.
+Without the smoothing procedure, the systematic uncertainties are overestimated, because they include effects from statistical uncertainties of the simulated samples.
+}
+%====================================================================================================
+\subsection{Neutral particle energy} \label{sec:syst_neutral}
+%====================================================================================================
+A source of systematic uncertainty arises from the uncertainty on the energy measured by the Belle II calorimeter (\ECL), namely the energy of photons and neutral hadrons.
+The Belle II performance group recommends to assign an uncertainty of the order of 0.5\% to the photon energy.
+For the neutral hadron energy, no recommendation is given.
+A comparison between data and simulation of variables related to the energy of the \ECL clusters indicates that the uncertainty on the neutral hadron energy is of the order of 10\%.
+
+The same procedure as for the track-finding efficiency (\cref{sec:syst_tracking}) is independently applied for these sources of systematic uncertainties.
+This time, instead of reconstructing the samples with a modified track-finding efficiency, the modified parameter is the energy of the simulated photons (modified by 0.5\%) in one case, and the energy of the simulated neutral hadrons (modified by 10\%) in the other case.
+After following the steps of the procedure, two vectors of correlated uncertainties are added to the likelihood model with two respective nuisance parameters $\theta^{(\gamma)}$ and $\theta^{(\text{neutral hadrons})}$.
+
+The middle and bottom parts of \cref{fig:syst_tracking_gamma_neutral_rel} show the obtained relative systematic uncertainties.
+Uncertainties obtained with and without the smoothing procedure presented in \cref{sec:syst_tracking} are compared to the statistical uncertainties due to the limited size of the simulated background samples.
+%====================================================================================================
+\subsection{Simulation statistical uncertainty} \label{sec:syst_mcstat}
+%====================================================================================================
+In addition to the systematic uncertainties listed above, a set of nuisance parameters are used in the binned-likelihood model to take into account the statistical uncertainty of the simulated samples.
+These statistical uncertainties are considered uncorrelated among the simulated samples and the bins of the signal search region, implying that one nuisance parameter is needed for each simulated sample and for each of the 12 bins of the signal search region.
+
+For the signal sample, the $\epem\to\BpBm$ sample, and the $\epem\to\BzBzb$ sample, a total of $3\cdot12=36$ nuisance parameters are needed.
+
+For each continuum background category, two independent simulated samples are compared to the data in the binned-likelihood model:
+\bi
+\item The first simulated sample contributes to the expectations that are compared to the on-resonance data in the 12 bins of the signal search region.
+\item The second simulated sample contributes to the expectations that are compared to the off-resonance data in 12 bins that replicate the bins of the signal search region.
+\ei
+Since there are five continuum background categories ($\epem\to\qqbar$ with $q=u,d,s,c$, and $\epem\to\tautau$), a total of $5\cdot(12+12)=120$ nuisance parameters are needed.
+
+In total, $36+120=156$ nuisance parameters of uncorrelated uncertainties $\theta_i^{(\mathrm{sim.\,stat.})}$ are used in the binned-likelihood model.
+%====================================================================================================
+\subsection{Summary} \label{sec:syst_summary}
+%====================================================================================================
+\cref{tab:nuisance_parameters} lists all the nuisance parameters defined in the above sections.
+In total, the binned-likelihood model of the charged mode (\BKpnn) has 182 nuisance parameters, and the binned-likelihood model of the neutral mode (\BKznn) has 176 nuisance parameters.
+
+\tab{nuisance_parameters}{lll}{\input{tables/nuisance_parameters.tex}}{
+Nuisance parameters defined in \cref{sec:systematics}.
+The particle identification uncertainty applies only to the charged mode (\BKpnn), and the \KS reconstruction efficiency applies only to the neutral mode (\BKznn).
+}
+%====================================================================================================
+\clearpage
+\section{Model fitting and expected upper limit} \label{sec:fit}
+%====================================================================================================
+\figs{signal_injection}
+{0.495}
+{figs/search_for_b2hnn/fit/signal_injection_Bplus2Kplus_sghf.pdf}
+{0.495}
+{figs/search_for_b2hnn/fit/signal_injection_Bzero2Kshort_sghf.pdf}
+{
+Pull distributions of pseudo-observation studies using the \sghf fit, for the \BKpnn mode (left) and the \BKznn mode (right).
+Pseudo-observations are generated with both Poisson statistical and Gaussian systematic fluctuations around the expectations.
+An injected signal strength is varied between $\mu_{\mathrm{in}}=1$ (\SM expectation), $\mu_{\mathrm{in}}=5$, and $\mu_{\mathrm{in}}=20$.
+The pull is defined as $p=(\mu-\mu_{\mathrm{in}})/\sigma_{\mu}$, where $\mu$ and $\sigma_{\mu}$ are the fit signal strength and its uncertainty.
+No significant bias is observed for the mean value of the pull $\bar{p}$, and the standard deviation $\sigma_{p}$ is consistent with unity.
+}
+
+\figs{limit_expectation}
+{0.495}
+{figs/search_for_b2hnn/fit/limit_vs_syst_Bplus2Kplus.pdf}
+{0.495}
+{figs/search_for_b2hnn/fit/limit_vs_syst_Bzero2Kshort.pdf}
+{
+Expected upper limits on $\mathrm{Br}(\BKnn)$ at the 90\% confidence level for the background-only hypothesis, obtained using the \sghf fit, for the \BKpnn mode (left), and the \BKznn mode (right).
+The limits are computed as $\mathrm{Br}(\BKnn)_{\mathrm{SM}}\cdot\sigma_{\mu}\cdot1.645$, where $\sigma_{\mu}$ is the uncertainty on the signal strength $\mu$, and $1.645$ is the conversion factor from the $68\%$ confidence level to the $90\%$ confidence level.
+The limits are obtained using only expected data statistical uncertainty (Stat.), data and simulation statistical uncertainties (Stat.+Stat.(MC)), data statistical and background normalisation uncertainties (Stat.+Norm.), data statistical, background normalisation and simulation statistical uncertainties (Stat+Norm.+Stat.(MC)), and total uncertainties (All).
+}
+
+\figs{CLs_limit}
+{0.495}
+{figs/search_for_b2hnn/fit/CLs_expected_Bplus2Kplus.pdf}
+{0.495}
+{figs/search_for_b2hnn/fit/CLs_expected_Bzero2Kshort.pdf}
+{
+Expected \CLs value as a function of the branching fraction of \BKpnn (left) and \BKznn (right) using the \pyhf fit, and corresponding upper limits at the 90\% confidence level (CL).
+The expected upper limits are derived for the background-only hypothesis.
+}
+
+At this point, all the ingredients that enter the binned-likelihood model, whose functional expression is given by \cref{eq:pyhf} in \cref{sec:da_pyhf}, are ready:
+\bi
+\item The signal search region consists of $4\times3=12$ bins in the $\esig\times\qrec$ space.
+\item Simulated background events, corresponding to an equivalent integrated luminosity of 800\invfb, and \nsignalmctest signal events, provide the expected yields in the 12 bins of the signal search region, once properly weighted to match the integrated luminosity of the on-resonance data (\lumion).
+\item Simulated continuum background events, corresponding to an equivalent integrated luminosity of 100\invfb, provide the expected yields in 12 bins that replicate those of the signal search region, once properly weighted to match the integrated luminosity of the off-resonance data (\lumioff).
+\item The binned-likelihood model compares data and simulation in the 24 bins defined above.
+\ei
+The degrees of freedom of the binned-likelihood model are the signal strength $\mu$, which is the parameter of interest (defined by \cref{eq:mu} in \cref{sec:da_pyhf}), and nuisance parameters that modify the expected yields according to the modelling of the systematic uncertainties (\cref{sec:systematics}).
+A unique set of continuum normalisation nuisance parameters \{$\mu_{\uubar}$, $\mu_{\ddbar}$, $\mu_{\ccbar}$, $\mu_{\ssbar}$, $\mu_{\tautau}$\} is shared by the 12 on-resonance bins and the 12 off-resonance bins, so that the off-resonance data sample helps to constrain the normalisation of the continuum background.
+
+Two implementations of the binned-likelihood model, that are introduced at the end of \cref{sec:da_pyhf} and give similar results, are used: the \pyhf model, which is a product of Poisson densities, and the \sghf model, which approximates the Poisson densities by Gaussian densities.
+Even though the \pyhf model is used to determine the final result, fits with the \sghf models take less computing time.
+For this reason, the \sghf model is preferred for tests that require a large number of fits.
+
+Before opening the box, meaning looking at the on-resonance data in the signal search region, a few more tests are carried out:
+\bi
+\item Several thousands of pseudo-observations are generated to verify that the maximum likelihood fit delivers an unbiased value of the signal strength $\mu$ and of its uncertainty.
+The pseudo-observations are generated with Poisson statistical fluctuations and Gaussian systematic fluctuations around the expectations.
+In addition, pseudo-observations are generated for three injected values of $\mu$: $\mu_{\mathrm{in}}=1,5,20$.
+\cref{fig:signal_injection} shows that a fit of the \sghf model to the pseudo-observations lead to an unbiased value of $\mu$ and of its uncertainty.
+It is shown in \cref{sec:pyhf_vs_sghf} that the \pyhf model and the \sghf model deliver similar results.
+\item The impact of the systematic and statistical uncertainties on the expected upper limit on $\mathrm{\Br}(\BKnn)$ is studied by fits of the \sghf model to the expectations, for multiple combinations of uncertainties included or not (\cref{fig:limit_expectation}).
+The systematic uncertainty contributing the most is the 50\% normalisation uncertainty on each background source (\cref{sec:syst_norm}).
+\item The \CLs method, presented in \cref{sec:da_upper_limit}, is followed to determine an expected upper limit on $\mathrm{\Br}(\BKnn)$ with the \pyhf model.
+The result is shown in \cref{fig:CLs_limit}.
+The expected upper limits on the branching fraction of \BKpnn and \BKznn are determined to be \limitKp and \limitKz at the 90\% confidence level, respectively.
+For $\mathrm{\Br}(\BKpnn)$, the expected upper limit is better than the current world-best observed upper limit, which is $1.6\times10^{-5}$ at the 90\% confidence level \cite{ParticleDataGroup:2020ssz}.
+\item An additional check is the study of the stability of the data yield per unit of integrated luminosity in the signal search region as a function of the data taking period.
+This specific study is presented in \cref{sec:yield_stability} and shows that the data yield per unit of integrated luminosity is stable.
+\ei
+
+Time did not allow to look at the data in the signal search region when selecting events from the full data sample of \lumion collected at the \Y4S resonance.
+For this reason, the result of a first iteration of the inclusive tagging method is presented in the next section, with data samples of \lumionpartial collected at the \Y4S resonance and \lumioffpartial collected 60\mev below the resonance.
+
+%====================================================================================================
+\section{Results of a first iteration of the method} \label{sec:first_iteration}
+%====================================================================================================
+
+This section presents the result of a first iteration of the method, on data samples of \lumionpartial collected at the \Y4S resonance and \lumioffpartial collected 60\mev below the resonance.
+This first iteration was published in \cite{Belle-II:2021rof} and has a few differences with respect to what is developed in the previous sections.
+In particular,
+\bi
+\item Only \BKpnn decays are selected, not \BKznn decays.
+\item Instead of selecting the signal candidate as the one with the smallest \qrec, the one with the highest transverse momentum ($p_T$) is selected.
+As illustrated by \cref{fig:63_q2_vs_pt}, this difference is minor, since the two variables are strongly anti-correlated. 
+\item The signal search region is defined by 12 bins in the $\bdtt\times p_{T}$ space, instead of 12 bins in the $\esig\times\qrec$ space.
+The exact definition of the signal search region bins is $\bdtt\in[0.93, 0.95, 0.97, 0.99, 1.0]$ and $p_T(\Kp)\in[0.5, 2.0, 2.4, 3.5]\gevc$.
+\item In the first iteration of the method, \bdto, \bdtt, and \bdtc share a common set of input variables, which include all the variables that are considered in \cref{sec:bdtt}.
+No significant impact is expected from this difference, because \cref{sec:bdtt} shows than the removal of the least discriminative variables does not impact the classification performance.
+\ei
+
+\fig{63_q2_vs_pt}
+{0.5}
+{figs/search_for_b2hnn/first_iteration/Bplus2Kplus_Bsig_H_reconstructed_q2_vs_B_sig_K_pt.pdf}
+{
+Transverse momentum ($p_T$) and reconstructed invariant mass squared of the two-neutrino system ($\qrec$) in $10^5$ simulated \BKpnn decays.
+}
+
+Before looking at the on-resonance data in the signal search region, the compatibility between the data and the \pyhf model is quantified as follows:
+\begin{enumerate}
+\item Several thousands of pseudo-observations are generated with Poisson statistical fluctuations and Gaussian systematic fluctuations around the expectations in the signal search region, using the data statistical uncertainties for the Poisson statistical fluctuations.
+\item The \pyhf model is fit to each pseudo-observation, and the found minimum of the negative log-likelihood is stored.
+\item The \pyhf model is fit to data, and the found minimum of the negative log-likelihood is stored.
+The fit value of the signal strength is kept hidden.
+\item Comparing the minimum of the negative log-likelihood found with the data and the pseudo-observations allows to define a $p$-value that quantifies the data-model compatibility (\cref{fig:63_data_model_compatibility}).
+\end{enumerate}
+The above study shows an excellent compatibility between the model and the data ($p=73\%$), allowing to look at the on-resonance data in the signal search region.
+
+\fig{63_data_model_compatibility}
+{0.6}
+{figs/search_for_b2hnn/first_iteration/data_model_compatibility_pyhf.pdf}
+{
+Distributions of the fit negative log-likelihood for pseudo-observation studies using the \pyhf fit.
+Pseudo-observations (toys) are generated with Poisson statistical and Gaussian systematic fluctuations around the expectations.
+The statistical fluctuations are based on the observed data yield.
+The $p$-value of the fit to the data (73\%) is the fraction of pseudo-observations that yield fits with a larger negative log-likelihood  value than that of the data fit.
+Since the fit region consists of $2\cdot12=24$ bins, the asymptotic $\chi^2$ distribution for 24 degrees of freedom is overlaid.
+}
+
+The result of the fit to the 12+12 bins of on-resonance and off-resonance data is shown in \cref{fig:63_post_fit}.
+The observed signal strength $\mu$ is
+\be \label{eq:result_mu}
+\mu = 4.2^{+3.4}_{-3.2} = 4.2^{+2.9}_{-2.8}(\mathrm{stat}){}^{+1.8}_{-1.6}(\mathrm{syst}),
+\ee
+meaning that the observed signal is 4.2 times larger than the \SM expectation, but with a large uncertainty that makes this measurement compatible with the \SM within one standard deviation.
+If translated into a measured branching fraction, the result is
+\be
+\mathrm{\Br}(\BKpnn)=\left[1.9^{+1.6}_{-1.5}\right] \times 10^{-5} = \left[1.9^{+1.3}_{-1.3}(\mathrm{stat}){}^{+0.8}_{-0.7}(\mathrm{syst})\right] \times 10^{-5}.
+\ee
+Information about the post-fit normalisation nuisance parameters can be found in \cref{sec:pulls}.
+
+\figs{63_post_fit}
+{0.495}
+{figs/search_for_b2hnn/first_iteration/SRs_postfit_2.pdf}
+{0.495}
+{figs/search_for_b2hnn/first_iteration/postfit_offresCR_2.pdf}
+{
+Yields in data and as predicted by the simultaneous fit to the on-resonance data (left) and off-resonance data (right), corresponding to an integrated luminosity of \lumionpartial and \lumioffpartial, respectively.
+The predicted yields are shown individually for charged and neutral \B meson decays and the sum of the five continuum background categories.
+The signal search region consists of $4\times3=12$ bins: 4 bins defined on the classifier output, $\bdtt\in[0.93, 0.95, 0.97, 0.99, 1.0]$, and 3 bins on the transverse momentum of the signal kaon candidate, $p_T(\Kp)\in[0.5, 2.0, 2.4, 3.5]\gevc$.
+Yields in the rightmost three bins are upscaled by a factor of 2.
+Figure published in \cite{Belle-II:2021rof}.
+}
+
+In \cref{eq:result_mu}, the total uncertainty on $\mu$ is obtained with a profile likelihood scan, which checks how the negative log-likelihood varies when the model is fit to the data with fixed values of $\mu$ around the value that minimises the negative log-likelihood (\cref{fig:63_mu_uncertainty}, left).
+The statistical uncertainty on $\mu$ is determined by taking the standard deviation of a sample of signal strengths determined from fits on pseudo-observations that are generated as Poisson statistical fluctuations around the observed data yields.
+The systematic uncertainty $\sigma_{\mathrm{syst}}(\mu)$ is determined by subtracting in quadrature the total uncertainty $\sigma(\mu)$ and the statistical uncertainty $\sigma_{\mathrm{stat}}(\mu)$:
+\be
+\sigma_{\mathrm{syst}}(\mu)=\sqrt{\sigma^2(\mu)-\sigma^2_{\mathrm{stat}}(\mu)}.
+\ee
+
+\figs{63_mu_uncertainty}
+{0.44}
+{figs/search_for_b2hnn/first_iteration/mu_profile.pdf}
+{0.55}
+{figs/search_for_b2hnn/first_iteration/br_comp.pdf}
+{
+On the left, scan of the signal strength $\mu$.
+Each point is obtained by fixing $\mu$ and minimising the negative log-likelihood $L$ of the \pyhf model with respect to all the other model parameters.
+The asymmetric uncertainty on $\mu$ is estimated by fitting the collection of points with an asymmetric parabola $f(x)=(x/\sigma^-)^2$ for $x<0$, and $f(x)=(x/\sigma^+)^2$ for $x\ge0$.
+The fit yields $\sigma^-=3.23$ and $\sigma^+=3.43$.
+On the right, comparison of the \BKpnn branching fraction measured by Belle II and previous experiments \cite{BaBar:2013npw,Belle:2013tnz,Belle:2017oht} with the \SM prediction \cite{BLAKE201750}.
+The values reported for Belle are computed based on the quoted observed number of events and efficiency.
+The weighted average is computed assuming that uncertainties are uncorrelated.
+Figure published in \cite{Belle-II:2021rof}.
+}
+
+The precision of the obtained measurement is comparable to previous results (\cref{fig:63_mu_uncertainty}, right), even if the size of the used data sample is much smaller.
+In order to compare the sensitivity of the inclusive tagging method with the sensitivity of other methods, the product $\sigma_{\mathrm{\Br}}\cdot\sqrt{L}$ is computed, where $\sigma_{\mathrm{\Br}}$ is the uncertainty on the branching fraction of \BKpnn, and $L$ is the integrated luminosity of the data sample used to make the measurement.
+This metric assumes that the total uncertainty scales as the inverse of the square root of the integrated luminosity, and is smaller for a more sensitive method.
+\cref{tab:method_comparison} compares $\sigma_{\mathrm{\Br}}\cdot\sqrt{L}$ for the obtained result and previous published results.
+With respect to this metric, the inclusive tagging method is a factor of 3.5 better than the hadronic tagging of \cite{Belle:2013tnz}, approximately 20\% better than the semileptonic tagging of \cite{Belle:2017oht}, and approximately 10\% better than the combined hadronic and semileptonic tagging of \cite{BaBar:2013npw}. 
+
+\tab{method_comparison}{llllll}{\input{tables/sensitivity.tex}}
+{Experimental results of searches for \BKpnn decays.
+Are given the name of the experiment, the integrated luminosity of the on-resonance data sample ($L$), the employed tagging method (combined stands for the combination of the inclusive and semileptonic tagging methods), the symmetrised uncertainty on the \BKpnn branching fraction ($\sigma_{\mathrm{\Br}}$), and the product $\sigma_{\mathrm{\Br}}\cdot\sqrt{L}$.
+The final line is the result of this work.
+}
+
+Since no significant signal is observed, the \CLs method, presented in \cref{sec:da_upper_limit}, is followed to determine an observed upper limit on $\mathrm{\Br}(\BKpnn)$ with the \pyhf model (\cref{fig:63_limit_on_br}).
+The observed upper limit is
+\be
+\mathrm{\Br}(\BKpnn)<4.1\times10^{-5}\hspace{1cm}\text{at the 90\% confidence level.}
+\ee
+
+\fig{63_limit_on_br}
+{0.6}
+{figs/search_for_b2hnn/first_iteration/B_Knunu_CLs_unblinding_90CL_both_expected_and_observed.pdf}
+{
+\CLs value as a function of the branching fraction of \BKpnn for expected and observed signal yields and corresponding upper limits at the 90\% confidence level (CL).
+The expected upper limit is derived for the background-only hypothesis.
+The observed upper limit is derived from a simultaneous fit to the on-resonance and off-resonance data, corresponding to an integrated luminosity of \lumionpartial and \lumioffpartial, respectively.
+The change of slope of the observed \CLs curve around $1.9\times10^{-5}$ is an expected feature of the \CLs method due to the presence of a threshold in the definition of the test statistic $q_\mu$ (\cref{eq:qmu} in \cref{sec:da_upper_limit}).
+Figure published in \cite{Belle-II:2021rof}.
+}
+
+%====================================================================================================
+\section{Discussion} \label{sec:discussion}
+%====================================================================================================
+The obtained result shows that the inclusive tagging method is particularly suitable to search for rare decays if the size of the data sample is limited.
+The main reason for this is the high efficiency of the signal selection: 4\% at the point of maximum significance (\cref{fig:significance_efficiency} in \cref{sec:classification_performance}), to be compared with the signal selection efficiencies of the hadronic and the semileptonic tagging methods, which are well below 1\% (\cref{tab:previous_measurements} in \cref{sec:previous_searches}).
+
+The success of the inclusive tagging method opens new opportunities in the search for rare decays with neutrinos in the final state or any kind of invisible energy.
+As already mentioned, the inclusive tagging method presented in this thesis is inspired by the method used by the Belle collaboration in a search for $\Bp\to\mup\!\num$ decays \cite{Belle:2019iji}.
+Examples of other decays that could benefit from the method include $\B\to\kaon^*\nu\bar{\nu}$, $\B\to\kaon^{(*)}\tau^+\tau^-$, and $\B\to\kaon\jpsi(\to\nunub)$. 
+
+A disadvantage of the developed inclusive tagging method is that it is channel-specific: a dedicated reconstruction and selection chain is defined for each mode (\BKpnn and \BKznn).
+In the future, it will be interesting to define a first classifier (\bdto) trained with a mixture of simulated signal decays, so that the first step of the background rejection could be shared by multiple targeted signal decays.
+After a common event selection with \bdto, a second classifier (\bdtt) could be trained once per targeted signal decay to finalise the event selection.
+This updated strategy would be similar to the one used by the Belle collaboration in a search for $B\to H\nunub$ decays with a semileptonic tagging method, where $H\in\{\Kp,\KS,K^{*+},K^{*0},\pip,\piz,\rho^+,\rho^0\}$ \cite{Belle:2017oht}.
+In this case, the selection of the accompanying $B$ meson was common among the channels, and channel-specific classifiers were trained for the final stage of the event selection.
+
+Currently, the main source of systematic uncertainty is the 50\% normalisation uncertainty on each of the background categories.
+As already mentioned in \cref{sec:syst_norm}, this value of 50\% is too conservative for the \B meson background.
+For the continuum background, more studies are needed to understand the cause of the normalisation discrepancy, which could be a mis-modelling of the quark fragmentation (\cref{sec:offres}).
+
+To improve the inclusive tagging method, it will also be interesting in the future to test other types of classification algorithms than boosted decision trees, such as neural networks \cite{hastie01statisticallearning}, or a combination of multiple classifiers.
+In addition, a combination of different tagging methods (hadronic, semileptonic and inclusive) may increase the sensitivity of the measurement.
