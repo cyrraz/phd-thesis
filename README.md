@@ -1,3 +1,6 @@
+phd-thesis
+==========
+
 [![CC BY-NC 4.0][cc-by-nc-shield]][cc-by-nc]
 
 Repository for my PhD thesis, whose reference is:
@@ -22,6 +25,13 @@ The main files and folders are:
 * `include/belle2sym.tex`: file defining particle symbols.
 
 This work is licensed under a [Creative Commons Attribution-NonCommercial 4.0 International License][cc-by-nc].
+
+See also
+--------
+* [latex-thesis-template](https://github.com/cyrraz/latex-thesis-template): LaTeX template for a PhD, Master's or Bachelor's thesis 
+* [particle-physics-presentations](https://github.com/cyrraz/particle-physics-presentations): Collection of public presentations in Beamer LaTeX that I gave during my PhD and postdoctoral studies in Particle Physics.
+* [moriond-2023-proceedings-ewp-radiative](https://github.com/cyrraz/moriond-2023-proceedings-ewp-radiative): Proceedings written in LaTeX for my talk at the "57th Rencontres de Moriond 2023" conference.
+* [latex-letter-template](https://github.com/cyrraz/latex-letter-template):  Very simple template for a letter in LaTeX.
 
 [cc-by-nc-shield]: https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg
 [cc-by-nc]: https://creativecommons.org/licenses/by-nc/4.0/
