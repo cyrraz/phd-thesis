@@ -8,7 +8,7 @@ Repository for my PhD thesis, whose reference is:
 * C. Praz, [*Search for B→Kνν decays with a machine learning method at the Belle II experiment*](https://dx.doi.org/10.3204/PUBDB-2022-04919), Ph.D. thesis, DESY, Hamburg, 2022.
 
 The pdf of the thesis can be produced by unzipping `figs.zip` and `tables.zip`, and running `make`.
-For producing the pdf, you need a distribution of TeX, such as [TeX Live](https://www.tug.org/texlive/quickinstall.html). A template version of the thesis is available in [this repository](https://github.com/cyrraz/latex-thesis-template).
+For producing the pdf, you need a distribution for the TeX typesetting system, such as [TeX Live](https://www.tug.org/texlive/quickinstall.html). A template version of the thesis is available in [this repository](https://github.com/cyrraz/latex-thesis-template).
 
 The main files and folders are:
 * `phd_thesis.tex`: main tex file whose purpose is to import all the other tex files;
