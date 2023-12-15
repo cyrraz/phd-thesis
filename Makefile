@@ -8,6 +8,8 @@ base='phd_thesis'
 all:
 	pdflatex ${base}.tex
 	bibtex ${base}.aux
+	#  Rerun pdflatex 3 times to get all cross-references right
+	pdflatex ${base}.tex
 	pdflatex ${base}.tex
 	pdflatex ${base}.tex
 	rm ${base}.aux ${base}.bbl ${base}.blg ${base}.log ${base}.toc ${base}.brf
