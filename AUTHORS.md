@@ -1,1 +1,1 @@
-Cyrille Praz
+Cyrille Praz ([@cyrraz](https://github.com/cyrraz))
