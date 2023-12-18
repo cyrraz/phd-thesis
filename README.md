@@ -32,7 +32,7 @@ See also
 --------
 * [thesis-template](https://github.com/cyrraz/thesis-template): LaTeX template for a PhD, Master's or Bachelor's thesis.
 * [particle-physics-presentations](https://github.com/cyrraz/particle-physics-presentations): Public presentations in Beamer LaTeX given during my PhD and postdoctoral studies in Particle Physics.
-* [moriond-2023-proceedings-ewp-radiative](https://github.com/cyrraz/moriond-2023-proceedings-ewp-radiative): Proceedings written in LaTeX for my talk at the "57th Rencontres de Moriond 2023" conference.
+* [moriond-2023-proceedings-ewp-radiative](https://github.com/cyrraz/moriond-2023-proceedings-ewp-radiative): Proceedings for my talk at the Moriond conference.
 * [letter-template](https://github.com/cyrraz/letter-template):  Very simple template for a letter in LaTeX.
 
 [cc-by-nc-shield]: https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg
