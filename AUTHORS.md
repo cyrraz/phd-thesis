@@ -1,3 +1,3 @@
-Author
-======
-Cyrille Praz ([@cyrraz](https://github.com/cyrraz))
+Repository author
+=================
+* Cyrille Praz ([@cyrraz](https://github.com/cyrraz))
